@@ -76,13 +76,17 @@ WSGI_APPLICATION = 'graduation_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+import sae.const
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': sae.const.MYSQL_DB,
+        'USER': sae.const.MYSQL_USER,
+        'PASSWORD': sae.const.MYSQL_PASS,
+        'HOST': sae.const.MYSQL_HOST,
+        'PORT': sae.const.MYSQL_PORT,
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
