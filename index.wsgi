@@ -1,7 +1,7 @@
 import os
 import sys
 import sae
-from simpleWeb import wsgi
+from sharephotos import wsgi
 
 root = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(root, 'site-packages'))
