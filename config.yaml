@@ -1,0 +1,8 @@
+name: sharephotos
+version: 1
+libraries:
+- name: "django"
+  version: "1.8.3"
+handlers:
+- url: "/static"
+  static_path: "collected_static"
