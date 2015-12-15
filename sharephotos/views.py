@@ -4,4 +4,4 @@ import uploadImg
 
 def hello(request):
     returnInfo = uploadImg.upload()
-    return render(request, u'hello.html', {'returnInfo': returnInfo})
+    return render(request, u'index.html')

@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="keywords" content="evan, 相册, sae, 图片浏览" />
+<meta name="description" content="evan 的在线图片浏览工具" />
+<link rel="shortcut icon" href="favicon.ico" >
+<title>evan's album</title>
+
+<link rel="stylesheet" href="http://lib.sinaapp.com/js/bootstrap/v3.0.0/css/bootstrap-theme.min.css" />
+<script src="http://lib.sinaapp.com/js/jquery/1.8.2/jquery.min.js"></script>
+</head>
+
+<body>
+<a>
+<form method="post" action="http://my-bucket.sinacloud.net/" enctype="multipart/form-data">
+    <input type="hidden" name="AWSAccessKeyId" value="您的accesskey" />
+    <input type="hidden" name="key" value="my_prefix/${filename}" />
+    <input type="hidden" name="acl" value="private" />
+    <input type="hidden" name="success_action_status" value="201" />
+    <input type="hidden" name="Policy" value="eyJleHBpcmF0aW9uIjoiMjAxNC0wNC0xMFQwOToxNzozMC4wMDBaIiwiY29uZGl0aW9ucyI6W3siYnVja2V0IjoiY2xvdWQxMjMqwqwsdifsdGFydHMtd2l0aCIsIiRrZXkiLCJteWZpbGVzLyJdLFsic3RhcnRzLXdpdGgiLCIkQ29udGVudC1UeXBlIiwiIl0sWyJzdGFydHMtd2l0aCIsIiRDb250ZW50LURpc3Bvc2l0aW9uIiwiIl0seyJ1aWQiOiIxMjMifSxbImNvbnRlbnQtbGVuZ3RoLXJhbmdlIiwwLDUyNDI4ODAwXV19" />
+    <input type="hidden" name="Signature" value="HnOSk3kfx5LFtn4CIiFcSglQUXc=" />
+    <input type="file" name="file" />
+    <input type="submit" value="上传" />
+</form>
+</a>
+hello
+return: {{returnInfo}}
+<a>
+<img src="{{returnInfo}}">
+</a>
+</body>
+</html>
