@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import sae.const
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -76,17 +77,32 @@ WSGI_APPLICATION = 'graduation_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-import sae.const
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': sae.const.MYSQL_DB,
-        'USER': sae.const.MYSQL_USER,
-        'PASSWORD': sae.const.MYSQL_PASS,
-        'HOST': sae.const.MYSQL_HOST,
-        'PORT': sae.const.MYSQL_PORT,
+
+if 'SERVER_SOFTWARE' not in os.environ:
+# use in localhost
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'app_sharephotos',
+            'USER': 'root',
+            'PASSWORD': '220200',
+            'HOST': 'localhost',
+        }
     }
-}
+else:
+    # connect to sae
+    import sae.const
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': sae.const.MYSQL_DB,
+            'USER': sae.const.MYSQL_USER,
+            'PASSWORD': sae.const.MYSQL_PASS,
+            'HOST': sae.const.MYSQL_HOST,
+            'PORT': sae.const.MYSQL_PORT,
+        }
+    }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -106,9 +122,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'sharephotos/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'sharephotos/static'),
     'sharephotos/static',
+)
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )

@@ -5,4 +5,4 @@ libraries:
   version: "1.8.3"
 handlers:
 - url: "/static"
-  static_path: "/sharephotos/static"
+  static_path: "collected_static"
