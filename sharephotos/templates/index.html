@@ -15,7 +15,9 @@
 <div id="header">
 <ul>
 	<li class="headerlist head_text">
+		<a href="">
 		<h1>群体活动照片分享系统</h1>
+		</a>
 	</li>
 	<li class="headerlist search">
 		<input type="text" class="input">
@@ -27,6 +29,20 @@
 	<li class="headerlist login">
 		<p>登录</p>
 	</li>
+    <li>
+    <div class="upload">
+			<form method="post" action="http://my-bucket.sinacloud.net/" enctype="multipart/form-data">
+			<input type="hidden" name="AWSAccessKeyId" value="您的accesskey" />
+			<input type="hidden" name="key" value="my_prefix/${filename}" />
+			<input type="hidden" name="acl" value="private" />
+			<input type="hidden" name="success_action_status" value="201" />
+			<input type="hidden" name="Policy" value="eyJleHBpcmF0aW9uIjoiMjAxNC0wNC0xMFQwOToxNzozMC4wMDBaIiwiY29uZGl0aW9ucyI6W3siYnVja2V0IjoiY2xvdWQxMjMqwqwsdifsdGFydHMtd2l0aCIsIiRrZXkiLCJteWZpbGVzLyJdLFsic3RhcnRzLXdpdGgiLCIkQ29udGVudC1UeXBlIiwiIl0sWyJzdGFydHMtd2l0aCIsIiRDb250ZW50LURpc3Bvc2l0aW9uIiwiIl0seyJ1aWQiOiIxMjMifSxbImNvbnRlbnQtbGVuZ3RoLXJhbmdlIiwwLDUyNDI4ODAwXV19" />
+			<input type="hidden" name="Signature" value="HnOSk3kfx5LFtn4CIiFcSglQUXc=" />
+			<input type="hidden" name="file" class="choose_button" />
+			<input type="submit" value="上传" class="upload_button" />
+			</form>
+		</div>
+        </li>
 </ul>	
 </div>
 
@@ -36,39 +52,42 @@
 	
 	<div class="menu">
 		<ul>
-			<li>Menu</li>
-			<li>Menu</li>
-			<li>Menu</li>
-			<li>Menu</li>
+			<li>tag</li>
+			<li>tag</li>
+			<li>tag</li>
+			<li>tag</li>
 		</ul>
 	</div>
+	
 	<div class="photos">
-	<ul class="photo_list">
-		<li class="photo_display">
-			<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-		</li>
-		<li class="photo_display">
-			<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-		</li>
-		<li class="photo_display">
-			<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-		</li>
-		<li class="photo_display">
-			<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-		</li>
-		<li class="photo_display">
-			<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-		</li>
-		<li class="photo_display">
-			<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-		</li>
-		<li class="photo_display">
-			<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-		</li>
-		<li class="photo_display">
-			<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-		</li>
-	</ul>
+		
+		<br class="clearfloat">
+		<ul class="photo_list">		
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+		</ul>
 	</div>
 </div>
 <div id="footer">

@@ -20,5 +20,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'sharephotos.views.hello', name = 'hello'),
+    url(r'^$', 'sharephotos.views.homepage', name = 'homepage'),
 ]

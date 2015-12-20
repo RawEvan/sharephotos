@@ -40,7 +40,11 @@ color:#ddd;
 {
 float:left;
 padding-top:25px;
-padding-left:130px;
+padding-left:50px;
+}
+.upload
+{
+float:left;
 }
 .input
 {
