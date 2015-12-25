@@ -29,11 +29,6 @@
 	<li class="headerlist login">
 		<p>登录</p>
 	</li>
-    <li>
-    <div class="upload_link">
-			<a href="/upload">上传</a>
-    </div>
-    </li>
 </ul>	
 </div>
 
@@ -50,35 +45,19 @@
 		</ul>
 	</div>
 	
-	<div class="photos">
+	<div id="upload_photos">
 		
 		<br class="clearfloat">
-		<ul class="photo_list">		
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-		</ul>
+		<form id="upload_form" action="" method="post" enctype="multipart/form-data">
+            
+            <input id="file_choose" type="file" name="image">
+            <div id="tag">
+                <input id="tag1" class="tag_text" type="text" value="标签">
+            </div>
+            <textarea id="description">描述</textarea>
+            <input id="submit_button" type="submit" value="上传">
+            <input id="reset_button" type="reset" value="重置">
+        </form>
 	</div>
 </div>
 <div id="footer">

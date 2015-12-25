@@ -5,5 +5,6 @@ import uploadImg
 def homepage(request):
     return render(request, u'index.html')
 
-#def upload(request, ):
+def upload(request):
+    return render(request, u'upload.html')
 		
