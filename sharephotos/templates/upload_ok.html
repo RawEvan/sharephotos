@@ -46,18 +46,14 @@
 	</div>
 	
 	<div id="upload_photos">
-		
-		<br class="clearfloat">
-		<form id="upload_form" action="/upload" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input id="file_choose" type="file" name="photoFile" name="image">
-            <div id="_div">
-                <input id="tag1" class="tag_text" name="tag" type="text" value="标签">
-            </div>
-            <textarea id="description" name="description">描述</textarea>
-            <input id="submit_button" type="submit" value="上传">
-            <input id="reset_button" type="reset" value="重置">
-        </form>
+		标签：{{form_info.tag}}
+        <br>
+        描述：{{form_info.description}}
+        <br>
+        图片:
+        <img src={{storeUrl}}>
+        <br>
+        地址：{{storeUrl}}
 	</div>
 </div>
 <div id="footer">

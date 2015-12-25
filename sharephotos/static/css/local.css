@@ -75,6 +75,10 @@ padding-left:25px;
 padding-right:25px;
 overflow:hidden;
 }
+.upload_href
+{
+    color:#66ccff;
+}
 .choose_button
 {
 float:left;
