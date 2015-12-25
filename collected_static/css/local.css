@@ -65,6 +65,7 @@ margin-left:155px;
 height:auto;
 background-color:#f0f0f0;
 text-align:center;
+min-height:500px;
 }
 .upload
 {
@@ -83,6 +84,13 @@ display:none;
 {
 float:left;
 }
+.upload_link
+{
+    float:left;
+    padding-left:25px;
+    padding-right:25px;
+    padding-top:25px;
+}
 .photo_list
 {
 margin-bottom:0;
@@ -100,4 +108,54 @@ text-align:center;
 width:100%;
 background-color:#ffffff;
 bottom:10px;
+}
+
+
+/* upload.html */
+
+#upload_photos
+{   
+margin-left:155px;
+height:auto;
+background-color:#f0f0f0;
+text-align:center;
+min-height:500px;
+}
+#upload_form
+{
+    position:absolute;
+    margin-left:550px;
+}
+#file_choose
+{
+    float:left;
+    margin-bottom:10px;
+}
+#submit_button
+{
+    clear:both;
+    float:left;
+}
+#reset_button
+{
+    float:left;
+    margin-left:40px;
+}
+#description
+{
+    margin-bottom:10px;
+    clear:both;
+    float:left;
+    height:120px;
+}
+#tag
+{
+    clear:both;
+    padding-bottom:10px;
+    overflow:hidden;
+}
+.tag_text
+{
+    float:left;
+    width:60px;
 }
