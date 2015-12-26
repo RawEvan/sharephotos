@@ -29,6 +29,11 @@
 	<li class="headerlist login">
 		<p>登录</p>
 	</li>
+    <li>
+    <div class="upload_link">
+			<a href="/upload" class="upload_href">上传</a>
+    </div>
+    </li>
 </ul>	
 </div>
 
@@ -45,16 +50,35 @@
 		</ul>
 	</div>
 	
-	<div id="upload_photos">
-        上传成功！
-		标签：{{form_info.tag}}
-        <br>
-        描述：{{form_info.description}}
-        <br>
-        图片:
-        <img src={{storeUrl}}>
-        <br>
-        地址：{{storeUrl}}
+	<div class="photos">
+		
+		<br class="clearfloat">
+		<ul class="photo_list">		
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+			<li class="photo_display">
+				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+			</li>
+		</ul>
 	</div>
 </div>
 <div id="footer">

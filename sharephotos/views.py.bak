@@ -20,9 +20,9 @@ def upload(request):
             #seperate these later
             photoInfo = tb_photo_info(store_url = storeUrl, description = request.POST['description'])
             photoInfo.save()
+            
             tagInfo = tb_tag(tag = request.POST['tag'])
             tagInfo.save()
-            tagInfo.photo.add(photoInfo)
             
             print 'upload_done'
             return render(request, 'upload_ok.html', {'form_info' : form, 'storeUrl': storeUrl})

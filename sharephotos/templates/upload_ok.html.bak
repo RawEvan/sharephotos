@@ -46,7 +46,6 @@
 	</div>
 	
 	<div id="upload_photos">
-        上传成功！
 		标签：{{form_info.tag}}
         <br>
         描述：{{form_info.description}}

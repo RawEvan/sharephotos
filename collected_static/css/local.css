@@ -75,6 +75,10 @@ padding-left:25px;
 padding-right:25px;
 overflow:hidden;
 }
+.upload_href
+{
+    color:#66ccff;
+}
 .choose_button
 {
 float:left;
@@ -148,14 +152,9 @@ min-height:500px;
     float:left;
     height:120px;
 }
-#tag
-{
-    clear:both;
-    padding-bottom:10px;
-    overflow:hidden;
-}
 .tag_text
 {
     float:left;
     width:60px;
+    margin-bottom:10px;
 }

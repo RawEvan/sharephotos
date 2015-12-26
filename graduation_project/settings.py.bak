@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'graduation_project.wsgi.application'
 
 
 if 'SERVER_SOFTWARE' not in os.environ:
-    # use in localhost
+# use in localhost
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
