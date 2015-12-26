@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 class tb_photo_info(models.Model):
-    #store_url = models.TextField(max_length = 1250, default = 'url')
+    store_url = models.TextField(max_length = 1250, default = 'url')
     description = models.TextField(max_length = 300, default = 'no description')
     upload_time = models.DateTimeField(auto_now = True)
     

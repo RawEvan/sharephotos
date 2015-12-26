@@ -105,6 +105,9 @@ display:inline-block;
 margin-top:15px;
 margin-bottom:135px;
 margin-right:235px;
+height:150px;
+width:20%;
+overflow:hidden;
 }
 #footer
 {

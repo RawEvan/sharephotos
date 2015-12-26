@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head id="head">
@@ -20,14 +20,12 @@
 		<h1>群体活动照片分享系统</h1>
 		</a>
 	</li>
-    <!--
 	<li class="headerlist search">
     <form id="search" name="search" action="/" method="POST">
-        {% csrf_token %}
+    {% csrf_token %}
 		<input type="text" class="input" name="search_word" value="花">
 		<input type="submit" class="submit" value="搜索">
 	</li>
-    -->
 	<li class="headerlist register">
 		<p>注册</p>
 	</li>
@@ -46,27 +44,10 @@
 	
 	<div class="menu">
 		<ul>
+            <li>当前关键字：<br>{{search_word}}</li>
 			<li>tag</li>
 			<li>tag</li>
 			<li>tag</li>
 			<li>tag</li>
 		</ul>
 	</div>
-	
-	<div id="upload_photos">
-		
-		<br class="clearfloat">
-		<form id="upload_form" name="upload" action="/upload" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input id="file_choose" type="file" name="photoFile" name="image">
-            <div id="tag_div">
-                <input id="tag1" class="tag_text" name="tag" type="text" value="标签">
-            </div>
-            <textarea id="description" name="description">描述</textarea>
-            <input id="submit_button" type="submit" value="上传">
-            <input id="reset_button" type="reset" value="重置">
-        </form>
-	</div>
-</div>
-
-{% include 'footer_base.html'%}

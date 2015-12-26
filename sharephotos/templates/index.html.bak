@@ -1,48 +1,10 @@
-﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head id="head">
-	<!--
-	<script src="http://lib.sinaapp.com/js/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-	-->
-	<link rel="stylesheet" href="http://lib.sinaapp.com/js/bootstrap/3.0.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/static/css/local.css">
-	<link rel="shortcut icon" href="/static/images/favicon.ico" >
-	<title>群体活动照片分享系统</title>
-</head>
-
-<body>
-<div id="header">
-<ul>
-	<li class="headerlist head_text">
-		<a href="/">
-		<h1>群体活动照片分享系统</h1>
-		</a>
-	</li>
-	<li class="headerlist search">
-		<input type="text" class="input">
-		<input type="submit" class="submit" value="搜索">
-	</li>
-	<li class="headerlist register">
-		<p>注册</p>
-	</li>
-	<li class="headerlist login">
-		<p>登录</p>
-	</li>
-    <li>
-    <div class="upload_link">
-			<a href="/upload" class="upload_href">上传</a>
-    </div>
-    </li>
-</ul>	
-</div>
-
-
+{% include 'header_base.html' %}
 
 <div id="content">
 	
 	<div class="menu">
 		<ul>
+            <li>当前关键字：<br>{{search_word}}</li>
 			<li>tag</li>
 			<li>tag</li>
 			<li>tag</li>
@@ -50,10 +12,14 @@
 		</ul>
 	</div>
 	
+    {% block content %}
 	<div class="photos">
 		
 		<br class="clearfloat">
 		<ul class="photo_list">		
+            <li class="photo_display">
+				<img src={{store_url}}">
+			</li>
 			<li class="photo_display">
 				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
 			</li>
@@ -81,10 +47,6 @@
 		</ul>
 	</div>
 </div>
-<div id="footer">
-	Powerd by 
-	<a href="/">Li Aiwen</a>
-</div>
-</body>
+{% endblock %}
 
-</html>
+{% include 'footer_base.html'%}

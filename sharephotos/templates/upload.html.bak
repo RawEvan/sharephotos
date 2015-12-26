@@ -20,14 +20,12 @@
 		<h1>群体活动照片分享系统</h1>
 		</a>
 	</li>
-    <!--
 	<li class="headerlist search">
     <form id="search" name="search" action="/" method="POST">
         {% csrf_token %}
 		<input type="text" class="input" name="search_word" value="花">
 		<input type="submit" class="submit" value="搜索">
 	</li>
-    -->
 	<li class="headerlist register">
 		<p>注册</p>
 	</li>
