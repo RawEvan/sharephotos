@@ -18,3 +18,4 @@ class tb_tag(models.Model):
     
     def __unicode__(self):
         return self.tag
+        

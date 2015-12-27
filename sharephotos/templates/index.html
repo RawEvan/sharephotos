@@ -4,34 +4,30 @@
 	<div class="photos">
 		
 		<br class="clearfloat">
-		<ul class="photo_list">		
+		<ul class="photo_list">	
+            {% if photo_list %}
+                {% for each_photo in photo_list%}
+                <li class="photo_display">
+                    <a href={{each_photo.url}}>
+                        <img src={{each_photo.url}}>
+                        <br class="clearfloat">
+                        <div class="display_description">
+                        {{each_photo.description}}
+                        </div>
+                    </a>
+                {% endfor %}
+                </li>
+            {% else %}
+            
             <li class="photo_display">
-				<img src={{store_url}}">
+                <img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+                <br class="clearfloat">
+                <div class="display_description">
+                    没有图片，搜索试试
+                </div>
 			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
-			<li class="photo_display">
-				<img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-			</li>
+            {% endif %}
+			
 		</ul>
 	</div>
 </div>

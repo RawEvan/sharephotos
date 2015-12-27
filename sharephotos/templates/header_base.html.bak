@@ -39,3 +39,20 @@
     </li>
 </ul>	
 </div>
+
+<div id="content">
+	
+	<div class="menu">
+		<ul>
+            {% if search_word %}
+            <div class="current_tag">
+            当前关键字：
+            <li>{{search_word}}</li>
+            </div>
+            {% endif %}
+			<li>tag</li>
+			<li>tag</li>
+			<li>tag</li>
+			<li>tag</li>
+		</ul>
+	</div>

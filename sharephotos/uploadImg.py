@@ -1,3 +1,4 @@
+#coding:utf-8
 import urllib2
 from sinastorage.bucket import SCSBucket, ACL
 import sinastorage
@@ -20,13 +21,13 @@ def urlUpload(imgSrc = 'http://www.w3school.com.cn/i/site_photoref.jpg'):
     stUrl = s.make_url(filename)   # get url of image in the storage
     return stUrl
 
-def objUpload(data):
+def objUpload(data, tag):
     sinastorage.setDefaultAppInfo('1cjfyo5kQPdnsI3cUc6W',
                                   'a3c139370a3509f269331930515729747573aa10')
     s = SCSBucket('sharephotos')
     path = time.ctime()
     # if '/' in file name there will be problems
-    filename = path + '.jpg' # use jpg temporary
+    filename = tag + '_' + path + '.jpg' # use jpg temporary
     scsResponse = s.put(filename, data)
     s.update_acl(filename, acl)
     stUrl = s.make_url(filename)   # get url of image in the storage

@@ -1,3 +1,4 @@
+#coding:utf-8
 from django.shortcuts import render
 import uploadImg
 from forms import photoForm, searchForm
@@ -12,11 +13,20 @@ def homepage(request):
         if form.is_valid():
             search_word = request.POST['search_word']
             #pdb.set_trace()
-            photo_list = tb_tag.objects.get(tag = search_word)
-            result = photo_list.photo.all()
-            return render(request, 'index.html', {'store_url': result.get().store_url,      'search_word': search_word})
+            try:
+                targetTag = tb_tag.objects.get(tag = search_word)
+            except:
+                targetTag = tb_tag.objects.get(tag = u'没有找到图片')
+            result_photo = targetTag.photo.all()    # get photo related to the tag 
+            
+            photo_list = []
+            for each_photo in result_photo:
+                photo_dict = {'url': each_photo.store_url,
+                'description': each_photo.description}
+                photo_list.append(photo_dict)
+            return render(request, 'index.html', {'photo_list': photo_list, 'search_word': search_word})
                 
-    return render(request, u'index.html', {'search_word': 'no search'})
+    return render(request, u'index.html')
 
 def upload(request):
     if request.method == 'POST':
@@ -24,12 +34,12 @@ def upload(request):
         #pdb.set_trace()
         if form.is_valid():
             photoData = request.FILES['photoFile'].read()
-            storeUrl = uploadImg.objUpload(photoData)
+            storeUrl = uploadImg.objUpload(photoData, tag = request.POST['tag'])
             
             #seperate these later
             photoInfo = tb_photo_info(store_url = storeUrl, description = request.POST['description'])
             photoInfo.save()
-            tagInfo = tb_tag(tag = request.POST['tag'])
+            tagInfo = tb_tag.objects.get_or_create(tag = request.POST['tag'])[0]
             tagInfo.save()
             tagInfo.photo.add(photoInfo)
             

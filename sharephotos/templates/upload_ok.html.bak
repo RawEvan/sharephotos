@@ -1,16 +1,24 @@
 {% include 'header_base.html'%}
 {% block content %}	
 	<div id="upload_photos">
+    <ul>
+    <li>
         上传成功！
-        <br>
+    </li>
+    <li>
 		标签：{{form_info.tag}}
-        <br>
+    </li>
+    <li>
         描述：{{form_info.description}}
-        <br>
+    </li>
+    <li>
         图片:
         <img src={{storeUrl}}>
-        <br>
+    </li>
+    <li>
         地址：{{storeUrl}}
+    </li>
+    </ul>
 	</div>
 </div>
 {% endblock %}
