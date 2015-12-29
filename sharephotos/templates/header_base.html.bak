@@ -43,13 +43,13 @@
 <div id="content">
 	
 	<div class="menu">
-		<ul>
             {% if search_word %}
             <div class="current_tag">
             当前关键字：
-            <li>{{search_word}}</li>
+            <br>{{search_word}}
             </div>
             {% endif %}
+        <ul>
 			<li>tag</li>
 			<li>tag</li>
 			<li>tag</li>
