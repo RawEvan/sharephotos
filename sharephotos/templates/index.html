@@ -1,5 +1,5 @@
 {% include 'header_base.html' %}
-	
+    
     {% block content %}
 	<div class="photos">
 		
@@ -8,8 +8,8 @@
             {% if photo_list %}
                 {% for each_photo in photo_list%}
                 <li class="photo_display">
-                    <a href={{each_photo.url}}>
-                        <img src={{each_photo.url}}>
+                    <a href={{each_photo.original_url}}>
+                        <img src={{each_photo.thumbnail_url}}>
                         <br class="clearfloat">
                         <div class="display_description">
                         {{each_photo.description}}

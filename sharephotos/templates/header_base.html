@@ -45,14 +45,18 @@
 	<div class="menu">
             {% if search_word %}
             <div class="current_tag">
-            当前关键字：
-            <br>{{search_word}}
+            当前关键字：{{search_word}}
             </div>
             {% endif %}
         <ul>
-			<li>tag</li>
-			<li>tag</li>
-			<li>tag</li>
-			<li>tag</li>
+            <div class="latest_tags">
+            最近关键字：
+            <br>
+            </div>
+            {% block latest_tags %}
+                {% for each_tag in latest_tags_list %}
+                <li>{{each_tag}}</li>
+                {% endfor %}
+            {% endblock %}
 		</ul>
 	</div>

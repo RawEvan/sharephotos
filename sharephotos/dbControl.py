@@ -12,7 +12,11 @@ def getRelatedPhotos(search_word):
     result_photo = targetTag.photo.all()    # get photo related to the tag 
     photo_list = []
     for each_photo in result_photo:
-        photo_dict = {'url': each_photo.store_url,
+        original_url = each_photo.store_url
+        split_url = original_url.split('/')
+        size = 'w_200,h_150'
+        thumbnail_url = 'http://imgx.' + split_url[2] + '/' +split_url[3] + '/' + size + '/' + split_url[4]
+        photo_dict = {'original_url': original_url, 'thumbnail_url': thumbnail_url, 
         'description': each_photo.description}
         photo_list.append(photo_dict)
     return photo_list
