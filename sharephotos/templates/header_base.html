@@ -23,7 +23,7 @@
 	<li class="headerlist search">
     <form id="search" name="search" action="/" method="POST">
     {% csrf_token %}
-		<input type="text" class="input" name="search_word" value="奥运会">
+		<input type="text" id="search_word" class="input" name="search_word" value="奥运会">
 		<input type="submit" class="submit" value="搜索">
 	</li>
 	<li class="headerlist register">
@@ -45,7 +45,8 @@
 	<div class="menu">
             {% if search_word %}
             <div class="current_tag">
-            当前关键字：{{search_word}}
+            当前关键字：
+            <a href="#" onClick="searchJS(this.innerText)">{{search_word}}</a>
             </div>
             {% endif %}
         <ul>
@@ -55,8 +56,18 @@
             </div>
             {% block latest_tags %}
                 {% for each_tag in latest_tags_list %}
-                <li>{{each_tag}}</li>
+                <li>
+                <a href="#" onClick="searchJS(this.innerText)">{{each_tag}}</a>
+                </li>
                 {% endfor %}
             {% endblock %}
 		</ul>
 	</div>
+    
+<script>
+function searchJS(innerText)
+{
+    document.getElementById("search_word").value=innerText
+    document.search.submit()
+}
+</script>
