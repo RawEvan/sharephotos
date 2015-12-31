@@ -177,3 +177,7 @@ min-height:500px;
     width:60px;
     margin-bottom:10px;
 }
+#tag_div
+{
+    clear:both;
+}

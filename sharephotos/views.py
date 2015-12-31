@@ -6,6 +6,7 @@ import dbControl
 from PIL import Image
 import pdb
 import uploadImg
+import common
 # Create your views here.
 
 def homepage(request):
@@ -16,7 +17,6 @@ def homepage(request):
         form = searchForm(request.POST or None)
         if form.is_valid():
             search_word = request.POST['search_word']
-            #pdb.set_trace()
             photo_list = dbControl.getRelatedPhotos(search_word)
             return render(request, 'index.html', {'photo_list': photo_list, 'search_word': search_word, 'latest_tags_list': latest_tags_list})
         else:
@@ -30,12 +30,13 @@ def upload(request):
         form = photoForm(request.POST or None, request.FILES)
         #pdb.set_trace()
         if form.is_valid():
-            photoData = request.FILES['photoFile'].read()
+            photo_data = request.FILES['photoFile'].read()
             description = request.POST['description']
             tag = request.POST['tag']
-            storeUrl = uploadImg.objUpload(photoData, tag)
-            dbControl.savePhotoAndTag(storeUrl, description, tag)
-            return render(request, 'upload_ok.html', {'form_info' : form, 'storeUrl':       storeUrl})
+            store_url = uploadImg.objUpload(photo_data, tag) # upload photo
+            dbControl.savePhotoAndTag(storeUrl, description, tag) # save info
+            thumbnail_url = common.get_thumbnail_url(store_url)
+            return render(request, 'upload_ok.html', {'form_info' : form, 'thumbnail_url': thumbnail_url})
         else:
             pass
     return render(request, u'upload.html')
