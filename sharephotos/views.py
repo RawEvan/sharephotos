@@ -34,7 +34,7 @@ def upload(request):
             description = request.POST['description']
             tag = request.POST['tag']
             store_url = uploadImg.objUpload(photo_data, tag) # upload photo
-            dbControl.savePhotoAndTag(storeUrl, description, tag) # save info
+            dbControl.savePhotoAndTag(store_url, description, tag) # save info
             thumbnail_url = common.get_thumbnail_url(store_url)
             return render(request, 'upload_ok.html', {'form_info' : form, 'thumbnail_url': thumbnail_url})
         else:
