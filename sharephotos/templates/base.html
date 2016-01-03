@@ -55,7 +55,6 @@
         
     <form class="form-inline form_text_align" role="form" id="search" name="search" action="/" method="POST">
     {% csrf_token %}
-            <input type="hidden" name="csrfmiddlewaretoken" value="tDn6D1BoWkMIFuSDAR8sw9fCjCViqpfr">
             <input type="text" id="search_word" class="form-control search_input" name="search_word" value="奥运会">
             <button type="submit" class="btn btn-lg btn-primary search_button">搜索</button>
         </form>
@@ -87,7 +86,7 @@
         <div class="col-xs-12 col-sm-10">  
             <div class="col-xs-12 result_info">
             {% if search_word %}
-                <h3><a class="result_a"href="#" onclick="searchJS(this.innerText)">{{search_word}}</a>的搜索结果:</h3>
+                <h3><a class="result_a" href="#" onclick="searchJS(this.innerText)">{{search_word}}</a>的搜索结果:</h3>
             </div>
             {% endif %}
             
@@ -101,7 +100,7 @@
 
 <footer id="footer">
 	Powerd by 
-	<a href="./群体活动照片分享系统_files/群体活动照片分享系统.html">Li Aiwen</a>
+	<a href="/">Li Aiwen</a>
 </footer>
 
 </body>
@@ -111,4 +110,5 @@ function searchJS(innerText)
     document.getElementById("search_word").value=innerText
     document.search.submit()
 }
-</script></html>
+</script>
+</html>
