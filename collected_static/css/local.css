@@ -119,6 +119,23 @@ max-height:150px;
 max-width:100%;
 overflow:hidden;
 margin-bottom:5px;
+position:relative;
+width:200px; 
+margin:0 auto;
+}
+.tags_of_photo
+{
+    width:100%; 
+    text-align:center; 
+    line-height:24px; 
+    position:absolute; 
+    background-color:#CCC;
+    z-indent:2;
+    left:0;
+    bottom:0;
+    margin:0 auto;
+    background:rgba(255, 255, 255, 0.6) none repeat scroll 0 0 !important;/*实现FF背景透明，文字不透明*/        
+    filter:Alpha(opacity=60); background:#fff;/*实现IE背景透明*/
 }
 .display_description
 {

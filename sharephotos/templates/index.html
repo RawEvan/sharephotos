@@ -1,36 +1,27 @@
-{% include 'header_base.html' %}
-    
-    {% block content %}
-	<div class="photos">
-		
-		<br class="clearfloat">
-		<ul class="photo_list">	
-            {% if photo_list %}
-                {% for each_photo in photo_list%}
-                <li class="photo_display">
-                    <a href={{each_photo.original_url}}>
-                        <img src={{each_photo.thumbnail_url}}>
-                        <br class="clearfloat">
-                        <div class="display_description">
-                        {{each_photo.description}}
-                        </div>
-                    </a>
-                {% endfor %}
-                </li>
-            {% else %}
-            
-            <li class="photo_display">
-                <img src="http://www.w3school.com.cn/i/site_photoref.jpg">
-                <br class="clearfloat">
-                <div class="display_description">
-                    没有图片，搜索试试
+{% include 'base.html' %}
+  
+{% block content %}  
+<div class="photo_list">
+    {% if photo_list %}
+        {% for each_photo in photo_list%}
+        <div class="col-sm-4 photo_display">
+            <a href={{each_photo.original_url}}>
+                <img src={{each_photo.thumbnail_url}}>
+                <div class="col-xs-12 display_description">
+                {{each_photo.description}}
                 </div>
-			</li>
-            {% endif %}
-			
-		</ul>
-	</div>
+            </a>
+            <div class="tags_of_photo">{{each_photo.tag}}</div>
+        </div>
+        {% endfor %}
+        
+    {% else %}
+        <div class="col-sm-4 photo_display">
+            <img src="http://www.w3school.com.cn/i/site_photoref.jpg">
+            <div class="col-xs-12 display_description">
+                没有图片，搜索试试
+            </div>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
-
-{% include 'footer_base.html'%}
