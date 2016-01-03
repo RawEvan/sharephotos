@@ -24,9 +24,9 @@
          <span class="icon-bar"></span>
          <span class="icon-bar"></span>
       </button>
-        <div class="navbar-brand col-xs-9 col-sm-12 title" href="./群体活动照片分享系统_files/群体活动照片分享系统.html">
+        <a class="navbar-brand col-xs-9 col-sm-12 title" href="/">
         群体活动照片分享系统
-        </div>
+        </a>
     </div>
     <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav navbar-right navbar_ul">
@@ -78,6 +78,8 @@
                 <label>
                 <a class="label label-default box_shadow" href="/#" onclick="searchJS(this.innerText)">{{each_tag}}</a>
                 </label><br>
+                {% endfor %}
+            {% endblock %}
             </div>
         </div>
     
@@ -88,6 +90,10 @@
                 <h3><a class="result_a"href="#" onclick="searchJS(this.innerText)">{{search_word}}</a>的搜索结果:</h3>
             </div>
             {% endif %}
+            
+            {% block content %}
+            {% endblock %}
+            
         </div>
     </div>
 </section>
