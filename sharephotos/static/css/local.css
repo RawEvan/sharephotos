@@ -262,6 +262,9 @@ background-color:rgba(0,0,0,.7);
 margin-top:-25px;
 float:none;
 position:relative;
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
 }
 #footer
 {
