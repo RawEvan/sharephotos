@@ -217,7 +217,6 @@ padding:5px;
 { 
 clear:both;
 margin-bottom:0;
-min-height:300px;
 border:1px solid #e9e9e9;
 }
 .photo_display
@@ -273,7 +272,7 @@ margin-bottom:5px;
     position: absolute;
     left:-600px;
     top:0;
-    margin-top:-150px;
+    margin-top:-250px;
     background-color:#f9f9f9;
     z-index: 10;
     border-radius: 3px;
