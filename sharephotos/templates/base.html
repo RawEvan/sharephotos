@@ -56,7 +56,7 @@
     <form class="form-inline form_text_align" role="form" id="search" name="search" action="/" method="POST">
     {% csrf_token %}
             <input type="text" id="search_word" class="form-control search_input" name="search_word" value="奥运会">
-            <button type="submit" class="btn btn-lg btn-primary search_button">搜索</button>
+            <button type="submit" id="search_button" class="btn btn-lg btn-primary search_button">搜索</button>
         </form>
 </div>
 </div>  
@@ -75,7 +75,7 @@
             {% block latest_tags %}
                 {% for each_tag in latest_tags_list %}
                 <label>
-                <a class="label label-default box_shadow" href="/#" onclick="searchJS(this.innerText)">{{each_tag}}</a>
+                <a class="label label-default box_shadow" onclick="searchJS(this.innerText)">{{each_tag}}</a>
                 </label><br>
                 {% endfor %}
             {% endblock %}
@@ -107,8 +107,8 @@
 <script>
 function searchJS(innerText)
 {
-    document.getElementById("search_word").value=innerText
-    document.search.submit()
+    document.getElementById("search_word").value=innerText;
+    document.getElementById("search_button").click();
 }
 </script>
 </html>

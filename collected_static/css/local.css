@@ -1,4 +1,4 @@
-﻿.blur
+.blur
 { 
 filter: url(blur.svg#blur); /* FireFox, Chrome, Opera */
 
@@ -75,7 +75,7 @@ position:relative;
 }
 .title
 {
-font-family:FZShuTi;
+font-family:'minijianshutib5d59858462b';
 text-align:center;
 float:left;
 height:100%;
@@ -139,6 +139,7 @@ margin-right:100px;
 {
 padding-right:21px!important;
 }
+
 .icon-bar
 {
 background-color:#ccc;
@@ -164,9 +165,6 @@ margin-bottom:5px;
 transition:.2s ease-out;
 box-shadow: 0px 1px 3px rgba(0,0,0,0.12), 0px 1px 2px rgba(0,0,0,0.24);
 }
-.upload_link
-{
-}
 .choose_button
 {
 float:left;
@@ -186,7 +184,6 @@ margin-left:5px;
 }
 #content
 {
-overflow:hidden;
 clear:both;
 }
 
@@ -223,10 +220,6 @@ margin-bottom:0;
 min-height:300px;
 border:1px solid #e9e9e9;
 }
-.img_wrap
-{
-    width=200px;
-}
 .photo_display
 {
 margin-top:20px;
@@ -234,13 +227,20 @@ margin-bottom:35px;
 overflow:hidden;
 text-align:center;
 }
-.photo_display img
+.photo_display>.image_wrap>img
 {
 max-height:150px;
 max-width:100%;
 overflow:hidden;
 margin-bottom:5px;
 }
+
+.photo_display:hover{
+    overflow:visible;
+    background-color: rgba(0,0,0,.7)
+    transition:all 0.5s ease;
+}
+
 .tags_of_photo
 {
     display:none;
@@ -256,6 +256,65 @@ margin-bottom:5px;
     background:rgba(255, 255, 255, 0.6) none repeat scroll 0 0 !important;/*实现FF背景透明，文字不透明*/        
     filter:Alpha(opacity=60); background:#fff;/*实现IE背景透明*/
 }
+.image_wrap
+{
+    position:relative;
+}
+.img_cover
+{
+    background-color:rgba(20,20,20,.4);
+    max-height:150px;
+    position:absolute;
+    z-index: 10;
+    
+}
+.pop-up
+{
+    position: absolute;
+    left:-600px;
+    top:0;
+    margin-top:-150px;
+    background-color:#f9f9f9;
+    z-index: 10;
+    border-radius: 3px;
+    padding: 4px;
+}
+.pop-up:hover{
+    display:none;
+}
+div.col-sm-4:nth-child(3n+1) > div:nth-child(2)
+{
+    position: absolute;
+    left:100%;
+    top:0;
+    margin-left:10px;
+    margin-top:-150px;
+    z-index:10;
+}
+.popup_photo
+{
+position: relative;
+}
+.popup_photo>img
+{
+max-height:330px;
+}
+.popup_tags
+{
+position: relative;
+height:40px;
+padding:10px;
+border:1px solid #e9e9e9;
+background-color: #f2f2f2;
+text-align: center;
+}
+.popup_description
+{
+padding:10px;
+background-color: #f2f2f2;
+border:1px solid #e9e9e9;
+border-top:0;
+}
 .display_description
 {
 background-color:rgba(0,0,0,.7);
@@ -265,6 +324,9 @@ position:relative;
 text-overflow: ellipsis;
 white-space: nowrap;
 overflow: hidden;
+max-width:250px;
+margin-left:auto;
+margin-right:auto;
 }
 #footer
 {

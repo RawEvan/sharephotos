@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'sharephotos.views.homepage', name = 'homepage'),
     url(r'^upload$', 'sharephotos.views.upload', name = 'upload'),
+#url(r'^detali$)
 ]

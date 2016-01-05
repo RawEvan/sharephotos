@@ -5,18 +5,35 @@
     {% if photo_list %}
         {% for each_photo in photo_list%}
         <div class="col-sm-4 photo_display">
-            <a href={{each_photo.original_url}}>
+            <div class="image_wrap">
+                <a href={{each_photo.original_url}}></a>
                 <img src={{each_photo.thumbnail_url}}>
                 <div class="col-xs-12 display_description">
                 {{each_photo.description}}
                 </div>
-            </a>
-            <div class="tags_of_photo">{{each_photo.tag}}</div>
+            </div>
+            <div class="pop-up box_shadow">
+                <div class="popup_photo">
+                <img src={{each_photo.original_url}}>
+                </div>
+                <div class="popup_tags">
+                    <label>
+                    <p>标签:</p>
+                    </label>
+                    {% for each_tag in each_photo.tags_list %}
+                        <label>{{each_tag}}
+                        </label>
+                    {% endfor %}
+                </div>
+                <div class="popup_description">
+                {{each_photo.description}}
+                </div>
+            </div>
         </div>
         {% endfor %}
         
     {% else %}
-        <div class="col-sm-4 photo_display">
+        <div class="col-sm-4 ">
             <img src="http://www.w3school.com.cn/i/site_photoref.jpg">
             <div class="col-xs-12 display_description">
                 没有图片，搜索试试

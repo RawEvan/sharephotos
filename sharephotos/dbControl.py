@@ -15,8 +15,10 @@ def getRelatedPhotos(search_word):
     for each_photo in result_photo:
         original_url = each_photo.store_url
         thumbnail_url = common.get_thumbnail_url(original_url)
-        photo_dict = {'original_url': original_url, 'thumbnail_url': thumbnail_url, 
-        'description': each_photo.description}
+        photo_dict = {'original_url': original_url,
+        'thumbnail_url': thumbnail_url, 
+        'description': each_photo.description, 
+        "tags_list": [each_tag.tag for each_tag in each_photo.tb_tag_set.all()]}
         photo_list.append(photo_dict)
     return photo_list
     
