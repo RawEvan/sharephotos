@@ -1,12 +1,18 @@
 {% extends 'base.html' %}
   
 {% block content %}  
+  
+<div class="col-xs-12 result_info">
+{% if search_word %}
+    <h3><a class="result_a" href="/tag/?search_word={{search_word}}">{{search_word}}</a>的搜索结果:</h3>
+</div>
+{% endif %}
 <div class="photo_list">
     {% if photo_list %}
         {% for each_photo in photo_list%}
         <div class="col-sm-4 photo_display">
             <div class="image_wrap">
-                <a href={{each_photo.original_url}}></a>
+                <a href="/photo/?photo={{each_photo.p_id}}"></a>
                 <img src={{each_photo.thumbnail_url}}>
                 <div class="col-xs-12 display_description">
                 {{each_photo.description}}

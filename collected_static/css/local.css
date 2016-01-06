@@ -236,7 +236,6 @@ margin-bottom:5px;
 
 .photo_display:hover{
     overflow:visible;
-    background-color: rgba(0,0,0,.7)
     transition:all 0.5s ease;
 }
 
@@ -259,9 +258,17 @@ margin-bottom:5px;
 {
     position:relative;
 }
+.image_wrap>a
+{
+    position: absolute;
+    height:100%;
+    width:100%;
+    background-color:rgba(0,0,0,0);
+    color:rgba(0,0,0,0);
+}
 .img_cover
 {
-    background-color:rgba(20,20,20,.4);
+    background-color:rgba(0,0,0,0);
     max-height:150px;
     position:absolute;
     z-index: 10;
@@ -353,6 +360,10 @@ position:absolute;
 margin-left:150px;
 color:#666;
 }
+#upload_photos img
+{
+max-width: 100%;    
+}
 #file_choose
 {
     float:left;
@@ -384,4 +395,26 @@ color:#666;
 #tag_div
 {
     clear:both;
+}
+
+/* photo_info.html */
+.photo_detail
+{
+margin:10px;
+background-color:#fbfbfb;
+border-color:#e3e3e3; 
+overflow:hidden;
+}
+.dtl_image
+{
+    width:70%;
+    position:relative;
+    left:10px;
+}
+.dtl_right
+{
+    width:25%;
+    margin:10px;
+    padding-left:20px;
+    float:left;
 }

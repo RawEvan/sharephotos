@@ -15,7 +15,9 @@ def getRelatedPhotos(search_word):
     for each_photo in result_photo:
         original_url = each_photo.store_url
         thumbnail_url = common.get_thumbnail_url(original_url)
-        photo_dict = {'original_url': original_url,
+        photo_dict = {
+        'p_id': each_photo.id,
+        'original_url': original_url,
         'thumbnail_url': thumbnail_url, 
         'description': each_photo.description, 
         "tags_list": [each_tag.tag for each_tag in each_photo.tb_tag_set.all()]}
@@ -30,3 +32,16 @@ def savePhotoAndTag(storeUrl, description, tag):
         tagInfo = tb_tag.objects.get_or_create(tag = tag)[0]
         tagInfo.save()
         tagInfo.photo.add(photoInfo) # add relation between tag and photo
+        
+def getPhotoInfo(p_id):
+    '''try:
+        photoObj = tb_photo_info.objects.get(store_url = photo_url)
+    except:
+        no_photo = tb_tag.objects.get(tag = u'没有找到图片')
+        photoObj = no_photo.photo.all()[0]'''
+    photoObj = tb_photo_info.objects.get(id = p_id)
+    photo_info = {
+    'description': photoObj.description, 
+    'photo_url': photoObj.store_url,
+    "tags_list": [each_tag.tag for each_tag in photoObj.tb_tag_set.all()]}
+    return photo_info

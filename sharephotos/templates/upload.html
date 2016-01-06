@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
+{% block menu %}
+{% endblock %}
 	<div id="upload_photos">
 		
 		<br class="clearfloat">
-		<form id="upload_form" name="upload" action="/upload" method="post" enctype="multipart/form-data">
+		<form id="upload_form" name="upload" action="/upload/" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input id="file_choose" type="file" name="photoFile" name="image">
             <div id="tag_div">

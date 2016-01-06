@@ -4,9 +4,11 @@
   <title>群体活动照片分享系统</title>
   <link rel="shortcut icon" href="/static/images/favicon.ico" >
   <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/> 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">  
   <link rel="stylesheet" href="/static/css/local.css">
+  <link href='http://api.youziku.com/webfont/CSS/568b6fb2f629d80a10ae5ff1' rel='stylesheet' type='text/css'>
   <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 </head>
@@ -65,6 +67,7 @@
 </header>
 <section id="content" class="container">
     <div class="row">
+    {% block menu %}
         <div class="col-xs-12 col-sm-2 menu">
             <h4 class="latest_tags">
             最近标签：
@@ -75,20 +78,15 @@
             {% block latest_tags %}
                 {% for each_tag in latest_tags_list %}
                 <label>
-                <a class="label label-default box_shadow" onclick="searchJS(this.innerText)">{{each_tag}}</a>
+                <a class="label label-default box_shadow" href="/tag/?search_word={{each_tag}}">{{each_tag}}</a>
                 </label><br>
                 {% endfor %}
             {% endblock %}
             </div>
         </div>
+    {% endblock %}
     
-    
-        <div class="col-xs-12 col-sm-10">  
-            <div class="col-xs-12 result_info">
-            {% if search_word %}
-                <h3><a class="result_a" href="#" onclick="searchJS(this.innerText)">{{search_word}}</a>的搜索结果:</h3>
-            </div>
-            {% endif %}
+        <div class="col-xs-12 col-sm-10">
             
             {% block content %}
             {% endblock %}

@@ -21,6 +21,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'sharephotos.views.homepage', name = 'homepage'),
-    url(r'^upload$', 'sharephotos.views.upload', name = 'upload'),
-#url(r'^detali$)
+    url(r'^upload/$', 'sharephotos.views.upload', name = 'upload'),
+    url(r'^tag/$', 'sharephotos.views.tag', name= 'tag'),
+    url(r'^photo/$', 'sharephotos.views.photo', name = 'photo'),
 ]
