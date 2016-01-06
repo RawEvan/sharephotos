@@ -29,7 +29,7 @@ filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false)
 filter: progid:DXImageTransform.Microsoft.Shadow(color='#969696',Direction=135, Strength=5);/*for ie6,7,8*/
 -moz-box-shadow:2px 2px 5px #969696;/*firefox*/
 -webkit-box-shadow:2px 2px 5px #969696;/*webkit*/
-box-shadow:2px 2px 5px #969696;/*opera或ie9*/
+box-shadow:2px 2px 5px #969696;/*operaæie9*/
 }
 a
 {  
@@ -81,8 +81,8 @@ float:left;
 height:100%;
 font-size:40px;
 line-height:35px;
-padding-top:4px;
 color:#66ccff;
+padding-top:10px; 
 }
 .title:hover
 {
@@ -139,7 +139,10 @@ margin-right:100px;
 {
 padding-right:21px!important;
 }
-
+.navbar_padding
+{
+    padding-top: 15px;
+}
 .icon-bar
 {
 background-color:#ccc;
@@ -225,6 +228,7 @@ margin-top:20px;
 margin-bottom:35px;
 overflow:hidden;
 text-align:center;
+position: relative;
 }
 .photo_display>.image_wrap>img
 {
@@ -251,8 +255,8 @@ margin-bottom:5px;
     left:0;
     bottom:0;
     margin:0 auto;
-    background:rgba(255, 255, 255, 0.6) none repeat scroll 0 0 !important;/*实现FF背景透明，文字不透明*/        
-    filter:Alpha(opacity=60); background:#fff;/*实现IE背景透明*/
+    background:rgba(255, 255, 255, 0.6) none repeat scroll 0 0 !important;/*å®ç°FFèæ¯éæï¼æå­ä¸éæ*/        
+    filter:Alpha(opacity=60); background:#fff;/*å®ç°IEèæ¯éæ*/
 }
 .image_wrap
 {
@@ -263,6 +267,7 @@ margin-bottom:5px;
     position: absolute;
     height:100%;
     width:100%;
+    max-width:250px;
     background-color:rgba(0,0,0,0)!important;
 }
 .img_cover
@@ -287,7 +292,7 @@ margin-bottom:5px;
 .pop-up:hover{
     display:none;
 }
-div.col-sm-4:nth-child(3n+1) > div:nth-child(2)
+div.col-sm-4:nth-child(3n+1) > div:nth-child(1) > div:nth-child(2)
 {
     position: absolute;
     left:100%;
@@ -400,7 +405,7 @@ max-width: 100%;
 .photo_detail
 {
 margin:10px;
-background-color:#fbfbfb;
+background-color:#fefefe;
 border-color:#e3e3e3; 
 overflow:hidden;
 }
@@ -412,8 +417,21 @@ overflow:hidden;
 }
 .dtl_right
 {
-    width:25%;
-    margin:10px;
+    width:30%;
+    margin-top:20px;
     padding-left:20px;
     float:left;
+    background-color: #f1f1f1;
+    border-right:1px solid #e1e1e1;
+}
+.dtl_tags
+{    
+    padding-top: 15px;
+    margin:2px;
+    border-bottom:1px solid #e1e1e1;
+}
+.dtl_description
+{
+    min-height: 55px;
+    padding-top: 15px;
 }

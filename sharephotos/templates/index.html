@@ -10,7 +10,8 @@
 <div class="photo_list">
     {% if photo_list %}
         {% for each_photo in photo_list%}
-        <div class="col-sm-4 photo_display">
+        <div class="col-sm-4">
+        <div class="photo_display">
             <div class="image_wrap">
                 <a href="/photo/?photo={{each_photo.p_id}}"></a>
                 <img src={{each_photo.thumbnail_url}}>
@@ -35,6 +36,7 @@
                 {{each_photo.description}}
                 </div>
             </div>
+        </div>
         </div>
         {% endfor %}
         
