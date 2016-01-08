@@ -98,7 +98,6 @@ def searchFaceset(method, urlOrPath, faceset_name = 'faceset_test'):
         similar_face_list.extend(face_list)
         if similar_face_list:
             print 'found similar face(s)'
-        addFaceToFaceset(faceset_name = faceset_name, face_id = face_id)
     print similar_face_list
     return similar_face_list
     
