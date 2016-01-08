@@ -6,8 +6,10 @@ class photoUploadForm(forms.Form):
     tag = forms.CharField(max_length = 10)
 
 class searchForm(forms.Form):
-    search_word = forms.CharField(max_length = 10)
+    search_word = forms.CharField(max_length = 50)
         
 class photoForm(forms.Form):
     p_id = forms.IntegerField()
     
+class facePhotoForm(forms.Form):
+    facePhotoFile = forms.ImageField()

@@ -11,7 +11,7 @@ API_KEY = config.API_KEY
 API_SECRET = config.API_SECRET
 api = API(API_KEY, API_SECRET)
 MIN_CONFIDENCE = 30
-MIN_SIMILARITY = 75
+MIN_SIMILARITY = 60
 
 #function copied from facepp's hello.py
 def print_result(hint, result):
@@ -28,7 +28,7 @@ def print_result(hint, result):
     print '\n'.join(['  ' + i for i in pformat(result, width = 75).split('\n')])
 
 def createFaceGroup(name, path, group_name = 'test'):
-    pdb.set_trace()
+    #pdb.set_trace()
     #detect face
     detect_result = api.detection.detect(img = File(path), mode = 'normal')
     print_result('Detection result for {}:'.format(name), detect_result)
@@ -51,7 +51,7 @@ def createFaceGroup(name, path, group_name = 'test'):
             print add_face_result
             personTrain(found_person_name)
         else:
-            print 'didn\'t find a similar face'
+            print "didn't find a similar face"
             #create a new Person for this face in the group
             new_person_name = name + '_new_' + str(count)
             try:
@@ -80,11 +80,14 @@ def createFaceGroup(name, path, group_name = 'test'):
         time.sleep(1)
     return person_name_list
 
-def createFaceSet(name, path, faceset_name = 'faceset_test'):
-    pdb.set_trace()
+def searchFaceset(method, urlOrPath, faceset_name = 'faceset_test'):
+    #pdb.set_trace()
     #detect face
-    detect_result = api.detection.detect(img = File(path), mode = 'normal')
-    print_result('Detection result for {}:'.format(name), detect_result)
+    if method == 'path':
+        detect_result = api.detection.detect(img = File(urlOrPath), mode = 'normal')
+    elif method == 'url':
+        detect_result = api.detection.detect(url = urlOrPath, mode = 'normal')
+    print('detect result:', detect_result)
     similar_face_list = []
     for each_face in detect_result['face']:
         face_id = each_face['face_id']
@@ -95,11 +98,32 @@ def createFaceSet(name, path, faceset_name = 'faceset_test'):
         similar_face_list.extend(face_list)
         if similar_face_list:
             print 'found similar face(s)'
-        # add the face to this faceset
-        add_face_result = api.faceset.add_face(faceset_name = faceset_name, face_id = face_id)
-        print add_face_result
-        print similar_face_list
-            
+        addFaceToFaceset(faceset_name = faceset_name, face_id = face_id)
+    print similar_face_list
+    return similar_face_list
+    
+def addPhotoFaces(method, urlOrPath, faceset_name = 'faceset_test'):
+    #detect face
+    #pdb.set_trace()
+    if method == 'path':
+        detect_result = api.detection.detect(img = File(urlOrPath), mode = 'normal')
+    elif method == 'url':
+        detect_result = api.detection.detect(url = urlOrPath, mode = 'normal')
+    print_result('detect_result:', detect_result)
+    face_id_list = []
+    for each_face in detect_result['face']:
+        face_id = each_face['face_id']
+        addFaceToFaceset(faceset_name = faceset_name, face_id = face_id)
+        face_id_list.append(face_id)
+    return face_id_list
+    
+def addFaceToFaceset(faceset_name, face_id):
+    # add the face to this faceset
+    add_face_result = api.faceset.add_face(faceset_name = faceset_name, face_id = face_id)
+    print add_face_result
+    facesetTrain(faceset_name)
+    
+def facesetTrain(faceset_name):          
     #train the faceset
     result = api.train.search(faceset_name = faceset_name)
     session_id = result['session_id']
@@ -110,7 +134,6 @@ def createFaceSet(name, path, faceset_name = 'faceset_test'):
             print_result('Async train result:', result)
             break
         time.sleep(1)
-    return similar_face_list
 
 def personTrain(person_name, type = 'all'):
     result = api.train.verify(person_name = person_name)
@@ -143,7 +166,7 @@ def trainAllPerson():
 def main():
     path = 'static/images/test2.jpg'
     name = 'test2'
-    createFaceSet(name = name, path = path)
+    searchFaceset(method = 'path', urlOrPath = path)
     
 if __name__ == '__main__':
     main()
