@@ -9,7 +9,8 @@ def getRelatedPhotos(search_word):
     try:
         targetTag = tb_tag.objects.get(tag = search_word)
     except:
-        targetTag = tb_tag.objects.get(tag = u'没有找到图片')
+        #targetTag = tb_tag.objects.get(tag = u'没有找到图片')
+        pass
     result_photo = targetTag.photo.all()    # get photo related to the tag 
     photo_list = []
     for each_photo in result_photo:
