@@ -17,7 +17,7 @@ MIN_SIMILARITY = 60
 if 'SERVER_SOFTWARE' not in os.environ:
     DEFAULT_FACESET = 'faceset_test'
     print DEFAULT_FACESET
-else
+else:
     DEFAULT_FACESET = 'sharephotos'
     print DEFAULT_FACESET
 
