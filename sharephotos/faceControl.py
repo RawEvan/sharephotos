@@ -4,6 +4,8 @@
 import time
 import config
 import pdb
+import os
+import sae.const
 from packages.facepp import API, File
 from pprint import pformat
 
@@ -12,6 +14,12 @@ API_SECRET = config.API_SECRET
 api = API(API_KEY, API_SECRET)
 MIN_CONFIDENCE = 30
 MIN_SIMILARITY = 60
+if 'SERVER_SOFTWARE' not in os.environ:
+    DEFAULT_FACESET = 'faceset_test'
+    print DEFAULT_FACESET
+else
+    DEFAULT_FACESET = 'sharephotos'
+    print DEFAULT_FACESET
 
 #function copied from facepp's hello.py
 def print_result(hint, result):
@@ -80,7 +88,7 @@ def createFaceGroup(name, path, group_name = 'test'):
         time.sleep(1)
     return person_name_list
 
-def searchFaceset(method, urlOrPath, faceset_name = 'faceset_test'):
+def searchFaceset(method, urlOrPath, faceset_name = DEFAULT_FACESET):
     #pdb.set_trace()
     #detect face
     if method == 'path':
@@ -101,7 +109,7 @@ def searchFaceset(method, urlOrPath, faceset_name = 'faceset_test'):
     print similar_face_list
     return similar_face_list
     
-def addPhotoFaces(method, urlOrPath, faceset_name = 'faceset_test'):
+def addPhotoFaces(method, urlOrPath, faceset_name = DEFAULT_FACESET):
     #detect face
     #pdb.set_trace()
     if method == 'path':

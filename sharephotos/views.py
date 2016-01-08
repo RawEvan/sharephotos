@@ -85,7 +85,7 @@ def face(request):
             photo_list = []
             for face_id in face_id_list:
                 each_face_photo_lsit = dbControl.getRelatedPhotos(search_word = face_id)
-                photo_list.extend(each_face_photo_lsit)            
+                photo_list.extend(each_face_photo_lsit)         
             return render(request, u'index.html', {'photo_list': photo_list,'latest_tags_list': latest_tags_list})
         else:
             pass
