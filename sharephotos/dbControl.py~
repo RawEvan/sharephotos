@@ -71,5 +71,5 @@ def getPhotoInfo(method, search_word):
     photo_info = {
     'description': photoObj.description, 
     'photo_url': photoObj.store_url,
-    "tags_list": tags_list}
+    "tags_list": tags_list
     return photo_info
