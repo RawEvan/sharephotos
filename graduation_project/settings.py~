@@ -82,10 +82,10 @@ if 'SERVER_SOFTWARE' not in os.environ:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'db.sqlite3',
-            'USER': '',
-            'PASSWORD': '',
-            'HOST': '',
+            'NAME': 'app_sharephotos',
+            'USER': 'root',
+            'PASSWORD': '220200',
+            'HOST': 'localhost',
         }
     }
 else:
