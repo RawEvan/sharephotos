@@ -27,5 +27,5 @@ urlpatterns = [
     url(r'^tag/$', 'sharephotos.views.tag', name= 'tag'),
     url(r'^photo/$', 'sharephotos.views.photo', name = 'photo'),
     url(r'^face/$', 'sharephotos.views.face', name = 'face'),
-    url(r'^accounts/', include('users.urls')),
+    url(r'^accounts/$', include('users.urls')),
 ]
