@@ -4,15 +4,19 @@ from models import tb_photo_info, tb_tag
 import common
 import pdb
 
-def getRelatedPhotos(search_word):
+def getRelatedPhotos(key, method = 'tag'):
     #pdb.set_trace()
     try:
-        targetTag = tb_tag.objects.get(tag = search_word)
+        if method == 'tag':
+            targetTag = tb_tag.objects.get(tag = key)
+            result_photo = targetTag.photo.all()    # get photo related to the tag 
+        elif method == 'owner':
+            result_photo = tb_photo_info.objects.filter(owner = key)
     except:
         #targetTag = tb_tag.objects.get(tag = u'没有找到图片')
         photo_list = []
         return photo_list
-    result_photo = targetTag.photo.all()    # get photo related to the tag 
+
     photo_list = []
     for each_photo in result_photo:
         original_url = each_photo.store_url
@@ -73,3 +77,7 @@ def getPhotoInfo(method, search_word):
     'photo_url': photoObj.store_url,
     "tags_list": tags_list}
     return photo_info
+
+def delete(p_id):
+    photo = tb_photo_info.objects.get(id = p_id)
+    photo.delete()

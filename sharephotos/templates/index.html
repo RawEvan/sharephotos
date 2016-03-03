@@ -5,10 +5,11 @@
 <div class="col-xs-12 result_info">
 {% if search_word %}
     <h3><a class="result_a" href="/tag/?search_word={{search_word}}">{{search_word}}</a>的搜索结果:</h3>
-{% else %}
-    <h3>搜索结果:</h3>
-</div>
 {% endif %}
+{% if owner %}
+    <h3><a class="result_a" href = "/photo_manage">{{owner}}</a>的图片:</h3>
+{% endif %}
+</div>
 <div class="photo_list">
     {% if photo_list %}
         {% for each_photo in photo_list%}
@@ -21,6 +22,7 @@
                 {{each_photo.description}}
                 </div>
             </div>
+            <a class="delete_photo" href="/delete/{{each_photo.p_id}}">删除</a>
             <div class="pop-up box_shadow">
                 <div class="popup_photo">
                 <img src={{each_photo.original_url}}>

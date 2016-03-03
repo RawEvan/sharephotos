@@ -10,7 +10,7 @@ from packages.facepp import API, File
 from pprint import pformat
 
 cp = ConfigParser.ConfigParser()
-cp.read('sharephotos.conf')
+cp.read('project.conf')
 API_KEY = cp.get('SAE_API', 'API_KEY')
 API_SECRET = cp.get('SAE_API', 'API_SECRET')
 api = API(API_KEY, API_SECRET)

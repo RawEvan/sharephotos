@@ -6,6 +6,7 @@ class tb_photo_info(models.Model):
     store_url = models.TextField(max_length = 1250, default = 'url')
     description = models.TextField(max_length = 300, default = 'no description')
     upload_time = models.DateTimeField(auto_now = True)
+    owner = models.TextField(max_length = 1250, default = 'system')
     
     def __unicode__(self):
         return self.description

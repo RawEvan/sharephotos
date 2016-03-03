@@ -38,16 +38,29 @@
             </div>
             </a>
         </li>
+        {% if user_Email %}
         <li>
-            <a class="nav_a">
+            <a class="nav_a" href="/photo_manage">
+                <div class="nav_icon">{{user_Email}}</div>
+            </a>
+        </li>
+        <li class="nav_li_login">
+            <a class="nav_a nav_a_login" href="/accounts/logout">
+            <div class="login">退出登录</div>
+            </a>
+        </li>
+        {% else %}
+        <li>
+            <a class="nav_a" href="/accounts/register">
             <div class="nav_icon">注册</div>
             </a>
         </li>
         <li class="nav_li_login">
-            <a class="nav_a nav_a_login">
+            <a class="nav_a nav_a_login" href="/accounts/login">
             <div class="login">登录</div>
             </a>
         </li>
+        {% endif %}
         </ul>
     </div>
 </nav>

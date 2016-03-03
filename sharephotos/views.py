@@ -19,12 +19,16 @@ def homepage(request):
         if form.is_valid():
             search_word = request.POST['search_word']
             photo_list = dbControl.getRelatedPhotos(search_word)
-            return render(request, 'index.html', {'photo_list': photo_list, 'search_word': search_word, 'latest_tags_list': latest_tags_list})
         else:
             pass
     search_word = u'奥运会'
     photo_list = dbControl.getRelatedPhotos(search_word)        
-    return render(request, u'index.html', {'photo_list': photo_list, 'search_word': search_word, 'latest_tags_list': latest_tags_list})
+    try:
+        email = request.user.email
+    except:
+        email = False
+        
+    return render(request, u'index.html', {'photo_list': photo_list, 'search_word': search_word, 'latest_tags_list': latest_tags_list, 'user_Email': email})
 
 def upload(request):
     if request.method == 'POST':
@@ -62,7 +66,6 @@ def tag(request):
         return render(request, u'index.html', {'photo_list': photo_list, 'search_word': search_word, 'latest_tags_list': latest_tags_list})
         
 def photo(request):
-    #pdb.set_trace()
     # form = photoForm(request.GET or None) 
     # if form.is_valid():
     # don't check it temporary
@@ -90,3 +93,17 @@ def face(request):
         else:
             pass
     return render(request, u'face.html')
+
+def photoManage(request):
+    user_email = request.user.email
+    photo_list = dbControl.getRelatedPhotos('system', method = 'owner')
+    #photo_list.append(dbControl.getRelatedPhotos('system', method = 'owner'))
+
+    return render(request, u'index.html', {'photo_list': photo_list, 'owner': user_email, 'latest_tags_list': ['no tag']})
+
+
+def delete(request, p_id):
+    #pdb.set_trace()
+    p_id = int(p_id)
+    photo_list = dbControl.delete(p_id)
+    return render(request, 'deleted.html')

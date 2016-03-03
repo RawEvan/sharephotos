@@ -6,8 +6,8 @@ import time
 import ConfigParser
 
 cp = ConfigParser.ConfigParser()
-cp.read('sharephotos.conf')
-API = cp.get('storage', 'API_KEY')
+cp.read('project.conf')
+API_KEY = cp.get('storage', 'API_KEY')
 API_SECRET = cp.get('storage', 'API_SECRET')
 acl = {}
 acl[ACL.ACL_GROUP_ANONYMOUSE] = [ACL.ACL_READ]
@@ -26,7 +26,7 @@ def urlUpload(imgSrc = 'http://www.w3school.com.cn/i/site_photoref.jpg'):
     return stUrl
 
 def objUpload(data, tag):
-    sinastorage.setDefaultAppInfo(API, API_SECRET)
+    sinastorage.setDefaultAppInfo(API_KEY, API_SECRET)
     s = SCSBucket('sharephotos')
     path = time.ctime()
     # if '/' in file name there will be problems

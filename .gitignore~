@@ -1,6 +1,0 @@
-*.pyc
-*.bat
-*.bak
-*.conf
-config.py
-!config.pyc
