@@ -7,14 +7,14 @@ import ConfigParser
 
 cp = ConfigParser.ConfigParser()
 cp.read('sharephotos.conf')
-API = cp.get('storage', 'API')
+API = cp.get('storage', 'API_KEY')
 API_SECRET = cp.get('storage', 'API_SECRET')
 acl = {}
 acl[ACL.ACL_GROUP_ANONYMOUSE] = [ACL.ACL_READ]
 acl[ACL.ACL_GROUP_CANONICAL] = [ACL.ACL_READ, ACL.ACL_READ_ACP,ACL.ACL_WRITE_ACP]
 
 def urlUpload(imgSrc = 'http://www.w3school.com.cn/i/site_photoref.jpg'):
-    sinastorage.setDefaultAppInfo(API, API_SECRET)
+    sinastorage.setDefaultAppInfo(API_KEY, API_SECRET)
     s = SCSBucket('sharephotos')
     data = urllib2.urlopen(imgSrc).read()
     path = imgSrc.split('/')[2] + '/%s__' % time.ctime()
