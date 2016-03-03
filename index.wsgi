@@ -1,6 +1,8 @@
+import sae
+sae.add_vendor_dir('site-packages')
+
 import os
 import sys
-import sae
 from graduation_project import wsgi
 
 root = os.path.dirname(__file__)
