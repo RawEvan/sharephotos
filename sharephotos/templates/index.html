@@ -22,7 +22,6 @@
                 {{each_photo.description}}
                 </div>
             </div>
-            <a class="delete_photo" href="/delete/{{each_photo.p_id}}">删除</a>
             <div class="pop-up box_shadow">
                 <div class="popup_photo">
                 <img src={{each_photo.original_url}}>
@@ -40,6 +39,7 @@
                 {{each_photo.description}}
                 </div>
             </div>
+            <a class="delete_photo" href="/delete/{{each_photo.p_id}}">删除</a>
         </div>
         </div>
         {% endfor %}
