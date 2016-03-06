@@ -39,7 +39,9 @@
                 {{each_photo.description}}
                 </div>
             </div>
+            {% if owner %}
             <a class="delete_photo" href="/delete/{{each_photo.p_id}}">删除</a>
+            {% endif %}
         </div>
         </div>
         {% endfor %}
