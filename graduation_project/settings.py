@@ -101,7 +101,7 @@ if 'SERVER_SOFTWARE' not in os.environ:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'app_sharephotos',
             'USER': 'root',
-            'PASSWORD': cp.get('database', 'password')
+            'PASSWORD': cp.get('database', 'password'),
             'HOST': 'localhost',
         }
     }
