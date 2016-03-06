@@ -55,7 +55,8 @@ USERS_REGISTRATION_OPEN = True
 EMAIL_HOST = 'smtp.sina.com'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'sys_sharephotos@sina.com'
-EMAIL_HOST_PASSWORD = 'jiandan220200'
+EMAIL_HOST_PASSWORD = cp.get('EMAIL', 'EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'sys_sharephotos@sina.com'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -100,7 +101,7 @@ if 'SERVER_SOFTWARE' not in os.environ:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'app_sharephotos',
             'USER': 'root',
-            'PASSWORD': '220200',
+            'PASSWORD': cp.get('database', 'password')
             'HOST': 'localhost',
         }
     }
