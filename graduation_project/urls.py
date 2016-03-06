@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^photo_manage', 'sharephotos.views.photoManage'),
     url(r'^delete/(\d+)/$', 'sharephotos.views.delete'),
     url(r'^accounts/', include('users.urls')),
+    url(r'^test_send_email', 'sharephotos.tests.EmailTest'),
 ]

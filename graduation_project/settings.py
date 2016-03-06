@@ -46,9 +46,16 @@ INSTALLED_APPS = (
     'users',
 )
 
+#Account settings, using Users module
 AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/'
 USERS_REGISTRATION_OPEN = True
+
+#SMTP settings
+EMAIL_HOST = 'smtp.sina.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'sys_sharephotos@sina.com'
+EMAIL_HOST_PASSWORD = 'jiandan220200'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

@@ -18,10 +18,10 @@ MIN_CONFIDENCE = 30
 MIN_SIMILARITY = 60
 if 'SERVER_SOFTWARE' not in os.environ:
     DEFAULT_FACESET = 'faceset_test'
-    print DEFAULT_FACESET
+    print 'using faceset:%s' % DEFAULT_FACESET
 else:
     DEFAULT_FACESET = 'sharephotos'
-    print DEFAULT_FACESET
+    print 'using faceset:%s' % DEFAULT_FACESET
 
 #function copied from facepp's hello.py
 def print_result(hint, result):
