@@ -30,8 +30,8 @@ def getRelatedPhotos(key, method = 'tag'):
         photo_list.append(photo_dict)
     return photo_list
     
-def savePhotoAndTag(storeUrl, description, tag_list, face_id_list):
-    photoInfo = tb_photo_info(store_url = storeUrl, description = description)
+def savePhotoAndTag(storeUrl, description, tag_list, face_id_list, owner):
+    photoInfo = tb_photo_info(store_url = storeUrl, description = description, owner = owner)
     photoInfo.save()
     for tag in tag_list:
         tagInfo = tb_tag.objects.get_or_create(tag = tag)[0]
@@ -81,3 +81,8 @@ def getPhotoInfo(method, search_word):
 def delete(p_id):
     photo = tb_photo_info.objects.get(id = p_id)
     photo.delete()
+
+def get_latest_tags(num = 5):
+    latest_tags_objects = tb_tag.objects.all().order_by('-id')[:5]
+    latest_tags_list = [object.tag for object in latest_tags_objects if not object.is_face]
+    return latest_tags_list

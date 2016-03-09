@@ -4,7 +4,10 @@ from forms import photoUploadForm, searchForm, photoForm, facePhotoForm
 from models import tb_photo_info, tb_tag
 from PIL import Image
 from faceControl import searchFaceset, addPhotoFaces
+import time
+import json
 import dbControl
+import cookiesControl
 import pdb
 import uploadImg
 import common
@@ -12,8 +15,8 @@ import common
 
 def homepage(request):
     #pdb.set_trace()
-    latest_tags = tb_tag.objects.all().order_by('-id')[:5]
-    latest_tags_list = [object.tag for object in latest_tags if not object.is_face]
+    latest_tags_list = dbControl.get_latest_tags()
+    Email = common.getEmail(request)
     if request.method == 'POST':
         form = searchForm(request.POST or None)
         if form.is_valid():
@@ -23,17 +26,22 @@ def homepage(request):
             pass
     search_word = u'奥运会'
     photo_list = dbControl.getRelatedPhotos(search_word)        
-    try:
-        email = request.user.email
-    except:
-        email = False
-        
-    return render(request, u'index.html', {'photo_list': photo_list, 'search_word': search_word, 'latest_tags_list': latest_tags_list, 'user_Email': email})
+    returnDict = {'photo_list': photo_list,
+            'search_word': search_word,
+            'latest_tags_list': latest_tags_list,
+            'user_Email': Email}
+    return  render(request, u'index.html', returnDict)
 
 def upload(request):
+    pdb.set_trace()
+    latest_tags_list = dbControl.get_latest_tags()
+    Email = common.getEmail(request)
     if request.method == 'POST':
+        try:
+            Email = request.user.email
+        except:
+            Email = 'no Email'
         form = photoUploadForm(request.POST or None, request.FILES)
-        #pdb.set_trace()
         if form.is_valid():
             photo_data = request.FILES['photoFile'].read()
             description = request.POST['description']
@@ -41,40 +49,63 @@ def upload(request):
             tag_list = tag.split(u'、')
             if 'sys_face' in tag_list:
                 return render(request, u'抱歉，不能使用这个标签哦亲')
-            photo_url = uploadImg.objUpload(photo_data, tag) # upload photo
+            # upload photo
+            photo_url = uploadImg.objUpload(photo_data, tag) 
             thumbnail_url = common.get_thumbnail_url(photo_url, size = 'c_fit,w_750')
+            # add face to faceset
             face_id_list = addPhotoFaces(method = 'url', urlOrPath = thumbnail_url)
-            dbControl.savePhotoAndTag(photo_url, description, tag_list, face_id_list) # save info
+            # save photo and tags
+            dbControl.savePhotoAndTag(photo_url, description, tag_list, face_id_list, owner = Email) 
+            # save info
             photo_info = dbControl.getPhotoInfo(method = 'url', search_word = photo_url)
-            return render(request, 'photo_info.html', {'photo_info' : photo_info})
+
+            returnDict = {'latest_tags_list': latest_tags_list,
+                    'user_Email': Email,
+                    'photo_info': photo_info}
+            return render(request, 'photo_info.html', returnDict)
         else:
             pass
-    return render(request, u'upload.html')
+    returnDict = {'latest_tags_list': latest_tags_list,
+            'user_Email': Email}
+    return render(request, u'upload.html', returnDict)
 		
 def tag(request):
     #pdb.set_trace()
+    latest_tags_list = dbControl.get_latest_tags()
+    Email = common.getEmail(request)
     latest_tags = tb_tag.objects.all().order_by('-id')[:5]
     latest_tags_list = [object.tag for object in latest_tags]
     form = searchForm(request.GET or None)
     if form.is_valid():
         search_word = request.GET['search_word']
         photo_list = dbControl.getRelatedPhotos(search_word)
-        return render(request, 'index.html', {'photo_list': photo_list, 'search_word': search_word, 'latest_tags_list': latest_tags_list})
     else:
         search_word = u'没有找到图片'
         photo_list = dbControl.getRelatedPhotos(search_word)        
-        return render(request, u'index.html', {'photo_list': photo_list, 'search_word': search_word, 'latest_tags_list': latest_tags_list})
+
+    returnDict = {'photo_list': photo_list,
+            'search_word': search_word,
+            'user_Email': Email,
+            'latest_tags_list': latest_tags_list}
+    return render(request, u'index.html', returnDict)
         
 def photo(request):
     # form = photoForm(request.GET or None) 
     # if form.is_valid():
     # don't check it temporary
+    latest_tags_list = dbControl.get_latest_tags()
+    Email = common.getEmail(request)
     p_id = int(request.GET['photo'])
     photo_info = dbControl.getPhotoInfo(method = 'p_id', search_word = p_id)
-    return render(request, 'photo_info.html', {'photo_info' : photo_info})
+    returnDict = {'user_Email': Email,
+            'latest_tags_list': latest_tags_list,
+            'photo_info': photo_info}
+    return render(request, 'photo_info.html', returnDict)
     
 def face(request):
     #pdb.set_trace()
+    latest_tags_list = dbControl.get_latest_tags()
+    Email = common.getEmail(request)
     if request.method == 'POST':
         latest_tags_list = [r'none for now']
         form = facePhotoForm(request.POST or None, request.FILES)
@@ -89,21 +120,46 @@ def face(request):
             for face_id in face_id_list:
                 each_face_photo_lsit = dbControl.getRelatedPhotos(search_word = face_id)
                 photo_list.extend(each_face_photo_lsit)         
-            return render(request, u'index.html', {'photo_list': photo_list,'latest_tags_list': latest_tags_list})
+
+            returnDict = {'photo_list': photo_list,
+                    'user_Email': Email,
+                    'latest_tags_list': latest_tags_list}
+            return render(request, u'index.html', returnDict)
         else:
             pass
-    return render(request, u'face.html')
+    returnDict = {'user_Email': Email,
+            'latest_tags_list': latest_tags_list}
+    return render(request, u'face.html', returnDict)
 
 def photoManage(request):
-    user_email = request.user.email
-    photo_list = dbControl.getRelatedPhotos('system', method = 'owner')
-    #photo_list.append(dbControl.getRelatedPhotos('system', method = 'owner'))
+    latest_tags_list = dbControl.get_latest_tags()
+    Email = common.getEmail(request)
+    try:
+        Email = request.user.email
+    except:
+        Email = 'no Email'
+    photo_list = dbControl.getRelatedPhotos(Email, method = 'owner')
+    if Email == '2012406855@qq.com':
+        photo_list.extend(dbControl.getRelatedPhotos('system', method = 'owner'))
 
-    return render(request, u'index.html', {'photo_list': photo_list, 'owner': user_email, 'latest_tags_list': ['no tag']})
+    returnDict = {'photo_list': photo_list,
+            'owner': Email,
+            'user_Email': Email,
+            'latest_tags_list': latest_tags_list}
+    return render(request, u'index.html', returnDict)
 
 
 def delete(request, p_id):
     #pdb.set_trace()
-    p_id = int(p_id)
-    photo_list = dbControl.delete(p_id)
-    return render(request, 'deleted.html')
+    latest_tags_list = dbControl.get_latest_tags()
+    Email = common.getEmail(request)
+    if request.user.isauthenticated():
+        p_id = int(p_id)
+        photo_list = dbControl.delete(p_id)
+        is_deleted = True
+    else:
+        is_deleted = False
+    returnDict = {'user_Email': Email,
+            'latest_tags_list': latest_tags_list,
+            'is_deleted': is_deleted}
+    return render(request, 'delete.html', returnDict)
