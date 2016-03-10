@@ -68,8 +68,8 @@
 <div class="container col-xs-12 header_center">
 <div class="row f-trans">
         
-    <form class="form-inline form_text_align" role="form" id="search" name="search" action="/tag/" method="POST">
-    {% csrf_token %}
+    <form class="form-inline form_text_align" role="form" id="search" name="search" action="/tag" method="GET">
+        <!--{% csrf_token %}--!>
             <input type="text" id="search_word" class="form-control search_input" name="search_word" value="奥运会">
             <button type="submit" id="search_button" class="btn btn-lg btn-primary search_button">搜索</button>
     </form>
@@ -96,7 +96,7 @@
             {% block latest_tags %}
                 {% for each_tag in latest_tags_list %}
                 <label>
-                <a class="label label-default box_shadow" href="/tag/?search_word={{each_tag}}">{{each_tag}}</a>
+                <a class="label label-default box_shadow" href="/tag/{{each_tag}}">{{each_tag}}</a>
                 </label><br>
                 {% endfor %}
             {% endblock %}

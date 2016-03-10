@@ -1,5 +1,7 @@
 #coding:utf-8
 from django.shortcuts import render
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from forms import photoUploadForm, searchForm, photoForm, facePhotoForm
 from models import tb_photo_info, tb_tag
 from PIL import Image
@@ -69,12 +71,8 @@ def upload(request):
             'user_Email': Email}
     return render(request, u'upload.html', returnDict)
 		
-def tag(request):
-    #pdb.set_trace()
-    latest_tags_list = dbControl.get_latest_tags()
-    Email = common.getEmail(request)
-    latest_tags = tb_tag.objects.all().order_by('-id')[:5]
-    latest_tags_list = [object.tag for object in latest_tags]
+def formTag(request):
+    #get search_word from the search form and check it, then redirects to view 'tag'
     form = searchForm(request.GET or None)
     if form.is_valid():
         search_word = request.GET['search_word']
@@ -82,7 +80,15 @@ def tag(request):
     else:
         search_word = u'没有找到图片'
         photo_list = dbControl.getRelatedPhotos(search_word)        
+    return HttpResponseRedirect(reverse('tag', args=[search_word]))
 
+def tag(request, search_word):
+    #search by tag (it's search_word here)
+    latest_tags_list = dbControl.get_latest_tags()
+    Email = common.getEmail(request)
+    latest_tags = tb_tag.objects.all().order_by('-id')[:5]
+    latest_tags_list = [object.tag for object in latest_tags]
+    photo_list = dbControl.getRelatedPhotos(search_word)        
     returnDict = {'photo_list': photo_list,
             'search_word': search_word,
             'user_Email': Email,
@@ -103,13 +109,11 @@ def photo(request):
     return render(request, 'photo_info.html', returnDict)
     
 def face(request):
-    #pdb.set_trace()
     latest_tags_list = dbControl.get_latest_tags()
     Email = common.getEmail(request)
     if request.method == 'POST':
         latest_tags_list = [r'none for now']
         form = facePhotoForm(request.POST or None, request.FILES)
-        #pdb.set_trace()
         if form.is_valid():
             photo_data = request.FILES['facePhotoFile'].read()
             tag = 'sys_face'
@@ -150,7 +154,7 @@ def photoManage(request):
 
 
 def delete(request, p_id):
-    #pdb.set_trace()
+    #delete photo, don't check user now
     latest_tags_list = dbControl.get_latest_tags()
     Email = common.getEmail(request)
     if request.user.isauthenticated():
