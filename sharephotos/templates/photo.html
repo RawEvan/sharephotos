@@ -12,7 +12,8 @@
             <p>标签:</p>
             </label>
             {% for each_tag in photo_info.tag_list %}
-                <label>{{each_tag}}
+                <label>
+                    <a href="/tag/{{each_tag}}">{{each_tag}}</a>
                 </label>
             {% endfor %}
         </div>

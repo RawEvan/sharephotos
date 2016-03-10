@@ -16,6 +16,11 @@ class tb_tag(models.Model):
     is_face = models.BooleanField(default = False)
     add_time = models.DateTimeField(auto_now = True)
     photo = models.ManyToManyField(tb_photo_info)
+    def unifiedTag(self):
+        if self.is_face:
+            return u'人脸' + self.tag
+        else:
+            return self.tag
     
     def __unicode__(self):
         return self.tag

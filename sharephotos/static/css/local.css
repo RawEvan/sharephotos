@@ -212,6 +212,17 @@ min-height:219px;
 {
 margin-top:10px;
 }
+.tag_labels
+{
+text-align:left;
+}
+.tag_a
+{
+overflow:hidden;
+max-width:80%!important;
+text-overflow:ellipsis;
+position:absolute;
+}
 .result_info
 {
 border:1px solid #e9e9e9;

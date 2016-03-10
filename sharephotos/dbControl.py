@@ -42,11 +42,7 @@ def getPhotoInfo(key, method):
     try:
         got_tag_list = photoObj.tb_tag_set.all()
         for each_tag in got_tag_list:
-            if each_tag.is_face:
-                changed_tag = u'人脸' + each_tag.tag[:6]
-                tag_list.append(changed_tag)
-            else:
-                tag_list.append(each_tag.tag)
+            tag_list.append(each_tag.unifiedTag())
     except:
         pass
 
@@ -110,5 +106,5 @@ def delete(p_id):
 
 def get_latest_tags(num = 5):
     latest_tag_objects = tb_tag.objects.all().order_by('-id')[:5]
-    latest_tag_list = [object.tag for object in latest_tag_objects if not object.is_face]
+    latest_tag_list = [object.unifiedTag() for object in latest_tag_objects]
     return latest_tag_list

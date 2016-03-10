@@ -63,7 +63,7 @@ def upload(request):
             returnDict = {'latest_tag_list': latest_tag_list,
                     'user_Email': Email,
                     'photo_info': photo_info}
-            return render(request, 'photo_info.html', returnDict)
+            return render(request, 'photo.html', returnDict)
         else:
             pass
     returnDict = {'latest_tag_list': latest_tag_list,
@@ -101,7 +101,7 @@ def photo(request):
     returnDict = {'user_Email': Email,
             'latest_tag_list': latest_tag_list,
             'photo_info': photo_info}
-    return render(request, 'photo_info.html', returnDict)
+    return render(request, 'photo.html', returnDict)
     
 def face(request):
     latest_tag_list = dbControl.get_latest_tags()
