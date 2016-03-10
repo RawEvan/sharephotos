@@ -4,20 +4,23 @@
 {% endblock %}
 	<div class="photo_detail">
     <div class="co-xs-12 col-sm-7 dtl_image">
-        <img class="photo_display" src={{photo_info.photo_url}}>
+        <img class="photo_display" src={{photo_info.original_url}}>
     </div>
     <div class="col-xs-12 col-sm-3 dtl_right">
         <div class="dtl_tags">
             <label>
             <p>标签:</p>
             </label>
-            {% for each_tag in photo_info.tags_list %}
+            {% for each_tag in photo_info.tag_list %}
                 <label>{{each_tag}}
                 </label>
             {% endfor %}
         </div>
         <div class="dtl_description">
             描述：{{photo_info.description}}
+        </div>
+        <div class="dtl_description">
+            上传：{{photo_info.owner}}
         </div>
     </div>
 	</div>

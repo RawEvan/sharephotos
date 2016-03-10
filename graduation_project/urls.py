@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'sharephotos.views.homepage', name = 'homepage'),
     url(r'^upload/$', 'sharephotos.views.upload', name = 'upload'),
-    url(r'^tag/(.+?)/$', 'sharephotos.views.tag', name = 'tag'),
+    url(r'^tag/(.*?)/$', 'sharephotos.views.tag', name = 'tag'),
     url(r'^tag$', 'sharephotos.views.formTag', name = 'formTag'),
     url(r'^photo/$', 'sharephotos.views.photo', name = 'photo'),
     url(r'^face/$', 'sharephotos.views.face', name = 'face'),

@@ -5,7 +5,8 @@ import common
 import pdb
 
 def getRelatedPhotos(key, method = 'tag'):
-    #pdb.set_trace()
+    photo_list = []
+    result_photo = []
     try:
         if method == 'tag':
             targetTag = tb_tag.objects.get(tag = key)
@@ -13,76 +14,101 @@ def getRelatedPhotos(key, method = 'tag'):
         elif method == 'owner':
             result_photo = tb_photo_info.objects.filter(owner = key)
     except:
-        #targetTag = tb_tag.objects.get(tag = u'没有找到图片')
-        photo_list = []
-        return photo_list
-
-    photo_list = []
+        pass
     for each_photo in result_photo:
         original_url = each_photo.store_url
-        thumbnail_url = common.get_thumbnail_url(original_url)
-        photo_dict = {
-        'p_id': each_photo.id,
-        'original_url': original_url,
-        'thumbnail_url': thumbnail_url, 
-        'description': each_photo.description, 
-        "tags_list": [each_tag.tag for each_tag in each_photo.tb_tag_set.all()]}
-        photo_list.append(photo_dict)
+        photo_info = getPhotoInfo(each_photo, method = 'obj')
+        photo_list.append(photo_info)
     return photo_list
     
+def getPhotoInfo(key, method):
+    if method == 'p_id':
+        try:
+            photoObj = tb_photo_info.objects.get(id = key)
+        except:
+            pass
+    elif method == 'url':
+        try:
+            #original_url is the same as store_url in database model
+            photoObj = tb_photo_info.objects.get(store_url = key)
+        except:
+            pass
+    elif method == 'obj':
+        photoObj = key
+    else:
+        pass
+    #get tag list and change face tag
+    tag_list = []
+    try:
+        got_tag_list = photoObj.tb_tag_set.all()
+        for each_tag in got_tag_list:
+            if each_tag.is_face:
+                changed_tag = u'人脸' + each_tag.tag[:6]
+                tag_list.append(changed_tag)
+            else:
+                tag_list.append(each_tag.tag)
+    except:
+        pass
+
+    thumbnail_url = common.get_thumbnail_url(photoObj.store_url)
+    if  photoObj.owner == 'system':
+        owner = u'游客'
+    else:
+        owner = photoObj.owner
+    photo_info = {
+        'p_id': photoObj.id,
+        'original_url': photoObj.store_url,
+        'description': photoObj.description, 
+        'owner': owner,
+        'thumbnail_url': thumbnail_url, 
+        "tag_list": tag_list}
+
+    return photo_info
+
 def savePhotoAndTag(storeUrl, description, tag_list, face_id_list, owner):
-    photoInfo = tb_photo_info(store_url = storeUrl, description = description, owner = owner)
-    photoInfo.save()
+    #TODO:deal with the failure of saving photo or tags
+    try:
+        photoObj = addPhoto(storeUrl, description, owner)
+    except:
+        return False
+    addTag(key = photoObj, tag_list = tag_list, method = 'obj', face_id_list = face_id_list)
+    return True
+        
+def addPhoto(storeUrl, description, owner):
+    photoObj = tb_photo_info(store_url = storeUrl, description = description, owner = owner)
+    photoObj.save()
+    return photoObj
+
+def addTag(key, tag_list, method, face_id_list = []):
+    if method == 'obj':
+        photoObj = key
+    elif method == 'p_id':
+        photoObj = tb_photo_info.objects.get(id = key)
+    else:
+        return False
+    # add tag and relation between tag and photo
+    # nomal tag
     for tag in tag_list:
         tagInfo = tb_tag.objects.get_or_create(tag = tag)[0]
         tagInfo.save()
-        tagInfo.photo.add(photoInfo) # add relation between tag and photo
+        tagInfo.photo.add(photoObj) 
+    # face tag
     if face_id_list:   
         for tag in face_id_list:
             tagInfo = tb_tag.objects.get_or_create(tag = tag, is_face = True)[0]
             tagInfo.save()
-            tagInfo.photo.add(photoInfo) # add relation between tag and photo
-        
-def getPhotoInfo(method, search_word):
-    '''try:
-        photoObj = tb_photo_info.objects.get(store_url = photo_url)
-    except:
-        no_photo = tb_tag.objects.get(tag = u'没有找到图片')
-        photoObj = no_photo.photo.all()[0]'''
-    if method == 'p_id':
-        p_id = search_word
-        try:
-            photoObj = tb_photo_info.objects.get(id = p_id)
-        except:
-            no_photo = tb_tag.objects.get(tag = u'没有找到图片')
-            photoObj = no_photo.photo.all()[0]
-    elif method == 'url':
-        photo_url = search_word
-        try:
-            photoObj = tb_photo_info.objects.get(store_url = photo_url)
-        except:
-            no_photo = tb_tag.objects.get(tag = u'没有找到图片')
-            photoObj = no_photo.photo.all()[0]
-    else:
-        no_photo = tb_tag.objects.get(tag = u'没有找到图片')
-        photoObj = no_photo.photo.all()[0]
-    tags_list = []
-    got_tags_list = photoObj.tb_tag_set.all()
-    for each_tag in got_tags_list:
-        if each_tag.is_face:
-            each_tag = u'人脸：' + each_tag[:6]
-        tags_list.append(each_tag)
-    photo_info = {
-    'description': photoObj.description, 
-    'photo_url': photoObj.store_url,
-    "tags_list": tags_list}
-    return photo_info
+            tagInfo.photo.add(photoObj) 
+    return True
 
 def delete(p_id):
-    photo = tb_photo_info.objects.get(id = p_id)
-    photo.delete()
+    try:
+        photo = tb_photo_info.objects.get(id = p_id)
+        photo.delete()
+        return True
+    except:
+        return False
 
 def get_latest_tags(num = 5):
-    latest_tags_objects = tb_tag.objects.all().order_by('-id')[:5]
-    latest_tags_list = [object.tag for object in latest_tags_objects if not object.is_face]
-    return latest_tags_list
+    latest_tag_objects = tb_tag.objects.all().order_by('-id')[:5]
+    latest_tag_list = [object.tag for object in latest_tag_objects if not object.is_face]
+    return latest_tag_list
