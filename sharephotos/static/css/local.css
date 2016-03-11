@@ -337,6 +337,9 @@ padding:10px;
 border:1px solid #e9e9e9;
 background-color: #f2f2f2;
 text-align: center;
+white-space:nowrap;
+text-overflow:ellipsis;
+overflow:hidden;
 }
 .popup_description
 {
@@ -457,6 +460,10 @@ overflow:hidden;
     padding-top: 15px;
     margin:2px;
     border-bottom:1px solid #e1e1e1;
+}
+.dtl_tag_a
+{
+white-space:nowrap;
 }
 .dtl_description
 {
