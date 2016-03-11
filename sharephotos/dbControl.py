@@ -3,12 +3,17 @@
 from models import tb_photo_info, tb_tag
 import common
 import pdb
+import re
 
 def getRelatedPhotos(key, method = 'tag'):
     photo_list = []
     result_photo = []
     try:
         if method == 'tag':
+            #the tag that is face id
+            reg = u'人脸' + r'\d+?'
+            if re.search(reg, key):
+                key = key[2:]
             targetTag = tb_tag.objects.get(tag = key)
             result_photo = targetTag.photo.all()    # get photo related to the tag 
         elif method == 'owner':
