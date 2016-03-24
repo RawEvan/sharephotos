@@ -10,10 +10,12 @@ API	.\packages\__init__.py	/^class API(object):$/;"	c
 API	.\packages\facepp.py	/^class API(object):$/;"	c
 APIError	.\packages\__init__.py	/^class APIError(Exception):$/;"	c
 APIError	.\packages\facepp.py	/^class APIError(Exception):$/;"	c
-API_KEY	.\config.py	/^API_KEY = 'c9efc1a5689359e5f5e1c3fd907b9782'$/;"	v
-API_KEY	.\faceControl.py	/^API_KEY = config.API_KEY$/;"	v
-API_SECRET	.\config.py	/^API_SECRET = 'oc79yIJ5Lmv29fhHg8MOXFfjmBDsc5LY'/;"	v
-API_SECRET	.\faceControl.py	/^API_SECRET = config.API_SECRET$/;"	v
+API_KEY	.\faceControl.py	/^API_KEY = cp.get('SAE_API', 'API_KEY')$/;"	v
+API_KEY	.\uploadImg.py	/^API_KEY = cp.get('storage', 'API_KEY')$/;"	v
+API_SECRET	.\faceControl.py	/^API_SECRET = cp.get('SAE_API', 'API_SECRET')$/;"	v
+API_SECRET	.\uploadImg.py	/^API_SECRET = cp.get('storage', 'API_SECRET')$/;"	v
+ConfigParser	.\faceControl.py	/^import ConfigParser $/;"	i
+ConfigParser	.\uploadImg.py	/^import ConfigParser$/;"	i
 DEBUG_LEVEL	.\packages\__init__.py	/^DEBUG_LEVEL = 1$/;"	v
 DEBUG_LEVEL	.\packages\facepp.py	/^DEBUG_LEVEL = 1$/;"	v
 DEFAULT_FACESET	.\faceControl.py	/^    DEFAULT_FACESET = 'faceset_test'$/;"	v
@@ -21,6 +23,8 @@ DEFAULT_FACESET	.\faceControl.py	/^    DEFAULT_FACESET = 'sharephotos'$/;"	v
 File	.\faceControl.py	/^from packages.facepp import API, File$/;"	i
 File	.\packages\__init__.py	/^class File(object):$/;"	c
 File	.\packages\facepp.py	/^class File(object):$/;"	c
+HttpResponse	.\tests.py	/^from django.http import HttpResponse$/;"	i
+HttpResponseRedirect	.\views.py	/^from django.http import HttpResponseRedirect$/;"	i
 Image	.\packages\__init__.py	/^            import PIL.Image$/;"	i
 Image	.\packages\facepp.py	/^            import PIL.Image$/;"	i
 Image	.\views.py	/^from PIL import Image$/;"	i
@@ -28,19 +32,20 @@ Iterable	.\packages\__init__.py	/^from collections import Iterable$/;"	i
 Iterable	.\packages\facepp.py	/^from collections import Iterable$/;"	i
 MIN_CONFIDENCE	.\faceControl.py	/^MIN_CONFIDENCE = 30$/;"	v
 MIN_SIMILARITY	.\faceControl.py	/^MIN_SIMILARITY = 60$/;"	v
-Migration	.\migrations\0001_initial.py	/^class Migration(migrations.Migration):$/;"	c
-Migration	.\migrations\0002_auto_20151226_1611.py	/^class Migration(migrations.Migration):$/;"	c
-Migration	.\migrations\0003_auto_20151226_1615.py	/^class Migration(migrations.Migration):$/;"	c
-Migration	.\migrations\0004_auto_20151226_1615.py	/^class Migration(migrations.Migration):$/;"	c
-Migration	.\migrations\0005_auto_20151226_1617.py	/^class Migration(migrations.Migration):$/;"	c
-Migration	.\migrations\0006_auto_20151226_1619.py	/^class Migration(migrations.Migration):$/;"	c
-Migration	.\migrations\0007_remove_tb_photo_info_store_url.py	/^class Migration(migrations.Migration):$/;"	c
-Migration	.\migrations\0008_tb_photo_info_store_url.py	/^class Migration(migrations.Migration):$/;"	c
-Migration	.\migrations\0009_auto_20151226_1640.py	/^class Migration(migrations.Migration):$/;"	c
-Migration	.\migrations\0010_remove_tb_photo_info_store_url.py	/^class Migration(migrations.Migration):$/;"	c
-Migration	.\migrations\0011_tb_photo_info_store_url.py	/^class Migration(migrations.Migration):$/;"	c
-Migration	.\migrations\0012_auto_20151227_1538.py	/^class Migration(migrations.Migration):$/;"	c
-Migration	.\migrations\0013_auto_20160109_0119.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0001_initial.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0002_auto_20151226_1611.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0003_auto_20151226_1615.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0004_auto_20151226_1615.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0005_auto_20151226_1617.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0006_auto_20151226_1619.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0007_remove_tb_photo_info_store_url.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0008_tb_photo_info_store_url.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0009_auto_20151226_1640.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0010_remove_tb_photo_info_store_url.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0011_tb_photo_info_store_url.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0012_auto_20151227_1538.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0013_auto_20160109_0119.py	/^class Migration(migrations.Migration):$/;"	c
+Migration	.\migrations\backup\0014_tb_photo_info_owner.py	/^class Migration(migrations.Migration):$/;"	c
 PIL	.\packages\__init__.py	/^            import PIL.Image$/;"	i
 PIL	.\packages\facepp.py	/^            import PIL.Image$/;"	i
 SCSBucket	.\uploadImg.py	/^from sinastorage.bucket import SCSBucket, ACL$/;"	i
@@ -95,8 +100,10 @@ _urlbase	.\packages\__init__.py	/^    _urlbase = None$/;"	v	class:_APIProxy
 _urlbase	.\packages\facepp.py	/^    _urlbase = None$/;"	v	class:_APIProxy
 acl	.\uploadImg.py	/^acl = {}$/;"	v
 addFaceToFaceset	.\faceControl.py	/^def addFaceToFaceset(faceset_name, face_id):$/;"	f
+addPhoto	.\dbControl.py	/^def addPhoto(storeUrl, description, owner):$/;"	f
 addPhotoFaces	.\faceControl.py	/^def addPhotoFaces(method, urlOrPath, faceset_name = DEFAULT_FACESET):$/;"	f
 addPhotoFaces	.\views.py	/^from faceControl import searchFaceset, addPhotoFaces$/;"	i
+addTag	.\dbControl.py	/^def addTag(key, tag_list, method, face_id_list = []):$/;"	f
 add_field	.\packages\__init__.py	/^    def add_field(self, name, value):$/;"	m	class:_MultiPartForm
 add_field	.\packages\facepp.py	/^    def add_field(self, name, value):$/;"	m	class:_MultiPartForm
 add_file	.\packages\__init__.py	/^    def add_file(self, fieldname, filename, content, mimetype = None):$/;"	m	class:_MultiPartForm
@@ -110,29 +117,37 @@ code	.\packages\__init__.py	/^    code = None$/;"	v	class:APIError
 code	.\packages\facepp.py	/^    code = None$/;"	v	class:APIError
 common	.\dbControl.py	/^import common$/;"	i
 common	.\views.py	/^import common$/;"	i
-config	.\faceControl.py	/^import config$/;"	i
 const	.\faceControl.py	/^import sae.const$/;"	i
 content	.\packages\__init__.py	/^    content = None$/;"	v	class:File
 content	.\packages\facepp.py	/^    content = None$/;"	v	class:File
+cookiesControl	.\views.py	/^import cookiesControl$/;"	i
+cp	.\faceControl.py	/^cp = ConfigParser.ConfigParser()$/;"	v
+cp	.\uploadImg.py	/^cp = ConfigParser.ConfigParser()$/;"	v
 createFaceGroup	.\faceControl.py	/^def createFaceGroup(name, path, group_name = 'test'):$/;"	f
 cv2	.\packages\__init__.py	/^            import cv2$/;"	i
 cv2	.\packages\facepp.py	/^            import cv2$/;"	i
+dbControl	.\cookiesControl.py	/^import dbControl$/;"	i
+dbControl	.\tests.py	/^import dbControl$/;"	i
 dbControl	.\views.py	/^import dbControl$/;"	i
+dbTestCase	.\tests.py	/^class dbTestCase(TestCase):$/;"	c
 decode_result	.\packages\__init__.py	/^    decode_result = True$/;"	v	class:API
 decode_result	.\packages\facepp.py	/^    decode_result = True$/;"	v	class:API
-dependencies	.\migrations\0001_initial.py	/^    dependencies = [$/;"	v	class:Migration
-dependencies	.\migrations\0002_auto_20151226_1611.py	/^    dependencies = [$/;"	v	class:Migration
-dependencies	.\migrations\0003_auto_20151226_1615.py	/^    dependencies = [$/;"	v	class:Migration
-dependencies	.\migrations\0004_auto_20151226_1615.py	/^    dependencies = [$/;"	v	class:Migration
-dependencies	.\migrations\0005_auto_20151226_1617.py	/^    dependencies = [$/;"	v	class:Migration
-dependencies	.\migrations\0006_auto_20151226_1619.py	/^    dependencies = [$/;"	v	class:Migration
-dependencies	.\migrations\0007_remove_tb_photo_info_store_url.py	/^    dependencies = [$/;"	v	class:Migration
-dependencies	.\migrations\0008_tb_photo_info_store_url.py	/^    dependencies = [$/;"	v	class:Migration
-dependencies	.\migrations\0009_auto_20151226_1640.py	/^    dependencies = [$/;"	v	class:Migration
-dependencies	.\migrations\0010_remove_tb_photo_info_store_url.py	/^    dependencies = [$/;"	v	class:Migration
-dependencies	.\migrations\0011_tb_photo_info_store_url.py	/^    dependencies = [$/;"	v	class:Migration
-dependencies	.\migrations\0012_auto_20151227_1538.py	/^    dependencies = [$/;"	v	class:Migration
-dependencies	.\migrations\0013_auto_20160109_0119.py	/^    dependencies = [$/;"	v	class:Migration
+delete	.\dbControl.py	/^def delete(p_id):$/;"	f
+delete	.\views.py	/^def delete(request, p_id):$/;"	f
+dependencies	.\migrations\backup\0001_initial.py	/^    dependencies = [$/;"	v	class:Migration
+dependencies	.\migrations\backup\0002_auto_20151226_1611.py	/^    dependencies = [$/;"	v	class:Migration
+dependencies	.\migrations\backup\0003_auto_20151226_1615.py	/^    dependencies = [$/;"	v	class:Migration
+dependencies	.\migrations\backup\0004_auto_20151226_1615.py	/^    dependencies = [$/;"	v	class:Migration
+dependencies	.\migrations\backup\0005_auto_20151226_1617.py	/^    dependencies = [$/;"	v	class:Migration
+dependencies	.\migrations\backup\0006_auto_20151226_1619.py	/^    dependencies = [$/;"	v	class:Migration
+dependencies	.\migrations\backup\0007_remove_tb_photo_info_store_url.py	/^    dependencies = [$/;"	v	class:Migration
+dependencies	.\migrations\backup\0008_tb_photo_info_store_url.py	/^    dependencies = [$/;"	v	class:Migration
+dependencies	.\migrations\backup\0009_auto_20151226_1640.py	/^    dependencies = [$/;"	v	class:Migration
+dependencies	.\migrations\backup\0010_remove_tb_photo_info_store_url.py	/^    dependencies = [$/;"	v	class:Migration
+dependencies	.\migrations\backup\0011_tb_photo_info_store_url.py	/^    dependencies = [$/;"	v	class:Migration
+dependencies	.\migrations\backup\0012_auto_20151227_1538.py	/^    dependencies = [$/;"	v	class:Migration
+dependencies	.\migrations\backup\0013_auto_20160109_0119.py	/^    dependencies = [$/;"	v	class:Migration
+dependencies	.\migrations\backup\0014_tb_photo_info_owner.py	/^    dependencies = [$/;"	v	class:Migration
 description	.\forms.py	/^    description = forms.CharField(max_length = 300)$/;"	v	class:photoUploadForm
 description	.\models.py	/^    description = models.TextField(max_length = 300, default = 'no description')$/;"	v	class:tb_photo_info
 enc	.\packages\__init__.py	/^        def enc(x):$/;"	f	function:_APIProxy._mkarg
@@ -143,24 +158,28 @@ facePhotoFile	.\forms.py	/^    facePhotoFile = forms.ImageField()/;"	v	class:fac
 facePhotoForm	.\forms.py	/^class facePhotoForm(forms.Form):$/;"	c
 facePhotoForm	.\views.py	/^from forms import photoUploadForm, searchForm, photoForm, facePhotoForm$/;"	i
 facesetTrain	.\faceControl.py	/^def facesetTrain(faceset_name):          $/;"	f
-field	.\migrations\0002_auto_20151226_1611.py	/^            field=models.TextField(unique=True, max_length=1000),$/;"	v	class:Migration
-field	.\migrations\0003_auto_20151226_1615.py	/^            field=models.CharField(unique=True, max_length=250),$/;"	v	class:Migration
-field	.\migrations\0004_auto_20151226_1615.py	/^            field=models.CharField(max_length=250),$/;"	v	class:Migration
-field	.\migrations\0005_auto_20151226_1617.py	/^            field=models.CharField(max_length=1250),$/;"	v	class:Migration
-field	.\migrations\0006_auto_20151226_1619.py	/^            field=models.TextField(max_length=1250),$/;"	v	class:Migration
-field	.\migrations\0008_tb_photo_info_store_url.py	/^            field=models.TextField(default=b'no url', max_length=1250),$/;"	v	class:Migration
-field	.\migrations\0009_auto_20151226_1640.py	/^            field=models.TextField(default=b'url', max_length=1250),$/;"	v	class:Migration
-field	.\migrations\0011_tb_photo_info_store_url.py	/^            field=models.TextField(default=b'url', max_length=1250),$/;"	v	class:Migration
-field	.\migrations\0012_auto_20151227_1538.py	/^            field=models.CharField(unique=True, max_length=20),$/;"	v	class:Migration
-field	.\migrations\0013_auto_20160109_0119.py	/^            field=models.CharField(unique=True, max_length=50),$/;"	v	class:Migration
-fields	.\migrations\0001_initial.py	/^            fields=[$/;"	v	class:Migration
+field	.\migrations\backup\0002_auto_20151226_1611.py	/^            field=models.TextField(unique=True, max_length=1000),$/;"	v	class:Migration
+field	.\migrations\backup\0003_auto_20151226_1615.py	/^            field=models.CharField(unique=True, max_length=250),$/;"	v	class:Migration
+field	.\migrations\backup\0004_auto_20151226_1615.py	/^            field=models.CharField(max_length=250),$/;"	v	class:Migration
+field	.\migrations\backup\0005_auto_20151226_1617.py	/^            field=models.CharField(max_length=1250),$/;"	v	class:Migration
+field	.\migrations\backup\0006_auto_20151226_1619.py	/^            field=models.TextField(max_length=1250),$/;"	v	class:Migration
+field	.\migrations\backup\0008_tb_photo_info_store_url.py	/^            field=models.TextField(default=b'no url', max_length=1250),$/;"	v	class:Migration
+field	.\migrations\backup\0009_auto_20151226_1640.py	/^            field=models.TextField(default=b'url', max_length=1250),$/;"	v	class:Migration
+field	.\migrations\backup\0011_tb_photo_info_store_url.py	/^            field=models.TextField(default=b'url', max_length=1250),$/;"	v	class:Migration
+field	.\migrations\backup\0012_auto_20151227_1538.py	/^            field=models.CharField(unique=True, max_length=20),$/;"	v	class:Migration
+field	.\migrations\backup\0013_auto_20160109_0119.py	/^            field=models.CharField(unique=True, max_length=50),$/;"	v	class:Migration
+field	.\migrations\backup\0014_tb_photo_info_owner.py	/^            field=models.TextField(default=b'system', max_length=1250),$/;"	v	class:Migration
+fields	.\migrations\backup\0001_initial.py	/^            fields=[$/;"	v	class:Migration
+formTag	.\views.py	/^def formTag(request):$/;"	f
 forms	.\forms.py	/^﻿from django import forms$/;"	i
-getPhotoInfo	.\dbControl.py	/^def getPhotoInfo(method, search_word):$/;"	f
-getRelatedPhotos	.\dbControl.py	/^def getRelatedPhotos(search_word):$/;"	f
+getEmail	.\common.py	/^def getEmail(request):$/;"	f
+getPhotoInfo	.\dbControl.py	/^def getPhotoInfo(key, method):$/;"	f
+getRelatedPhotos	.\dbControl.py	/^def getRelatedPhotos(key, method = 'tag'):$/;"	f
 get_content_type	.\packages\__init__.py	/^    def get_content_type(self):$/;"	m	class:_MultiPartForm
 get_content_type	.\packages\facepp.py	/^    def get_content_type(self):$/;"	m	class:_MultiPartForm
 get_filename	.\packages\__init__.py	/^    def get_filename(self):$/;"	m	class:File
 get_filename	.\packages\facepp.py	/^    def get_filename(self):$/;"	m	class:File
+get_latest_tags	.\dbControl.py	/^def get_latest_tags(num = 5):$/;"	f
 get_thumbnail_url	.\common.py	/^def get_thumbnail_url(original_url, size = 'w_250,h_150'):$/;"	f
 geturl	.\packages\__init__.py	/^    def geturl(self, **kargs):$/;"	m	class:_APIProxy
 geturl	.\packages\facepp.py	/^    def geturl(self, **kargs):$/;"	m	class:_APIProxy
@@ -171,92 +190,101 @@ itertools	.\packages\__init__.py	/^import itertools$/;"	i
 itertools	.\packages\facepp.py	/^import itertools$/;"	i
 json	.\packages\__init__.py	/^import json$/;"	i
 json	.\packages\facepp.py	/^import json$/;"	i
+json	.\views.py	/^import json$/;"	i
 key	.\packages\__init__.py	/^    key = None$/;"	v	class:API
 key	.\packages\facepp.py	/^    key = None$/;"	v	class:API
+latest_tags_list	.\cookiesControl.py	/^def latest_tags_list(request, response):$/;"	f
 main	.\faceControl.py	/^def main():$/;"	f
 max_retries	.\packages\__init__.py	/^    max_retries = None$/;"	v	class:API
 max_retries	.\packages\facepp.py	/^    max_retries = None$/;"	v	class:API
-migrations	.\migrations\0001_initial.py	/^from django.db import models, migrations$/;"	i
-migrations	.\migrations\0002_auto_20151226_1611.py	/^from django.db import models, migrations$/;"	i
-migrations	.\migrations\0003_auto_20151226_1615.py	/^from django.db import models, migrations$/;"	i
-migrations	.\migrations\0004_auto_20151226_1615.py	/^from django.db import models, migrations$/;"	i
-migrations	.\migrations\0005_auto_20151226_1617.py	/^from django.db import models, migrations$/;"	i
-migrations	.\migrations\0006_auto_20151226_1619.py	/^from django.db import models, migrations$/;"	i
-migrations	.\migrations\0007_remove_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
-migrations	.\migrations\0008_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
-migrations	.\migrations\0009_auto_20151226_1640.py	/^from django.db import models, migrations$/;"	i
-migrations	.\migrations\0010_remove_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
-migrations	.\migrations\0011_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
-migrations	.\migrations\0012_auto_20151227_1538.py	/^from django.db import models, migrations$/;"	i
-migrations	.\migrations\0013_auto_20160109_0119.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0001_initial.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0002_auto_20151226_1611.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0003_auto_20151226_1615.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0004_auto_20151226_1615.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0005_auto_20151226_1617.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0006_auto_20151226_1619.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0007_remove_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0008_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0009_auto_20151226_1640.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0010_remove_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0011_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0012_auto_20151227_1538.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0013_auto_20160109_0119.py	/^from django.db import models, migrations$/;"	i
+migrations	.\migrations\backup\0014_tb_photo_info_owner.py	/^from django.db import models, migrations$/;"	i
 mimetools	.\packages\__init__.py	/^import mimetools$/;"	i
 mimetools	.\packages\facepp.py	/^import mimetools$/;"	i
 mimetypes	.\packages\__init__.py	/^import mimetypes$/;"	i
 mimetypes	.\packages\facepp.py	/^import mimetypes$/;"	i
-model_name	.\migrations\0002_auto_20151226_1611.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
-model_name	.\migrations\0003_auto_20151226_1615.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
-model_name	.\migrations\0004_auto_20151226_1615.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
-model_name	.\migrations\0005_auto_20151226_1617.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
-model_name	.\migrations\0006_auto_20151226_1619.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
-model_name	.\migrations\0007_remove_tb_photo_info_store_url.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
-model_name	.\migrations\0008_tb_photo_info_store_url.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
-model_name	.\migrations\0009_auto_20151226_1640.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
-model_name	.\migrations\0010_remove_tb_photo_info_store_url.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
-model_name	.\migrations\0011_tb_photo_info_store_url.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
-model_name	.\migrations\0012_auto_20151227_1538.py	/^            model_name='tb_tag',$/;"	v	class:Migration
-model_name	.\migrations\0013_auto_20160109_0119.py	/^            model_name='tb_tag',$/;"	v	class:Migration
-models	.\migrations\0001_initial.py	/^from django.db import models, migrations$/;"	i
-models	.\migrations\0002_auto_20151226_1611.py	/^from django.db import models, migrations$/;"	i
-models	.\migrations\0003_auto_20151226_1615.py	/^from django.db import models, migrations$/;"	i
-models	.\migrations\0004_auto_20151226_1615.py	/^from django.db import models, migrations$/;"	i
-models	.\migrations\0005_auto_20151226_1617.py	/^from django.db import models, migrations$/;"	i
-models	.\migrations\0006_auto_20151226_1619.py	/^from django.db import models, migrations$/;"	i
-models	.\migrations\0007_remove_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
-models	.\migrations\0008_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
-models	.\migrations\0009_auto_20151226_1640.py	/^from django.db import models, migrations$/;"	i
-models	.\migrations\0010_remove_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
-models	.\migrations\0011_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
-models	.\migrations\0012_auto_20151227_1538.py	/^from django.db import models, migrations$/;"	i
-models	.\migrations\0013_auto_20160109_0119.py	/^from django.db import models, migrations$/;"	i
+model_name	.\migrations\backup\0002_auto_20151226_1611.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
+model_name	.\migrations\backup\0003_auto_20151226_1615.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
+model_name	.\migrations\backup\0004_auto_20151226_1615.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
+model_name	.\migrations\backup\0005_auto_20151226_1617.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
+model_name	.\migrations\backup\0006_auto_20151226_1619.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
+model_name	.\migrations\backup\0007_remove_tb_photo_info_store_url.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
+model_name	.\migrations\backup\0008_tb_photo_info_store_url.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
+model_name	.\migrations\backup\0009_auto_20151226_1640.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
+model_name	.\migrations\backup\0010_remove_tb_photo_info_store_url.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
+model_name	.\migrations\backup\0011_tb_photo_info_store_url.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
+model_name	.\migrations\backup\0012_auto_20151227_1538.py	/^            model_name='tb_tag',$/;"	v	class:Migration
+model_name	.\migrations\backup\0013_auto_20160109_0119.py	/^            model_name='tb_tag',$/;"	v	class:Migration
+model_name	.\migrations\backup\0014_tb_photo_info_owner.py	/^            model_name='tb_photo_info',$/;"	v	class:Migration
+models	.\migrations\backup\0001_initial.py	/^from django.db import models, migrations$/;"	i
+models	.\migrations\backup\0002_auto_20151226_1611.py	/^from django.db import models, migrations$/;"	i
+models	.\migrations\backup\0003_auto_20151226_1615.py	/^from django.db import models, migrations$/;"	i
+models	.\migrations\backup\0004_auto_20151226_1615.py	/^from django.db import models, migrations$/;"	i
+models	.\migrations\backup\0005_auto_20151226_1617.py	/^from django.db import models, migrations$/;"	i
+models	.\migrations\backup\0006_auto_20151226_1619.py	/^from django.db import models, migrations$/;"	i
+models	.\migrations\backup\0007_remove_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
+models	.\migrations\backup\0008_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
+models	.\migrations\backup\0009_auto_20151226_1640.py	/^from django.db import models, migrations$/;"	i
+models	.\migrations\backup\0010_remove_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
+models	.\migrations\backup\0011_tb_photo_info_store_url.py	/^from django.db import models, migrations$/;"	i
+models	.\migrations\backup\0012_auto_20151227_1538.py	/^from django.db import models, migrations$/;"	i
+models	.\migrations\backup\0013_auto_20160109_0119.py	/^from django.db import models, migrations$/;"	i
+models	.\migrations\backup\0014_tb_photo_info_owner.py	/^from django.db import models, migrations$/;"	i
 models	.\models.py	/^from django.db import models$/;"	i
-name	.\migrations\0001_initial.py	/^            name='tb_photo_info',$/;"	v	class:Migration
-name	.\migrations\0001_initial.py	/^            name='tb_tag',$/;"	v	class:Migration
-name	.\migrations\0002_auto_20151226_1611.py	/^            name='store_url',$/;"	v	class:Migration
-name	.\migrations\0003_auto_20151226_1615.py	/^            name='store_url',$/;"	v	class:Migration
-name	.\migrations\0004_auto_20151226_1615.py	/^            name='store_url',$/;"	v	class:Migration
-name	.\migrations\0005_auto_20151226_1617.py	/^            name='store_url',$/;"	v	class:Migration
-name	.\migrations\0006_auto_20151226_1619.py	/^            name='store_url',$/;"	v	class:Migration
-name	.\migrations\0007_remove_tb_photo_info_store_url.py	/^            name='store_url',$/;"	v	class:Migration
-name	.\migrations\0008_tb_photo_info_store_url.py	/^            name='store_url',$/;"	v	class:Migration
-name	.\migrations\0009_auto_20151226_1640.py	/^            name='store_url',$/;"	v	class:Migration
-name	.\migrations\0010_remove_tb_photo_info_store_url.py	/^            name='store_url',$/;"	v	class:Migration
-name	.\migrations\0011_tb_photo_info_store_url.py	/^            name='store_url',$/;"	v	class:Migration
-name	.\migrations\0012_auto_20151227_1538.py	/^            name='tag',$/;"	v	class:Migration
-name	.\migrations\0013_auto_20160109_0119.py	/^            name='tag',$/;"	v	class:Migration
+name	.\migrations\backup\0001_initial.py	/^            name='tb_photo_info',$/;"	v	class:Migration
+name	.\migrations\backup\0001_initial.py	/^            name='tb_tag',$/;"	v	class:Migration
+name	.\migrations\backup\0002_auto_20151226_1611.py	/^            name='store_url',$/;"	v	class:Migration
+name	.\migrations\backup\0003_auto_20151226_1615.py	/^            name='store_url',$/;"	v	class:Migration
+name	.\migrations\backup\0004_auto_20151226_1615.py	/^            name='store_url',$/;"	v	class:Migration
+name	.\migrations\backup\0005_auto_20151226_1617.py	/^            name='store_url',$/;"	v	class:Migration
+name	.\migrations\backup\0006_auto_20151226_1619.py	/^            name='store_url',$/;"	v	class:Migration
+name	.\migrations\backup\0007_remove_tb_photo_info_store_url.py	/^            name='store_url',$/;"	v	class:Migration
+name	.\migrations\backup\0008_tb_photo_info_store_url.py	/^            name='store_url',$/;"	v	class:Migration
+name	.\migrations\backup\0009_auto_20151226_1640.py	/^            name='store_url',$/;"	v	class:Migration
+name	.\migrations\backup\0010_remove_tb_photo_info_store_url.py	/^            name='store_url',$/;"	v	class:Migration
+name	.\migrations\backup\0011_tb_photo_info_store_url.py	/^            name='store_url',$/;"	v	class:Migration
+name	.\migrations\backup\0012_auto_20151227_1538.py	/^            name='tag',$/;"	v	class:Migration
+name	.\migrations\backup\0013_auto_20160109_0119.py	/^            name='tag',$/;"	v	class:Migration
+name	.\migrations\backup\0014_tb_photo_info_owner.py	/^            name='owner',$/;"	v	class:Migration
 objUpload	.\uploadImg.py	/^def objUpload(data, tag):$/;"	f
-operations	.\migrations\0001_initial.py	/^    operations = [$/;"	v	class:Migration
-operations	.\migrations\0002_auto_20151226_1611.py	/^    operations = [$/;"	v	class:Migration
-operations	.\migrations\0003_auto_20151226_1615.py	/^    operations = [$/;"	v	class:Migration
-operations	.\migrations\0004_auto_20151226_1615.py	/^    operations = [$/;"	v	class:Migration
-operations	.\migrations\0005_auto_20151226_1617.py	/^    operations = [$/;"	v	class:Migration
-operations	.\migrations\0006_auto_20151226_1619.py	/^    operations = [$/;"	v	class:Migration
-operations	.\migrations\0007_remove_tb_photo_info_store_url.py	/^    operations = [$/;"	v	class:Migration
-operations	.\migrations\0008_tb_photo_info_store_url.py	/^    operations = [$/;"	v	class:Migration
-operations	.\migrations\0009_auto_20151226_1640.py	/^    operations = [$/;"	v	class:Migration
-operations	.\migrations\0010_remove_tb_photo_info_store_url.py	/^    operations = [$/;"	v	class:Migration
-operations	.\migrations\0011_tb_photo_info_store_url.py	/^    operations = [$/;"	v	class:Migration
-operations	.\migrations\0012_auto_20151227_1538.py	/^    operations = [$/;"	v	class:Migration
-operations	.\migrations\0013_auto_20160109_0119.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0001_initial.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0002_auto_20151226_1611.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0003_auto_20151226_1615.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0004_auto_20151226_1615.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0005_auto_20151226_1617.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0006_auto_20151226_1619.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0007_remove_tb_photo_info_store_url.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0008_tb_photo_info_store_url.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0009_auto_20151226_1640.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0010_remove_tb_photo_info_store_url.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0011_tb_photo_info_store_url.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0012_auto_20151227_1538.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0013_auto_20160109_0119.py	/^    operations = [$/;"	v	class:Migration
+operations	.\migrations\backup\0014_tb_photo_info_owner.py	/^    operations = [$/;"	v	class:Migration
 os	.\faceControl.py	/^import os$/;"	i
 os	.\packages\__init__.py	/^import os$/;"	i
 os	.\packages\__init__.py	/^import os.path$/;"	i
 os	.\packages\facepp.py	/^import os$/;"	i
 os	.\packages\facepp.py	/^import os.path$/;"	i
+owner	.\models.py	/^    owner = models.TextField(max_length = 1250, default = 'system')$/;"	v	class:tb_photo_info
 p_id	.\forms.py	/^    p_id = forms.IntegerField()$/;"	v	class:photoForm
 path	.\packages\__init__.py	/^    path = None$/;"	v	class:File
 path	.\packages\__init__.py	/^import os.path$/;"	i
 path	.\packages\facepp.py	/^    path = None$/;"	v	class:File
 path	.\packages\facepp.py	/^import os.path$/;"	i
+pdb	.\cookiesControl.py	/^import pdb$/;"	i
 pdb	.\dbControl.py	/^import pdb$/;"	i
 pdb	.\faceControl.py	/^import pdb$/;"	i
 pdb	.\views.py	/^import pdb$/;"	i
@@ -267,25 +295,30 @@ photo	.\views.py	/^def photo(request):$/;"	f
 photoFile	.\forms.py	/^    photoFile = forms.ImageField()$/;"	v	class:photoUploadForm
 photoForm	.\forms.py	/^class photoForm(forms.Form):$/;"	c
 photoForm	.\views.py	/^from forms import photoUploadForm, searchForm, photoForm, facePhotoForm$/;"	i
+photoManage	.\views.py	/^def photoManage(request):$/;"	f
 photoUploadForm	.\forms.py	/^class photoUploadForm(forms.Form):$/;"	c
 photoUploadForm	.\views.py	/^from forms import photoUploadForm, searchForm, photoForm, facePhotoForm$/;"	i
 print_result	.\faceControl.py	/^def print_result(hint, result):$/;"	f
+re	.\dbControl.py	/^import re$/;"	i
 render	.\views.py	/^from django.shortcuts import render$/;"	i
 retry_delay	.\packages\__init__.py	/^    retry_delay = None$/;"	v	class:API
 retry_delay	.\packages\facepp.py	/^    retry_delay = None$/;"	v	class:API
+reverse	.\views.py	/^from django.core.urlresolvers import reverse$/;"	i
 sae	.\faceControl.py	/^import sae.const$/;"	i
-savePhotoAndTag	.\dbControl.py	/^def savePhotoAndTag(storeUrl, description, tag_list, face_id_list):$/;"	f
+savePhotoAndTag	.\dbControl.py	/^def savePhotoAndTag(storeUrl, description, tag_list, face_id_list, owner):$/;"	f
 searchFaceset	.\faceControl.py	/^def searchFaceset(method, urlOrPath, faceset_name = DEFAULT_FACESET):$/;"	f
 searchFaceset	.\views.py	/^from faceControl import searchFaceset, addPhotoFaces$/;"	i
 searchForm	.\forms.py	/^class searchForm(forms.Form):$/;"	c
 searchForm	.\views.py	/^from forms import photoUploadForm, searchForm, photoForm, facePhotoForm$/;"	i
+searchJS	.\templates\bak\header_base.html	/^function searchJS(innerText)$/;"	f
 searchJS	.\templates\base.html	/^function searchJS(innerText)$/;"	f
-searchJS	.\templates\header_base.html	/^function searchJS(innerText)$/;"	f
 search_word	.\forms.py	/^    search_word = forms.CharField(max_length = 50)$/;"	v	class:searchForm
 secret	.\packages\__init__.py	/^    secret = None$/;"	v	class:API
 secret	.\packages\facepp.py	/^    secret = None$/;"	v	class:API
+send_mail	.\tests.py	/^from django.core.mail import send_mail$/;"	i
 server	.\packages\__init__.py	/^    server = 'http:\/\/api.faceplusplus.com\/'$/;"	v	class:API
 server	.\packages\facepp.py	/^    server = 'http:\/\/api.faceplusplus.com\/'$/;"	v	class:API
+setUp	.\tests.py	/^    def setUp(self):$/;"	m	class:dbTestCase
 sinastorage	.\uploadImg.py	/^import sinastorage$/;"	i
 socket	.\packages\__init__.py	/^import socket$/;"	i
 socket	.\packages\facepp.py	/^import socket$/;"	i
@@ -294,37 +327,44 @@ sys	.\packages\__init__.py	/^import sys$/;"	i
 sys	.\packages\facepp.py	/^import sys$/;"	i
 tag	.\forms.py	/^    tag = forms.CharField(max_length = 10)$/;"	v	class:photoUploadForm
 tag	.\models.py	/^    tag = models.CharField(max_length = 50, unique = True, blank = False)$/;"	v	class:tb_tag
-tag	.\views.py	/^def tag(request):$/;"	f
+tag	.\views.py	/^def tag(request, search_word):$/;"	f
 tb_photo_info	.\admin.py	/^from sharephotos.models import tb_photo_info, tb_tag$/;"	i
 tb_photo_info	.\dbControl.py	/^from models import tb_photo_info, tb_tag$/;"	i
 tb_photo_info	.\models.py	/^class tb_photo_info(models.Model):$/;"	c
+tb_photo_info	.\tests.py	/^from models import tb_photo_info, tb_tag$/;"	i
 tb_photo_info	.\views.py	/^from models import tb_photo_info, tb_tag$/;"	i
 tb_tag	.\admin.py	/^from sharephotos.models import tb_photo_info, tb_tag$/;"	i
 tb_tag	.\dbControl.py	/^from models import tb_photo_info, tb_tag$/;"	i
 tb_tag	.\models.py	/^class tb_tag(models.Model):$/;"	c
+tb_tag	.\tests.py	/^from models import tb_photo_info, tb_tag$/;"	i
 tb_tag	.\views.py	/^from models import tb_photo_info, tb_tag$/;"	i
 tempfile	.\packages\__init__.py	/^import tempfile$/;"	i
 tempfile	.\packages\facepp.py	/^import tempfile$/;"	i
+testSavePhotoAndTag	.\tests.py	/^    def testSavePhotoAndTag(self):$/;"	m	class:dbTestCase
 time	.\faceControl.py	/^import time$/;"	i
 time	.\packages\__init__.py	/^import time$/;"	i
 time	.\packages\facepp.py	/^import time$/;"	i
+time	.\tests.py	/^import time$/;"	i
 time	.\uploadImg.py	/^import time$/;"	i
+time	.\views.py	/^import time$/;"	i
 timeout	.\packages\__init__.py	/^    timeout = None$/;"	v	class:API
 timeout	.\packages\facepp.py	/^    timeout = None$/;"	v	class:API
 trainAllPerson	.\faceControl.py	/^def trainAllPerson():$/;"	f
-unicode_literals	.\migrations\0001_initial.py	/^from __future__ import unicode_literals$/;"	i
-unicode_literals	.\migrations\0002_auto_20151226_1611.py	/^from __future__ import unicode_literals$/;"	i
-unicode_literals	.\migrations\0003_auto_20151226_1615.py	/^from __future__ import unicode_literals$/;"	i
-unicode_literals	.\migrations\0004_auto_20151226_1615.py	/^from __future__ import unicode_literals$/;"	i
-unicode_literals	.\migrations\0005_auto_20151226_1617.py	/^from __future__ import unicode_literals$/;"	i
-unicode_literals	.\migrations\0006_auto_20151226_1619.py	/^from __future__ import unicode_literals$/;"	i
-unicode_literals	.\migrations\0007_remove_tb_photo_info_store_url.py	/^from __future__ import unicode_literals$/;"	i
-unicode_literals	.\migrations\0008_tb_photo_info_store_url.py	/^from __future__ import unicode_literals$/;"	i
-unicode_literals	.\migrations\0009_auto_20151226_1640.py	/^from __future__ import unicode_literals$/;"	i
-unicode_literals	.\migrations\0010_remove_tb_photo_info_store_url.py	/^from __future__ import unicode_literals$/;"	i
-unicode_literals	.\migrations\0011_tb_photo_info_store_url.py	/^from __future__ import unicode_literals$/;"	i
-unicode_literals	.\migrations\0012_auto_20151227_1538.py	/^from __future__ import unicode_literals$/;"	i
-unicode_literals	.\migrations\0013_auto_20160109_0119.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0001_initial.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0002_auto_20151226_1611.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0003_auto_20151226_1615.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0004_auto_20151226_1615.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0005_auto_20151226_1617.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0006_auto_20151226_1619.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0007_remove_tb_photo_info_store_url.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0008_tb_photo_info_store_url.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0009_auto_20151226_1640.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0010_remove_tb_photo_info_store_url.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0011_tb_photo_info_store_url.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0012_auto_20151227_1538.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0013_auto_20160109_0119.py	/^from __future__ import unicode_literals$/;"	i
+unicode_literals	.\migrations\backup\0014_tb_photo_info_owner.py	/^from __future__ import unicode_literals$/;"	i
+unifiedTag	.\models.py	/^    def unifiedTag(self):$/;"	m	class:tb_tag
 update_request	.\packages\__init__.py	/^    def update_request(self, request):$/;"	m	class:API
 update_request	.\packages\facepp.py	/^    def update_request(self, request):$/;"	m	class:API
 upload	.\views.py	/^def upload(request):$/;"	f
