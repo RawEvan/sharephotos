@@ -17,6 +17,15 @@
                 </label>
             {% endfor %}
         </div>
+        <button type="button", class="btn" data-toggle="collapse" data-target="#add">添加标签</button>
+        <div id="add"class="collapse">
+            <form id="add_tag" action="/addTag/"  method="get" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input id="tag" name="tag" type="text">
+                <input id="p_id" name="p_id" type="hidden" value={{photo_info.p_id}}>
+                <input id="tag_submit" class="btn" type="button" value="添加">
+            </form>
+        </div>
         <div class="dtl_description">
             描述：{{photo_info.description}}
         </div>

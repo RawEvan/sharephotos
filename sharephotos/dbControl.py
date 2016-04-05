@@ -113,3 +113,11 @@ def get_latest_tags(num = 5):
     latest_tag_objects = tb_tag.objects.all().order_by('-id')[:5]
     latest_tag_list = [object.unifiedTag() for object in latest_tag_objects]
     return latest_tag_list
+
+def tagOfPhotoExist(tag, p_id):
+#    photoObj = tb_photo_info.objects.get(id = key)
+#    if photoObj.tb_tag_set.get(tag = tag):
+#        return True
+#    else:
+#        return False
+    return True

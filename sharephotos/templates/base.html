@@ -120,10 +120,32 @@
 
 </body>
 <script>
-function searchJS(innerText)
+$(document).ready(function()
 {
-    document.getElementById("search_word").value=innerText;
-    document.getElementById("search_button").click();
-}
+    $("#tag_submit").click(function()
+    {
+        var tag = $("#tag").val();
+        var p_id = $("#p_id").val();
+        var csrf = $("input[name='csrfmiddlewaretoken']").val();
+        $.getJSON("/addTag/", {'tag': tag, 'p_id': p_id}, function(ret)
+        {
+            var tag_list = ret.tag_list;
+            if(ret.SUC==true)
+            {
+                for(var i = tag_list.length-1; i >= 0; i--)
+                {
+                    var new_table ='<label><a class="dtl_tag_a" href="/tag/' + tag_list[i] + '">' + tag_list[i] + '&nbsp</a>';
+                    $(".dtl_tags").append(new_table);
+                }
+                alert("标签添加成功");
+            }
+        });
+    });
+    $("#add_tag").submit(function(e)
+    {
+        $("#tag_submit").click();
+        e.preventDefault();
+    });
+});
 </script>
 </html>

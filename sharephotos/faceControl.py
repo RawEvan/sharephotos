@@ -23,8 +23,8 @@ else:
     DEFAULT_FACESET = 'sharephotos'
     print 'using faceset:%s' % DEFAULT_FACESET
 
-#function copied from facepp's hello.py
 def print_result(hint, result):
+#function copied from facepp's hello.py
     def encode(obj):
         if type(obj) is unicode:
             return obj.encode('utf-8')

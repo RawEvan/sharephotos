@@ -22,13 +22,15 @@ import users
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/', include('users.urls')),
     url(r'^$', 'sharephotos.views.homepage', name = 'homepage'),
     url(r'^upload/$', 'sharephotos.views.upload', name = 'upload'),
-    url(r'^tag/(.*?)/$', 'sharephotos.views.tag', name = 'tag'),
-    url(r'^tag$', 'sharephotos.views.formTag', name = 'formTag'),
+    url(r'^tag/(.*?)/$', 'sharephotos.views.tag', name = 'tag'), #for url method(using url derectly)
+    url(r'^tag$', 'sharephotos.views.formTag', name = 'formTag'), #for GET method
     url(r'^photo/$', 'sharephotos.views.photo', name = 'photo'),
     url(r'^face/$', 'sharephotos.views.face', name = 'face'),
-    url(r'^photo_manage', 'sharephotos.views.photoManage'),
-    url(r'^delete/(\d+)/$', 'sharephotos.views.delete'),
-    url(r'^accounts/', include('users.urls')),
+    url(r'^photo_manage/$', 'sharephotos.views.photoManage', name = 'photoManage'),
+    url(r'^delete/(\d+)/$', 'sharephotos.views.delete', name = 'delete'),
+    url(r'^addTag/$', 'sharephotos.views.addTag', name = 'addTag'),
+    #url(r'^deleteTag/$', 'sharephotos.views.deleteTag', name = 'deleteTag'),
 ]

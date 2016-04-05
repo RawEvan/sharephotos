@@ -1,8 +1,8 @@
 #coding:utf-8
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
-from forms import photoUploadForm, searchForm, photoForm, facePhotoForm
+from django.http import HttpResponseRedirect, JsonResponse
+from forms import photoInfoForm, searchForm, photoIDForm, photoFileForm, tagForm
 from models import tb_photo_info, tb_tag
 from PIL import Image
 from faceControl import searchFaceset, addPhotoFaces
@@ -42,14 +42,14 @@ def upload(request):
             Email = request.user.email
         except:
             Email = 'no Email'
-        form = photoUploadForm(request.POST or None, request.FILES)
+        form = photoInfoForm(request.POST or None, request.FILES)
         if form.is_valid():
             photo_data = request.FILES['photoFile'].read()
             description = request.POST['description']
             tag = request.POST['tag']
             tag_list = tag.split(u'、')
             if 'sys_face' in tag_list:
-                return render(request, u'抱歉，不能使用这个标签哦亲')
+                return render(request, u'抱歉，不能使用这个标签')
             # upload photo
             photo_url = uploadImg.objUpload(photo_data, tag) 
             thumbnail_url = common.get_thumbnail_url(photo_url, size = 'c_fit,w_750')
@@ -91,7 +91,7 @@ def tag(request, search_word):
     return render(request, u'index.html', returnDict)
         
 def photo(request):
-    # form = photoForm(request.GET or None) 
+    # form = photoIDForm(request.GET or None) 
     # if form.is_valid():
     # don't check it temporary
     latest_tag_list = dbControl.get_latest_tags()
@@ -108,7 +108,7 @@ def face(request):
     Email = common.getEmail(request)
     if request.method == 'POST':
         latest_tag_list = [r'none for now']
-        form = facePhotoForm(request.POST or None, request.FILES)
+        form = photoFileForm(request.POST or None, request.FILES)
         if form.is_valid():
             photo_data = request.FILES['facePhotoFile'].read()
             tag = 'sys_face'
@@ -161,3 +161,23 @@ def delete(request, p_id):
             'latest_tag_list': latest_tag_list,
             'is_deleted': is_deleted}
     return render(request, 'delete.html', returnDict)
+
+def addTag(request):
+    import pdb
+    #pdb.set_trace()
+    tag_list = []
+    if request.method == 'GET':
+    #check it later
+        tag = request.GET['tag']
+        p_id = int(request.GET['p_id'])
+        tag_list = tag.split(u'、')
+        if 'sys_face' in tag_list:
+            return render(request, u'抱歉，不能使用这个标签')
+        dbControl.addTag(p_id, tag_list, method = 'p_id')
+        result = {'tag_list': tag_list, 'SUC': True}
+        for eachTag in tag_list:
+            if not dbControl.tagOfPhotoExist(eachTag, p_id):
+                result['SUC'] = False
+        return JsonResponse(result) 
+    else:
+        return JsonResponse('error')
