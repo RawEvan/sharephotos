@@ -152,7 +152,9 @@ def delete(request, p_id):
     #delete photo, don't check user now
     latest_tag_list = dbControl.get_latest_tags()
     Email = common.getEmail(request)
-    if request.user.isauthenticated():
+    import pdb
+    pdb.set_trace()
+    if request.user.is_authenticated():
         p_id = int(p_id)
         is_deleted = dbControl.delete(p_id)
     else:
