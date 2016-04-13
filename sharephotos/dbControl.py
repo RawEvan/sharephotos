@@ -103,8 +103,6 @@ def addTag(key, tag_list, method, face_id_list = []):
 
 def delete(p_id):
     try:
-        import pdb
-        pdb.set_trace()
         photo = tb_photo_info.objects.get(id = p_id)
         tags = photo.tb_tag_set.all()
         for tag in tags:
