@@ -1,9 +1,8 @@
-#coding:utf-8
+# coding:utf-8
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, JsonResponse
 from forms import photoInfoForm, searchForm, photoIDForm, photoFileForm, tagForm
-from models import tb_photo_info, tb_tag
 from PIL import Image
 from faceControl import searchFaceset, addPhotoFaces
 import time
@@ -16,7 +15,6 @@ import common
 # Create your views here.
 
 def homepage(request):
-    #pdb.set_trace()
     latest_tag_list = dbControl.get_latest_tags()
     Email = common.getEmail(request)
     if request.method == 'POST':

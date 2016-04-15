@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.http import HttpResponse
 from django.core.mail import send_mail
-from models import tb_photo_info, tb_tag
+from models import tb_photo, tb_tag
 import dbControl
 import time
 
@@ -24,7 +24,7 @@ class dbTestCase(TestCase):
     def testSavePhotoAndTag(self):
         photoInfo = tb_photo_info.objects.get()
         # get tag list
-        tagObjList= photoInfo.tb_tag_set.all()
+        tagObjList= photoInfo.tags.all()
         gotTagList = []
         for each_tag in tagObjList:
             gotTagList.append(each_tag.tag)

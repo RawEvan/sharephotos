@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sharephotos', '0010_remove_tb_photo_info_store_url'),
+        ('sharephotos', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='tb_photo_info',
-            name='store_url',
-            field=models.TextField(default=b'url', max_length=1250),
+            model_name='tb_tag',
+            name='used_times',
+            field=models.IntegerField(default=0),
         ),
     ]

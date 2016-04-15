@@ -1,6 +1,6 @@
 # coding:utf-8
 # function of database control
-from models import tb_photo_info, tb_tag
+from models import tb_photo, tb_tag
 import common
 import pdb
 import re
@@ -15,9 +15,9 @@ def getRelatedPhotos(key, method = 'tag'):
             if re.search(reg, key):
                 key = key[2:]
             targetTag = tb_tag.objects.get(tag = key)
-            result_photo = targetTag.photo.all()    # get photo related to the tag 
+            result_photo = targetTag.tb_photo_set.all()    # get photo related to the tag 
         elif method == 'owner':
-            result_photo = tb_photo_info.objects.filter(owner = key)
+            result_photo = tb_photo.objects.filter(owner = key)
     except:
         pass
     for each_photo in result_photo:
@@ -29,13 +29,13 @@ def getRelatedPhotos(key, method = 'tag'):
 def getPhotoInfo(key, method):
     if method == 'p_id':
         try:
-            photoObj = tb_photo_info.objects.get(id = key)
+            photoObj = tb_photo.objects.get(id = key)
         except:
             pass
     elif method == 'url':
         try:
             #original_url is the same as store_url in database model
-            photoObj = tb_photo_info.objects.get(store_url = key)
+            photoObj = tb_photo.objects.get(store_url = key)
         except:
             pass
     elif method == 'obj':
@@ -45,7 +45,7 @@ def getPhotoInfo(key, method):
     #get tag list and change face tag
     tag_list = []
     try:
-        got_tag_list = photoObj.tb_tag_set.all()
+        got_tag_list = photoObj.tags.all()
         for each_tag in got_tag_list:
             tag_list.append(each_tag.unifiedTag())
     except:
@@ -76,7 +76,7 @@ def savePhotoAndTag(storeUrl, description, tag_list, face_id_list, owner):
     return True
         
 def addPhoto(storeUrl, description, owner):
-    photoObj = tb_photo_info(store_url = storeUrl, description = description, owner = owner)
+    photoObj = tb_photo(store_url = storeUrl, description = description, owner = owner)
     photoObj.save()
     return photoObj
 
@@ -84,7 +84,7 @@ def addTag(key, tag_list, method, face_id_list = []):
     if method == 'obj':
         photoObj = key
     elif method == 'p_id':
-        photoObj = tb_photo_info.objects.get(id = key)
+        photoObj = tb_photo.objects.get(id = key)
     else:
         return False
     # add tag and relation between tag and photo
@@ -92,22 +92,22 @@ def addTag(key, tag_list, method, face_id_list = []):
     for tag in tag_list:
         tagInfo = tb_tag.objects.get_or_create(tag = tag)[0]
         tagInfo.save()
-        tagInfo.photo.add(photoObj) 
+        tagInfo.tb_photo_set.add(photoObj) 
     # face tag
     if face_id_list:   
         for tag in face_id_list:
             tagInfo = tb_tag.objects.get_or_create(tag = tag, is_face = True)[0]
             tagInfo.save()
-            tagInfo.photo.add(photoObj) 
+            tagInfo.tb_photo_set.add(photoObj) 
     return True
 
 def delete(p_id):
     try:
-        photo = tb_photo_info.objects.get(id = p_id)
-        tags = photo.tb_tag_set.all()
+        photo = tb_photo.objects.get(id = p_id)
+        tags = photo.tags.all()
         for tag in tags:
-            tag.photo.remove(photo)
-            if not tag.photo.all():
+            tag.tb_photo_set.remove(photo)
+            if not tag.tb_photo_set.all():
                 tag.delete()
         photo.delete()
         return True
@@ -120,8 +120,8 @@ def get_latest_tags(num = 5):
     return latest_tag_list
 
 def tagOfPhotoExist(tag, p_id):
-#    photoObj = tb_photo_info.objects.get(id = key)
-#    if photoObj.tb_tag_set.get(tag = tag):
+#    photoObj = tb_photo.objects.get(id = key)
+#    if photoObj.tags.get(tag = tag):
 #        return True
 #    else:
 #        return False
