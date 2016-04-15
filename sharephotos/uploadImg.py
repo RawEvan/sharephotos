@@ -16,6 +16,9 @@ acl[ACL.ACL_GROUP_CANONICAL] = [
 
 
 def urlUpload(imgSrc='http://www.w3school.com.cn/i/site_photoref.jpg'):
+
+    """ Upload photo by url. """
+
     sinastorage.setDefaultAppInfo(API_KEY, API_SECRET)
     s = SCSBucket('sharephotos')
     data = urllib2.urlopen(imgSrc).read()
@@ -29,6 +32,9 @@ def urlUpload(imgSrc='http://www.w3school.com.cn/i/site_photoref.jpg'):
 
 
 def objUpload(data, tag):
+
+    """ Upload photo by object. """
+
     sinastorage.setDefaultAppInfo(API_KEY, API_SECRET)
     s = SCSBucket('sharephotos')
     path = time.ctime()

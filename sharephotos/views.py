@@ -2,7 +2,8 @@
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, JsonResponse
-from forms import photoInfoForm, searchForm, photoIDForm, photoFileForm, tagForm
+from forms import photoInfoForm, searchForm,\
+        photoIDForm, photoFileForm, tagForm
 from PIL import Image
 from faceControl import searchFaceset, addPhotoFaces
 import time
@@ -15,6 +16,11 @@ import common
 
 
 def homepage(request):
+
+    """
+    Homepage of the website.
+    """
+
     latest_tag_list = dbControl.get_latest_tags()
     Email = common.getEmail(request)
     if request.method == 'POST':
@@ -34,6 +40,11 @@ def homepage(request):
 
 
 def upload(request):
+
+    """
+    Upload photo and infomation.
+    """
+
     latest_tag_list = dbControl.get_latest_tags()
     Email = common.getEmail(request)
     if request.method == 'POST':
@@ -73,9 +84,10 @@ def upload(request):
 
 
 def formTag(request):
+
     """
-    get search_word from the search form and check it, then redirects to
-    view 'tag'
+    Get search_word from the search form and check it, then redirects to
+    view 'tag'.
     """
 
     form = searchForm(request.GET or None)
@@ -87,7 +99,11 @@ def formTag(request):
 
 
 def tag(request, search_word):
-    # search by tag (it's search_word here)
+
+    """
+    Search by tag (it's search_word here).
+    """
+
     latest_tag_list = dbControl.get_latest_tags()
     Email = common.getEmail(request)
     photo_list = dbControl.getRelatedPhotos(search_word, method='tag')
@@ -99,13 +115,16 @@ def tag(request, search_word):
 
 
 def photo(request):
-    # form = photoIDForm(request.GET or None)
-    # if form.is_valid():
-    # don't check it temporary
+
+    """
+    Show infomation of photo. Don't check the p_id temporary
+    """
+
     latest_tag_list = dbControl.get_latest_tags()
     Email = common.getEmail(request)
     p_id = int(request.GET['photo'])
     photo_info = dbControl.getPhotoInfo(p_id, method='p_id')
+
     returnDict = {'user_Email': Email,
                   'latest_tag_list': latest_tag_list,
                   'photo_info': photo_info}
@@ -113,6 +132,11 @@ def photo(request):
 
 
 def face(request):
+
+    """
+    Search photos related to the face(s) in given photo.
+    """
+
     latest_tag_list = dbControl.get_latest_tags()
     Email = common.getEmail(request)
     if request.method == 'POST':
@@ -137,12 +161,18 @@ def face(request):
             return render(request, u'index.html', returnDict)
         else:
             pass
+
     returnDict = {'user_Email': Email,
                   'latest_tag_list': latest_tag_list}
     return render(request, u'face.html', returnDict)
 
 
 def photoManage(request):
+
+    """
+    Manage user's photo.
+    """
+
     latest_tag_list = dbControl.get_latest_tags()
     Email = common.getEmail(request)
     try:
@@ -161,7 +191,11 @@ def photoManage(request):
 
 
 def delete(request, p_id):
-    # delete photo, don't check user now
+
+    """
+    Delete photo, don't check user now
+    """
+
     latest_tag_list = dbControl.get_latest_tags()
     Email = common.getEmail(request)
     if request.user.is_authenticated():
@@ -176,6 +210,11 @@ def delete(request, p_id):
 
 
 def addTag(request):
+
+    """
+    Add tag by AJAX.
+    """
+
     tag_list = []
     if request.method == 'GET':
         # check it later

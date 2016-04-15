@@ -25,7 +25,11 @@ else:
 
 
 def print_result(hint, result):
-    # function copied from facepp's hello.py
+
+    """
+    Function copied from facepp's hello.py.
+    """
+
     def encode(obj):
         if type(obj) is unicode:
             return obj.encode('utf-8')
@@ -40,8 +44,11 @@ def print_result(hint, result):
 
 
 def createFaceGroup(name, path, group_name='test'):
-    # pdb.set_trace()
-    # detect face
+
+    """
+    Create a face group of all faces in the app.
+    """
+
     detect_result = api.detection.detect(img=File(path), mode='normal')
     print_result('Detection result for {}:'.format(name), detect_result)
     person_name_list = []
@@ -55,7 +62,8 @@ def createFaceGroup(name, path, group_name='test'):
             key_face_id=[face_id], group_name=group_name)
         print_result('Recognize result:', recognize_result)
 
-        if recognize_result['face'][0]['candidate'][0]['confidence'] > MIN_CONFIDENCE:
+        if recognize_result['face'][0]['candidate'][0]['confidence'] >\
+                MIN_CONFIDENCE:
             print 'found similar face(s)'
             # add the face to this person
             found_person_name = recognize_result[
@@ -97,8 +105,11 @@ def createFaceGroup(name, path, group_name='test'):
 
 
 def searchFaceset(method, urlOrPath, faceset_name=DEFAULT_FACESET):
-    # pdb.set_trace()
-    # detect face
+
+    """
+    Search face in the faceset.
+    """
+
     if method == 'path':
         detect_result = api.detection.detect(
             img=File(urlOrPath), mode='normal')
@@ -122,8 +133,11 @@ def searchFaceset(method, urlOrPath, faceset_name=DEFAULT_FACESET):
 
 
 def addPhotoFaces(method, urlOrPath, faceset_name=DEFAULT_FACESET):
-    # detect face
-    # pdb.set_trace()
+
+    """
+    Detect faces in the photo and add them to the faceset.
+    """
+
     if method == 'path':
         detect_result = api.detection.detect(
             img=File(urlOrPath), mode='normal')
@@ -139,7 +153,11 @@ def addPhotoFaces(method, urlOrPath, faceset_name=DEFAULT_FACESET):
 
 
 def addFaceToFaceset(faceset_name, face_id):
-    # add the face to this faceset
+
+    """
+    Add a face to this faceset.
+    """
+
     add_face_result = api.faceset.add_face(
         faceset_name=faceset_name, face_id=face_id)
     print add_face_result
@@ -147,7 +165,11 @@ def addFaceToFaceset(faceset_name, face_id):
 
 
 def facesetTrain(faceset_name):
-    # train the faceset
+
+    """
+    Train the faceset.
+    """
+
     result = api.train.search(faceset_name=faceset_name)
     session_id = result['session_id']
     # wait before the train completes
@@ -160,6 +182,11 @@ def facesetTrain(faceset_name):
 
 
 def personTrain(person_name, type='all'):
+
+    """
+    Train the faces of a person.
+    """
+
     result = api.train.verify(person_name=person_name)
     session_id = result['session_id']
     # wait before the train completes
@@ -172,6 +199,11 @@ def personTrain(person_name, type='all'):
 
 
 def groupTrain(group_name, type='all'):
+
+    """
+    Train the group.
+    """
+
     result = api.recognition.train(group_name=group_name, type=type)
     session_id = result['session_id']
     # wait before the train completes
@@ -184,6 +216,8 @@ def groupTrain(group_name, type='all'):
 
 
 def trainAllPerson():
+
+    """ Train faces of all persons. """
     result = api.info.get_person_list()
     for each_person in result['person']:
         person_name = each_person['person_name']

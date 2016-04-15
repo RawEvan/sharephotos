@@ -4,6 +4,7 @@ from users.models import AbstractUser, User
 
 
 class tb_tag(models.Model):
+    """ Model of tag. """
     tag = models.CharField(max_length=50, unique=True, blank=False)
     is_face = models.BooleanField(default=False)
     add_time = models.DateTimeField(auto_now=True)
@@ -20,6 +21,7 @@ class tb_tag(models.Model):
 
 
 class tb_photo(models.Model):
+    """ Model of photo. """
     store_url = models.TextField(max_length=1250, default='url')
     description = models.TextField(max_length=300, default='no description')
     upload_time = models.DateTimeField(auto_now=True)
@@ -33,7 +35,7 @@ class tb_photo(models.Model):
 
 
 class extend_user():
-    # add other infomation of user as supplyment of users.User
+    """ add other infomation of user as supplyment of 'users.User'. """
     user = models.ForeignKey(User, related_name='email')
     interest = models.ManyToManyField(tb_tag)
 

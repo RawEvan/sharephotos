@@ -5,15 +5,10 @@ from models import tb_photo, tb_tag
 import dbControl
 import time
 
-'''
-def EmailTest(request):
-    message = '%s, Email from sharephotos.sinaapp.com' % time.ctime()
-    send_mail('Subject_test', message, 'sys_sharephotos@sina.com', ['909798432@qq.com'])
-    return HttpResponse(u'send success')
-'''
-
 
 class dbTestCase(TestCase):
+
+    """ Test for functions of database comtroling. """
 
     def setUp(self):
         self.url = 'http://testStoreUrl.jpg'
@@ -41,3 +36,11 @@ class dbTestCase(TestCase):
                         self.allTagList,
                         self.owner]
         self.assertEqual(gotInfoList, testInfoList)
+
+
+def EmailTest(request):
+
+    """ Test the function of sending Email. """
+    message = '%s, Email from sharephotos.sinaapp.com' % time.ctime()
+    send_mail('Subject_test', message, 'sys_sharephotos@sina.com', ['909798432@qq.com'])
+    return HttpResponse(u'send success')
