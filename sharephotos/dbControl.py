@@ -2,11 +2,13 @@
 # function of database control
 from models import tb_photo, tb_tag
 import common
-import pdb
 import re
 
 
-def getRelatedPhotos(key, method='tag'):
+def getPhotosOfTag(key, method='tag'):
+
+    """ Get photos which have the tag """
+
     photo_list = []
     result_photo = []
     try:
@@ -25,6 +27,16 @@ def getRelatedPhotos(key, method='tag'):
         original_url = each_photo.store_url
         photo_info = getPhotoInfo(each_photo, method='obj')
         photo_list.append(photo_info)
+    return photo_list
+
+
+def getRelatedPhotos(tag_list):
+
+    """ get photos related to a tag list """
+
+    photo_list = []
+    for tag in tag_list:
+        photo_list = getRelatedPhotos(tag)
     return photo_list
 
 
@@ -69,20 +81,21 @@ def getPhotoInfo(key, method):
     return photo_info
 
 
-def savePhotoAndTag(storeUrl, description, tag_list, face_id_list, owner):
+def savePhotoAndTag(storeUrl, description, tag, face_id_list, permission, owner):
     # TODO:deal with the failure of saving photo or tags
     try:
-        photoObj = addPhoto(storeUrl, description, owner)
+        photoObj = addPhoto(storeUrl, description, permission, owner)
     except:
         return False
+    tag_list = tag.split(u'、')
     addTag(key=photoObj, tag_list=tag_list,
            method='obj', face_id_list=face_id_list)
     return True
 
 
-def addPhoto(storeUrl, description, owner):
+def addPhoto(storeUrl, description, permission, owner):
     photoObj = tb_photo(store_url=storeUrl,
-                        description=description, owner=owner)
+                        description=description, permission=permission, owner=owner)
     photoObj.save()
     return photoObj
 

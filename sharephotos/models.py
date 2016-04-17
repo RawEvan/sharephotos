@@ -26,6 +26,9 @@ class tb_photo(models.Model):
     upload_time = models.DateTimeField(auto_now=True)
     owner = models.TextField(max_length=1250, default='system')
     collected_times = models.IntegerField(default=0)
+    # permission:
+    # private: only friend can see the photo;
+    # public: all people can see the photo.
     permission = models.CharField(max_length=20, default='private')
     tags = models.ManyToManyField(tb_tag)
 

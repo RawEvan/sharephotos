@@ -3,7 +3,6 @@
 
 import time
 import ConfigParser
-import pdb
 import os
 import sae.const
 from packages.facepp import API, File

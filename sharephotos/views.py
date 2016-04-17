@@ -2,16 +2,11 @@
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, JsonResponse
-from forms import photoInfoForm, searchForm,\
-        photoIDForm, photoFileForm, tagForm
-from PIL import Image
+
 from faceControl import searchFaceset, addPhotoFaces
-import time
-import json
+import forms
 import dbControl
-import cookiesControl
-import pdb
-import uploadImg
+import storage
 import common
 
 
@@ -24,63 +19,20 @@ def homepage(request):
     latest_tag_list = dbControl.get_latest_tags()
     Email = common.getEmail(request)
     if request.method == 'POST':
-        form = searchForm(request.POST or None)
+        form = forms.searchForm(request.POST or None)
         if form.is_valid():
             search_word = request.POST['search_word']
-            photo_list = dbControl.getRelatedPhotos(search_word, method='tag')
+            photo_list = dbControl.getPhotosOfTag(search_word, method='tag')
         else:
             pass
     search_word = u'奥运会'
-    photo_list = dbControl.getRelatedPhotos(search_word, method='tag')
+    photo_list = dbControl.getPhotosOfTag(search_word, method='tag')
+
     returnDict = {'photo_list': photo_list,
                   'search_word': search_word,
                   'latest_tag_list': latest_tag_list,
                   'user_Email': Email}
     return render(request, u'index.html', returnDict)
-
-
-def upload(request):
-
-    """
-    Upload photo and infomation.
-    """
-
-    latest_tag_list = dbControl.get_latest_tags()
-    Email = common.getEmail(request)
-    if request.method == 'POST':
-        try:
-            Email = request.user.email
-        except:
-            Email = 'no Email'
-        form = photoInfoForm(request.POST or None, request.FILES)
-        if form.is_valid():
-            photo_data = request.FILES['photoFile'].read()
-            description = request.POST['description']
-            tag = request.POST['tag']
-            tag_list = tag.split(u'、')
-            if 'sys_face' in tag_list:
-                return render(request, u'抱歉，不能使用这个标签')
-            # upload photo
-            photo_url = uploadImg.objUpload(photo_data, tag)
-            thumbnail_url = common.get_thumbnail_url(
-                photo_url, size='c_fit,w_750')
-            # add face to faceset
-            face_id_list = addPhotoFaces(method='url', urlOrPath=thumbnail_url)
-            # save photo and tags
-            dbControl.savePhotoAndTag(
-                photo_url, description, tag_list, face_id_list, owner=Email)
-            # save info
-            photo_info = dbControl.getPhotoInfo(photo_url, method='url')
-
-            returnDict = {'latest_tag_list': latest_tag_list,
-                          'user_Email': Email,
-                          'photo_info': photo_info}
-            return render(request, 'photo.html', returnDict)
-        else:
-            pass
-    returnDict = {'latest_tag_list': latest_tag_list,
-                  'user_Email': Email}
-    return render(request, u'upload.html', returnDict)
 
 
 def formTag(request):
@@ -90,7 +42,7 @@ def formTag(request):
     view 'tag'.
     """
 
-    form = searchForm(request.GET or None)
+    form = forms.searchForm(request.GET or None)
     photo_list = []
     search_word = ''
     if form.is_valid():
@@ -106,7 +58,8 @@ def tag(request, search_word):
 
     latest_tag_list = dbControl.get_latest_tags()
     Email = common.getEmail(request)
-    photo_list = dbControl.getRelatedPhotos(search_word, method='tag')
+    photo_list = dbControl.getPhotosOfTag(search_word, method='tag')
+
     returnDict = {'photo_list': photo_list,
                   'search_word': search_word,
                   'user_Email': Email,
@@ -131,6 +84,41 @@ def photo(request):
     return render(request, 'photo.html', returnDict)
 
 
+def upload(request):
+
+    """
+    Upload photo and infomation.
+    """
+
+    import pdb
+    pdb.set_trace()
+    latest_tag_list = dbControl.get_latest_tags()
+    Email = common.getEmail(request)
+    if request.method == 'POST':
+        try:
+            Email = request.user.email
+        except:
+            Email = 'no Email'
+        form = forms.photoInfoForm(request.POST or None, request.FILES)
+        if form.is_valid():
+            photo_file = request.FILES['photoFile'].read()
+            description = request.POST['description']
+            tag = request.POST['tag']
+            permission = request.POST['permission']
+            photo_info = common.uploadPhoto(photo_file, description, tag, permission, Email)
+
+            returnDict = {'latest_tag_list': latest_tag_list,
+                          'user_Email': Email,
+                          'photo_info': photo_info}
+            return render(request, 'photo.html', returnDict)
+        else:
+            pass
+
+    returnDict = {'latest_tag_list': latest_tag_list,
+                  'user_Email': Email}
+    return render(request, u'upload.html', returnDict)
+
+
 def face(request):
 
     """
@@ -141,19 +129,16 @@ def face(request):
     Email = common.getEmail(request)
     if request.method == 'POST':
         latest_tag_list = [r'none for now']
-        form = photoFileForm(request.POST or None, request.FILES)
+        form = forms.photoFileForm(request.POST or None, request.FILES)
         if form.is_valid():
-            photo_data = request.FILES['facePhotoFile'].read()
-            tag = 'sys_face'
-            photo_url = uploadImg.objUpload(photo_data, tag)  # upload photo
+            photo_file = request.FILES['facePhotoFile'].read()
+            # upload photo
+            photo_url = storage.objUpload(photo_file, tag)
             thumbnail_url = common.get_thumbnail_url(
                 photo_url, size='c_fit,w_750')
-            face_id_list = searchFaceset(method='url', urlOrPath=thumbnail_url)
-            photo_list = []
-            for face_id in face_id_list:
-                each_face_photo_lsit = dbControl.getRelatedPhotos(
-                    face_id, method='tag')
-                photo_list.extend(each_face_photo_lsit)
+            # add face to faceset
+            face_id_list = faceControl.addPhotoFaces(method='url', urlOrPath=thumbnail_url)
+            photo_list = dbControl.getRelatedPhotos(face_id_list)
 
             returnDict = {'photo_list': photo_list,
                           'user_Email': Email,
@@ -179,10 +164,8 @@ def photoManage(request):
         Email = request.user.email
     except:
         Email = 'no Email'
-    photo_list = dbControl.getRelatedPhotos(Email, method='owner')
-    # super user owns photos without owner(or owned by 'system')
-    if request.user.is_superuser:
-        photo_list.extend(dbControl.getRelatedPhotos('system', method='owner'))
+    photo_list = dbControl.getPhotosOfTag(Email, method='owner')
+
     returnDict = {'photo_list': photo_list,
                   'owner': Email,
                   'user_Email': Email,
@@ -193,7 +176,7 @@ def photoManage(request):
 def delete(request, p_id):
 
     """
-    Delete photo, don't check user now
+    Delete photo, don't check owner now
     """
 
     latest_tag_list = dbControl.get_latest_tags()
@@ -203,6 +186,7 @@ def delete(request, p_id):
         is_deleted = dbControl.delete(p_id)
     else:
         is_deleted = False
+
     returnDict = {'user_Email': Email,
                   'latest_tag_list': latest_tag_list,
                   'is_deleted': is_deleted}
@@ -221,8 +205,6 @@ def addTag(request):
         tag = request.GET['tag']
         p_id = int(request.GET['p_id'])
         tag_list = tag.split(u'、')
-        if 'sys_face' in tag_list:
-            return render(request, u'抱歉，不能使用这个标签')
         dbControl.addTag(p_id, tag_list, method='p_id')
         result = {'tag_list': tag_list, 'SUC': True}
         for eachTag in tag_list:

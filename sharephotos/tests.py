@@ -38,6 +38,14 @@ class dbTestCase(TestCase):
         self.assertEqual(gotInfoList, testInfoList)
 
 
+class uploadTestCase(TestCase):
+
+    """ TestCase for view: upload. """
+
+    def testUpload(self):
+        pass
+
+
 def EmailTest(request):
 
     """ Test the function of sending Email. """
