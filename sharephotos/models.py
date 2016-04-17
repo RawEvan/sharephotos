@@ -1,6 +1,5 @@
 ﻿# coding:utf-8
 from django.db import models
-from users.models import AbstractUser, User
 
 
 class tb_tag(models.Model):
@@ -32,11 +31,3 @@ class tb_photo(models.Model):
 
     def __unicode__(self):
         return self.description
-
-
-class extend_user():
-    """ add other infomation of user as supplyment of 'users.User'. """
-    user = models.ForeignKey(User, related_name='email')
-    interest = models.ManyToManyField(tb_tag)
-
-# class tb_relation(models.Model):
