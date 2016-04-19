@@ -1,6 +1,7 @@
 # coding:utf-8
 # function of database control
 from models import tb_photo, tb_tag
+import users
 import common
 import re
 
@@ -90,7 +91,17 @@ def savePhotoAndTag(storeUrl, description, tag, face_id_list, permission, owner)
     tag_list = tag.split(u'、')
     addTag(key=photoObj, tag_list=tag_list,
            method='obj', face_id_list=face_id_list)
+    all_tag_list = tag_list.extend(face_id_list)
+    addInterest(owner, all_tag_list)
     return True
+
+
+def addInterest(user, tag_list):
+
+    """ Add interest tags for user. """
+
+    for tag in tag_list:
+        pass
 
 
 def addPhoto(storeUrl, description, permission, owner):
