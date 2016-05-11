@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('tag', models.CharField(unique=True, max_length=50)),
-                ('is_face', models.BooleanField(default=False)),
+                ('is_person', models.BooleanField(default=False)),
                 ('add_time', models.DateTimeField(auto_now=True)),
                 ('used_times', models.IntegerField(default=0)),
             ],

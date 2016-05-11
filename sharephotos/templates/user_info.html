@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block menu %}
+{% endblock %}
+{% block content %}
+<div>
+    <div>
+        用户id：{{info.id}}
+    </div>
+    <div>
+        Email：{{info.email}}
+    </div>
+    <div>
+        <button>
+        <a href="/photo_manage">
+            上传照片管理</a>
+        </button>
+    </div>
+    <div>
+        收藏：
+        {% for each_photo in info.collect %}
+        <a href="/photo/?photo={{each_photo.p_id}}">
+            <img src={{each_photo.thumbnail_url}}></a>
+        {% endfor %}
+    </div>
+    <div>
+        兴趣：
+        {% for each_tag in info.interest %}
+        <a href="/tag/{{each_tag}}">{{each_tag}}</a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

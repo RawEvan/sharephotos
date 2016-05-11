@@ -21,20 +21,19 @@ def uploadPhoto(photo_file, description, tag, permission, owner):
     thumbnail_url = get_thumbnail_url(
         photo_url, size='c_fit,w_750')
     # add face to faceset
-    face_id_list = faceControl.addPhotoFaces(method='url', urlOrPath=thumbnail_url)
+    person_id_list = faceControl.add_faces(
+            method='url', url_or_path=thumbnail_url)
     # save photo and tags
     dbControl.savePhotoAndTag(
-        photo_url, description, tag, face_id_list, permission, owner)
+        photo_url, description, tag, person_id_list, permission, owner)
     # save info
     photo_info = dbControl.getPhotoInfo(photo_url, method='url')
     return photo_info
 
-
-def getEmail(request):
-
-    """ Check if Email exist. """
+def get_email(request):
     try:
         Email = request.user.email
     except:
-        Email = False
+        print 'no owner'
+        Email = '2012406855@qq.com'
     return Email

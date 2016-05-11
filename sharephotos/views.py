@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, JsonResponse
 
-from faceControl import searchFaceset, addPhotoFaces
+from faceControl import add_faces
 import forms
 import dbControl
 import storage
@@ -11,32 +11,38 @@ import common
 
 
 def homepage(request):
-
     """
     Homepage of the website.
     """
 
     latest_tag_list = dbControl.get_latest_tags()
-    Email = common.getEmail(request)
-    if request.method == 'POST':
-        form = forms.searchForm(request.POST or None)
-        if form.is_valid():
-            search_word = request.POST['search_word']
-            photo_list = dbControl.getPhotosOfTag(search_word, method='tag')
+    email = common.get_email(request)
+    if request.user.is_authenticated():
+        # if search
+        if request.method == 'POST':
+            form = forms.searchForm(request.POST or None)
+            if form.is_valid():
+                search_word = request.POST['search_word']
+                photo_list = dbControl.getPhotosOfTag(search_word, method='tag')
+            else:
+                pass
+        # not search, get photos may be interested in
         else:
-            pass
-    search_word = u'奥运会'
-    photo_list = dbControl.getPhotosOfTag(search_word, method='tag')
+            search_word= ''
+            photo_list = dbControl.get_interested_photos(email=email)
+    # not login
+    else:
+        search_word = ''
+        photo_list = dbControl.get_latest_photos()
 
-    returnDict = {'photo_list': photo_list,
+    return_dict = {'photo_list': photo_list,
                   'search_word': search_word,
                   'latest_tag_list': latest_tag_list,
-                  'user_Email': Email}
-    return render(request, u'index.html', returnDict)
+                  'user_Email': email}
+    return render(request, u'index.html', return_dict)
 
 
 def formTag(request):
-
     """
     Get search_word from the search form and check it, then redirects to
     view 'tag'.
@@ -51,82 +57,80 @@ def formTag(request):
 
 
 def tag(request, search_word):
-
     """
     Search by tag (it's search_word here).
     """
 
     latest_tag_list = dbControl.get_latest_tags()
-    Email = common.getEmail(request)
+    email = common.get_email(request)
     photo_list = dbControl.getPhotosOfTag(search_word, method='tag')
 
-    returnDict = {'photo_list': photo_list,
+    return_dict = {'photo_list': photo_list,
                   'search_word': search_word,
-                  'user_Email': Email,
+                  'user_Email': email,
                   'latest_tag_list': latest_tag_list}
-    return render(request, u'index.html', returnDict)
+    return render(request, u'index.html', return_dict)
 
 
 def photo(request):
-
     """
     Show infomation of photo. Don't check the p_id temporary
     """
 
     latest_tag_list = dbControl.get_latest_tags()
-    Email = common.getEmail(request)
+    email = common.get_email(request)
     p_id = int(request.GET['photo'])
     photo_info = dbControl.getPhotoInfo(p_id, method='p_id')
-
-    returnDict = {'user_Email': Email,
+    is_collected = dbControl.is_collected(email, p_id)
+    return_dict = {'user_Email': email,
                   'latest_tag_list': latest_tag_list,
+                  'is_collected':is_collected,
                   'photo_info': photo_info}
-    return render(request, 'photo.html', returnDict)
+    return render(request, 'photo.html', return_dict)
 
 
 def upload(request):
-
     """
     Upload photo and infomation.
     """
+    if request.user.is_authenticated():
+        latest_tag_list = dbControl.get_latest_tags()
+        email = common.get_email(request)
 
-    import pdb
-    pdb.set_trace()
-    latest_tag_list = dbControl.get_latest_tags()
-    Email = common.getEmail(request)
-    if request.method == 'POST':
-        try:
-            Email = request.user.email
-        except:
-            Email = 'no Email'
-        form = forms.photoInfoForm(request.POST or None, request.FILES)
-        if form.is_valid():
-            photo_file = request.FILES['photoFile'].read()
-            description = request.POST['description']
-            tag = request.POST['tag']
-            permission = request.POST['permission']
-            photo_info = common.uploadPhoto(photo_file, description, tag, permission, Email)
+        # after upload
+        if request.method == 'POST':
+            form = forms.photoInfoForm(request.POST or None, request.FILES)
+            if form.is_valid():
+                photo_file = request.FILES['photoFile'].read()
+                description = request.POST['description']
+                tag = request.POST['tag']
+                permission = request.POST['permission']
+                photo_info = common.uploadPhoto(
+                    photo_file, description, tag, permission, email)
 
-            returnDict = {'latest_tag_list': latest_tag_list,
-                          'user_Email': Email,
-                          'photo_info': photo_info}
-            return render(request, 'photo.html', returnDict)
+                return_dict = {'latest_tag_list': latest_tag_list,
+                              'user_Email': email,
+                              'photo_info': photo_info}
+                return render(request, 'photo.html', return_dict)
+            else:
+                pass
+        # before upload
         else:
-            pass
+            return_dict = {'latest_tag_list': latest_tag_list,
+                          'user_Email': email}
+            return render(request, u'upload.html', return_dict)
+    else:
+        return HttpResponseRedirect(reverse('users_login'))
 
-    returnDict = {'latest_tag_list': latest_tag_list,
-                  'user_Email': Email}
-    return render(request, u'upload.html', returnDict)
 
 
 def face(request):
-
     """
     Search photos related to the face(s) in given photo.
     """
 
     latest_tag_list = dbControl.get_latest_tags()
-    Email = common.getEmail(request)
+    email = common.get_email(request)
     if request.method == 'POST':
         latest_tag_list = [r'none for now']
         form = forms.photoFileForm(request.POST or None, request.FILES)
@@ -137,79 +141,115 @@ def face(request):
             thumbnail_url = common.get_thumbnail_url(
                 photo_url, size='c_fit,w_750')
             # add face to faceset
-            face_id_list = faceControl.addPhotoFaces(method='url', urlOrPath=thumbnail_url)
-            photo_list = dbControl.getRelatedPhotos(face_id_list)
+            person_id_list = faceControl.add_faces(
+                method='url', urlOrPath=thumbnail_url)
+            photo_list = dbControl.getRelatedPhotos(person_id_list)
 
-            returnDict = {'photo_list': photo_list,
-                          'user_Email': Email,
+            return_dict = {'photo_list': photo_list,
+                          'user_Email': email,
                           'latest_tag_list': latest_tag_list}
-            return render(request, u'index.html', returnDict)
+            return render(request, u'index.html', return_dict)
         else:
             pass
 
-    returnDict = {'user_Email': Email,
+    return_dict = {'user_Email': email,
                   'latest_tag_list': latest_tag_list}
-    return render(request, u'face.html', returnDict)
+    return render(request, u'face.html', return_dict)
 
 
 def photoManage(request):
+    """ Manage user's photo. """
+    if request.user.is_authenticated():
+        latest_tag_list = dbControl.get_latest_tags()
+        email = common.get_email(request)
+        photo_list = dbControl.getPhotosOfTag(email, method='owner')
 
-    """
-    Manage user's photo.
-    """
-
-    latest_tag_list = dbControl.get_latest_tags()
-    Email = common.getEmail(request)
-    try:
-        Email = request.user.email
-    except:
-        Email = 'no Email'
-    photo_list = dbControl.getPhotosOfTag(Email, method='owner')
-
-    returnDict = {'photo_list': photo_list,
-                  'owner': Email,
-                  'user_Email': Email,
-                  'latest_tag_list': latest_tag_list}
-    return render(request, u'index.html', returnDict)
+        return_dict = {'photo_list': photo_list,
+                      'owner': email,
+                      'user_Email': email,
+                      'latest_tag_list': latest_tag_list}
+        return render(request, u'index.html', return_dict)
+    else:
+        return HttpResponseRedirect(reverse('users_login'))
 
 
 def delete(request, p_id):
-
-    """
-    Delete photo, don't check owner now
-    """
-
+    """ Delete photo, don't check owner now. """
     latest_tag_list = dbControl.get_latest_tags()
-    Email = common.getEmail(request)
+    email = common.get_email(request)
     if request.user.is_authenticated():
         p_id = int(p_id)
         is_deleted = dbControl.delete(p_id)
     else:
         is_deleted = False
 
-    returnDict = {'user_Email': Email,
+    return_dict = {'user_Email': email,
                   'latest_tag_list': latest_tag_list,
                   'is_deleted': is_deleted}
-    return render(request, 'delete.html', returnDict)
+    return render(request, 'delete.html', return_dict)
 
 
 def addTag(request):
-
     """
     Add tag by AJAX.
     """
-
-    tag_list = []
-    if request.method == 'GET':
-        # check it later
-        tag = request.GET['tag']
-        p_id = int(request.GET['p_id'])
-        tag_list = tag.split(u'、')
-        dbControl.addTag(p_id, tag_list, method='p_id')
-        result = {'tag_list': tag_list, 'SUC': True}
-        for eachTag in tag_list:
-            if not dbControl.tagOfPhotoExist(eachTag, p_id):
-                result['SUC'] = False
-        return JsonResponse(result)
+    if request.user.is_authenticated():
+        tag_list = []
+        if request.method == 'GET':
+            # check it later
+            tag = request.GET['tag']
+            p_id = int(request.GET['p_id'])
+            tag_list = tag.split(u'、')
+            dbControl.addTag(p_id, tag_list, method='p_id')
+            result = {'tag_list': tag_list, 'SUC': True}
+            for eachTag in tag_list:
+                if not dbControl.tagOfPhotoExist(eachTag, p_id):
+                    result['SUC'] = False
+            return JsonResponse(result)
     else:
         return JsonResponse('error')
+
+
+def add_collect(request):
+    """ Add collected photo for user. """
+    if request.user.is_authenticated():
+        email = common.get_email(request)
+        if request.method == 'GET':
+            photo_id = int(request.GET['p_id'])
+            if dbControl.add_collect(email, photo_id):
+                collected_times = dbControl.get_collected_times(photo_id)
+                return JsonResponse({'SUC':True, 'collected_times':collected_times})
+            else:
+                return JsonResponse({'SUC':False})
+    else:
+        return HttpResponseRedirect(reverse('users_login'))
+
+
+def cancel_collect(request):
+    """ Cancel collect. """
+    if request.user.is_authenticated():
+        email = common.get_email(request)
+        if request.method == 'GET':
+            photo_id = int(request.GET['p_id'])
+            if dbControl.cancel_collect(email, photo_id):
+                collected_times = dbControl.get_collected_times(photo_id)
+                return JsonResponse({'SUC':True, 'collected_times':collected_times})
+            else:
+                return JsonResponse({'SUC':False})
+    else:
+        return HttpResponseRedirect(reverse('users_login'))
+
+
+def user_info(request):
+    """ Show infomation of user. """
+    if request.user.is_authenticated():
+        email = common.get_email(request)
+        info = dbControl.get_user_info(email)
+
+        return_dict = {
+                'user_Email': email,
+                'info': info,
+                }
+        return render(request, 'user_info.html', return_dict)
+    else:
+        return HttpResponseRedirect(reverse('users_login'))

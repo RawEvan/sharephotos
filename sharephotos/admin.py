@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from sharephotos.models import tb_photo, tb_tag
+from sharephotos.models import Photo, Tag
 
-admin.site.register(tb_photo)
-admin.site.register(tb_tag)
+admin.site.register(Photo)
+admin.site.register(Tag)

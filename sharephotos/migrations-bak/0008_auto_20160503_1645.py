@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sharephotos', '0001_initial'),
+        ('sharephotos', '0007_auto_20160429_1728'),
     ]
 
     operations = [
-        migrations.AddField(
+        migrations.AlterField(
             model_name='tb_tag',
             name='used_times',
-            field=models.IntegerField(default=0),
+            field=models.IntegerField(default=1),
         ),
     ]

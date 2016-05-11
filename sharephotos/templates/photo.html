@@ -25,13 +25,21 @@
                 <input id="tag_submit" class="btn" type="button" value="添加">
             </form>
         </div>
-        <button type="button", class="btn" data-toggle="collapse" data-target="#add">添加标签</button>
+        <button type="button" class="btn" data-toggle="collapse" data-target="#add">添加标签</button>
         <div class="dtl_description">
             描述：{{photo_info.description}}
         </div>
         <div class="dtl_description">
             上传：{{photo_info.owner}}
         </div>
+        <div id="collected_times" class="dtl_description">
+            收藏：{{photo_info.collected_times}}
+        </div>
+        {% if is_collected %}
+        <button id="collect" type="button" class="btn" title="cancel_collect">取消收藏</button>
+        {% else %}
+        <button id="collect" type="button" class="btn" title="collect">收藏</button>
+        {% endif %}
     </div>
 	</div>
 </div>

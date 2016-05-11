@@ -7,9 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin', '0001_initial'),
-        ('sharephotos', '0005_auto_20160417_2123'),
+        ('sharephotos', '0009_auto_20160503_1923'),
     ]
 
     operations = [
+        migrations.RenameField(
+            model_name='photo',
+            old_name='store_url',
+            new_name='photo_url',
+        ),
     ]

@@ -10,24 +10,97 @@ from pprint import pformat
 
 cp = ConfigParser.ConfigParser()
 cp.read('project.conf')
-API_KEY = cp.get('SAE_API', 'API_KEY')
-API_SECRET = cp.get('SAE_API', 'API_SECRET')
+API_KEY = cp.get('FACEPP_API', 'API_KEY')
+API_SECRET = cp.get('FACEPP_API', 'API_SECRET')
 api = API(API_KEY, API_SECRET)
 MIN_CONFIDENCE = 30
 MIN_SIMILARITY = 60
-if 'SERVER_SOFTWARE' not in os.environ:
-    DEFAULT_FACESET = 'faceset_test'
-    print 'using faceset:%s' % DEFAULT_FACESET
-else:
-    DEFAULT_FACESET = 'sharephotos'
-    print 'using faceset:%s' % DEFAULT_FACESET
+DEFAULT_GROUP = 'spgroup'
+
+
+def add_faces(method, url_or_path):
+    """ Detect faces in the photo and add them to the faceset.  """
+
+    result = group_train(group_name=DEFAULT_GROUP)
+    if method == 'path':
+        detect_result = api.recognition.identify(
+            group_name=DEFAULT_GROUP, img=File(url_or_path), mode='normal')
+    elif method == 'url':
+        detect_result = api.recognition.identify(
+            group_name=DEFAULT_GROUP, url=url_or_path, mode='normal')
+    print_result('detect_result:', detect_result)
+
+    # Ignore the situation that two faces of one person in the photo for now.
+    # """
+    person_list = []
+    for each_face in detect_result['face']:
+        face_id = each_face['face_id']
+        person_id = find_person(each_face)
+        if not person_id:
+            # Create a new person into the group
+            person_id = api.person.create(face_id=face_id)['person_id']
+            result = api.group.add_person(
+                group_name=DEFAULT_GROUP, person_id=person_id)
+            print 'create new person'
+        # Add the face to the person
+        result = api.person.add_face(person_id=person_id, face_id=face_id)
+        if result['success']:
+            print 'add face to person Ok'
+        else:
+            print 'add face to person failed'
+        person_list.append(person_id)
+
+    return person_list
+
+
+def find_person(each_face):
+    if each_face['candidate'] and\
+            each_face['candidate'][0]['confidence'] > MIN_CONFIDENCE:
+        return each_face['candidate'][0]['person_id']
+    else:
+        return False
+
+
+def person_train(person_name, type='all'):
+    """ Train the faces of a person. """
+
+    result = api.train.verify(person_name=person_name)
+    session_id = result['session_id']
+    return get_result(session_id)
+
+
+def group_train(group_name, type='all'):
+    """ Train the group. """
+
+    result = api.recognition.train(group_name=group_name, type=type)
+    session_id = result['session_id']
+    return get_result(session_id)
+
+
+def get_result(session_id):
+    """ Wait before the train completes. """
+
+    start_time = time.time()
+    while time.time() - start_time < 20:
+        result = api.info.get_session(session_id=session_id)
+        if result['status'] == u'SUCC':
+            print_result('Async train result:', result)
+            return True
+        time.sleep(1)
+    return False
+
+
+def train_all_person():
+    """ Train faces of all persons. """
+
+    result = api.info.get_person_list()
+    for each_person in result['person']:
+        person_name = each_person['person_name']
+        personTrain(person_name)
 
 
 def print_result(hint, result):
-
-    """
-    Function copied from facepp's hello.py.
-    """
+    """ Function copied from facepp's hello.py.  """
 
     def encode(obj):
         if type(obj) is unicode:
@@ -42,188 +115,9 @@ def print_result(hint, result):
     print '\n'.join(['  ' + i for i in pformat(result, width=75).split('\n')])
 
 
-def createFaceGroup(name, path, group_name='test'):
-
-    """
-    Create a face group of all faces in the app.
-    """
-
-    detect_result = api.detection.detect(img=File(path), mode='normal')
-    print_result('Detection result for {}:'.format(name), detect_result)
-    person_name_list = []
-    count = 1
-    for each_face in detect_result['face']:
-
-        face_id = each_face['face_id']
-
-        # recognize(identify) the face
-        recognize_result = api.recognition.identify(
-            key_face_id=[face_id], group_name=group_name)
-        print_result('Recognize result:', recognize_result)
-
-        if recognize_result['face'][0]['candidate'][0]['confidence'] >\
-                MIN_CONFIDENCE:
-            print 'found similar face(s)'
-            # add the face to this person
-            found_person_name = recognize_result[
-                'face'][0]['candidate'][0]['person_name']
-            add_face_result = api.person.add_face(
-                person_name=found_person_name, face_id=face_id)
-            person_name_list.append(found_person_name)
-            print add_face_result
-            personTrain(found_person_name)
-        else:
-            print "didn't find a similar face"
-            # create a new Person for this face in the group
-            new_person_name = name + '_new_' + str(count)
-            try:
-                api.person.create(person_name=new_person_name,
-                                  group_name=group_name,
-                                  face_id=face_id)
-            except:
-                count = count + 3
-                new_person_name = name + '_new_' + time.ctime()
-                api.person.create(person_name=new_person_name,
-                                  group_name=group_name,
-                                  face_id=face_id)
-            person_name_list.append(new_person_name)
-            count = count + 1
-            personTrain(new_person_name)
-
-    # train the group
-    result = api.recognition.train(group_name=group_name, type='all')
-    session_id = result['session_id']
-    # wait before the train completes
-    while True:
-        result = api.info.get_session(session_id=session_id)
-        if result['status'] == u'SUCC':
-            print_result('Async train result:', result)
-            break
-        time.sleep(1)
-    return person_name_list
-
-
-def searchFaceset(method, urlOrPath, faceset_name=DEFAULT_FACESET):
-
-    """
-    Search face in the faceset.
-    """
-
-    if method == 'path':
-        detect_result = api.detection.detect(
-            img=File(urlOrPath), mode='normal')
-    elif method == 'url':
-        detect_result = api.detection.detect(url=urlOrPath, mode='normal')
-    print('detect result:', detect_result)
-    similar_face_list = []
-    for each_face in detect_result['face']:
-        face_id = each_face['face_id']
-        # recognize(search) the new face
-        recognize_result = api.recognition.search(
-            key_face_id=face_id, faceset_name=faceset_name)
-        print_result('Recognize result:', recognize_result)
-        face_list = [face['face_id'] for face in recognize_result[
-            'candidate'] if face['similarity'] > MIN_SIMILARITY]
-        similar_face_list.extend(face_list)
-        if similar_face_list:
-            print 'found similar face(s)'
-    print similar_face_list
-    return similar_face_list
-
-
-def addPhotoFaces(method, urlOrPath, faceset_name=DEFAULT_FACESET):
-
-    """
-    Detect faces in the photo and add them to the faceset.
-    """
-
-    if method == 'path':
-        detect_result = api.detection.detect(
-            img=File(urlOrPath), mode='normal')
-    elif method == 'url':
-        detect_result = api.detection.detect(url=urlOrPath, mode='normal')
-    print_result('detect_result:', detect_result)
-    face_id_list = []
-    for each_face in detect_result['face']:
-        face_id = each_face['face_id']
-        addFaceToFaceset(faceset_name=faceset_name, face_id=face_id)
-        face_id_list.append(face_id)
-    return face_id_list
-
-
-def addFaceToFaceset(faceset_name, face_id):
-
-    """
-    Add a face to this faceset.
-    """
-
-    add_face_result = api.faceset.add_face(
-        faceset_name=faceset_name, face_id=face_id)
-    print add_face_result
-    facesetTrain(faceset_name)
-
-
-def facesetTrain(faceset_name):
-
-    """
-    Train the faceset.
-    """
-
-    result = api.train.search(faceset_name=faceset_name)
-    session_id = result['session_id']
-    # wait before the train completes
-    while True:
-        result = api.info.get_session(session_id=session_id)
-        if result['status'] == u'SUCC':
-            print_result('Async train result:', result)
-            break
-        time.sleep(1)
-
-
-def personTrain(person_name, type='all'):
-
-    """
-    Train the faces of a person.
-    """
-
-    result = api.train.verify(person_name=person_name)
-    session_id = result['session_id']
-    # wait before the train completes
-    while True:
-        result = api.info.get_session(session_id=session_id)
-        if result['status'] == u'SUCC':
-            print_result('Async train result:', result)
-            break
-        time.sleep(1)
-
-
-def groupTrain(group_name, type='all'):
-
-    """
-    Train the group.
-    """
-
-    result = api.recognition.train(group_name=group_name, type=type)
-    session_id = result['session_id']
-    # wait before the train completes
-    while True:
-        result = api.info.get_session(session_id=session_id)
-        if result['status'] == u'SUCC':
-            print_result('Async train result:', result)
-            break
-        time.sleep(1)
-
-
-def trainAllPerson():
-
-    """ Train faces of all persons. """
-    result = api.info.get_person_list()
-    for each_person in result['person']:
-        person_name = each_person['person_name']
-        personTrain(person_name)
-
-
 def main():
+    import pdb
+    pdb.set_trace()
     path = 'static/images/test2.jpg'
     name = 'test2'
     searchFaceset(method='path', urlOrPath=path)

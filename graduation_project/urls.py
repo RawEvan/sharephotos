@@ -32,5 +32,8 @@ urlpatterns = [
     url(r'^photo_manage/$', 'sharephotos.views.photoManage', name = 'photoManage'),
     url(r'^delete/(\d+)/$', 'sharephotos.views.delete', name = 'delete'),
     url(r'^addTag/$', 'sharephotos.views.addTag', name = 'addTag'),
+    url(r'^add_collect/$', 'sharephotos.views.add_collect', name = 'add_collect'),
+    url(r'^cancel_collect/$', 'sharephotos.views.cancel_collect', name = 'cancel_collect'),
+    url(r'^user_info/$', 'sharephotos.views.user_info', name = 'user_info'),
     #url(r'^deleteTag/$', 'sharephotos.views.deleteTag', name = 'deleteTag'),
 ]
