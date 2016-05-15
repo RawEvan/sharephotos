@@ -2,4 +2,4 @@ tags
 *.pyc
 *.bat
 *.bak
-*.conf
+*.swap
