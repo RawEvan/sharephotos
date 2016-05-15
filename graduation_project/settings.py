@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 cp = ConfigParser.ConfigParser()
-cp.read('project.conf')
+cp.read('./project.conf')
 SECRET_KEY = cp.get('project', 'SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
