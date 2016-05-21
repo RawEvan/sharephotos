@@ -99,13 +99,13 @@ def upload(request):
 
         # after upload
         if request.method == 'POST':
-            form = forms.photoInfo_form(request.POST or None, request.FILES)
+            form = forms.photo_info_form(request.POST or None, request.FILES)
             if form.is_valid():
-                photo_file = request.FILES['photoFile'].read()
+                photo_file = request.FILES['photo_file'].read()
                 description = request.POST['description']
                 tag = request.POST['tag']
                 permission = request.POST['permission']
-                photo_info = common.uploadPhoto(
+                photo_info = common.upload_photo(
                     photo_file, description, tag, permission, email)
 
                 return_dict = {'latest_tag_list': latest_tag_list,
@@ -133,9 +133,9 @@ def face_search(request):
     email = common.get_email(request)
     if request.method == 'POST':
         latest_tag_list = [r'none for now']
-        form = forms.photoFile_form(request.POST or None, request.FILES)
+        form = forms.photo_file_form(request.POST or None, request.FILES)
         if form.is_valid():
-            photo_file = request.FILES['facePhotoFile'].read()
+            photo_file = request.FILES['face_photo_file'].read()
             # upload photo
             photo_url = storage.objUpload(photo_file, tag)
             thumbnail_url = common.get_thumbnail_url(
@@ -215,12 +215,11 @@ def collect_add(request):
     if request.user.is_authenticated():
         email = common.get_email(request)
         if request.method == 'GET':
+            return_dict = {}
             photo_id = int(request.GET['p_id'])
-            if dbControl.add_collect(email, photo_id):
-                collected_times = dbControl.get_collected_times(photo_id)
-                return JsonResponse({'SUC':True, 'collected_times':collected_times})
-            else:
-                return JsonResponse({'SUC':False})
+            return_dict['SUC'] = dbControl.add_collect(email, photo_id)
+            return_dict['collected_times'] = dbControl.get_collected_times(photo_id)
+            return JsonResponse(return_dict)
     else:
         return HttpResponseRedirect(reverse('users_login'))
 

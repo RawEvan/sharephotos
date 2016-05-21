@@ -1,7 +1,7 @@
 ﻿from django import forms
 
 
-class photoInfo_form(forms.Form):
+class photo_info_form(forms.Form):
     """ Use this form when upload photo. """
     photo_file = forms.ImageField()
     description = forms.CharField(max_length=300)

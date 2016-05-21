@@ -58,7 +58,7 @@ def get_photo_info(key, method):
         tag_list = []
         got_tag_list = photo.tags.all()
         for each_tag in got_tag_list:
-            tag_list.append(each_tag.unifiedTag())
+            tag_list.append(each_tag.unified_tag())
         thumbnail_url = common.get_thumbnail_url(photo.photo_url)
         if photo.owner == 'system':
             owner = u'游客'
@@ -95,8 +95,9 @@ def save_photo_and_tag(photo_url, description, tag, person_id_list, permission, 
 
 
 def add_photo(photo_url, description, permission, owner):
+    user = User.objects.get(email=owner)
     photo = Photo(photo_url=photo_url,
-                    description=description, permission=permission, owner=owner)
+                    description=description, permission=permission, owner=user)
     photo.save()
     return photo
 
@@ -135,14 +136,14 @@ def add_interest(owner, tag_list):
 
     """ Add infomation of interests to the database. """
 
-    user_obj = User.objects.get(email=owner)
+    user= User.objects.get(email=owner)
     for tag in tag_list:
         tag_obj = Tag.objects.get(tag=tag)
-        interest_obj = Interest.objects.get_or_create(email=user_obj, interested_tag=tag_obj)[0]
+        interest_obj = Interest.objects.get_or_create(user=user, tag=tag_obj)[0]
         if interest_obj:
             interest_obj.degree += 1
         else:
-            interest_obj = Interest(email=owner, interested_tag=tag, degree=0)
+            interest_obj = Interest(user=owner, tag=tag, degree=0)
         interest_obj.save()
 
 
@@ -237,8 +238,8 @@ def get_user_info(email):
     info = {}
     photos = []
     user = User.objects.get(email=email)
-    interest = user.interest_set.all()
-    collect = user.collect_set.all()
+    interest = user.interest.all()
+    collect = user.collect.all()
     for c in collect:
         photo = get_photo_info(c.photo, 'obj')
         if photo:

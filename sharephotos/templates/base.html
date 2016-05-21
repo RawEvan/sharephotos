@@ -127,7 +127,7 @@ $(document).ready(function()
         var tag = $("#tag").val();
         var p_id = $("#p_id").val();
         var csrf = $("input[name='csrfmiddlewaretoken']").val();
-        $.getJSON("/addTag/", {'tag': tag, 'p_id': p_id}, function(ret)
+        $.getJSON("/tag_add/", {'tag': tag, 'p_id': p_id}, function(ret)
         {
             var tag_list = ret.tag_list;
             if(ret.SUC==true)
@@ -145,7 +145,7 @@ $(document).ready(function()
             }
         });
     });
-    $("#add_tag").submit(function(e)
+    $("#tag_add").submit(function(e)
     {
         $("#tag_submit").click();
         e.preventDefault();
@@ -160,17 +160,17 @@ $(document).ready(function()
     {
         var p_id = $("#p_id").val();
         title = $("#collect").attr("title");
-        if(title=="collect")
+        if(title=="collect_add")
         {
-            $.getJSON("/add_collect/", {'p_id': p_id}, function(ret)
+            $.getJSON("/collect_add/", {'p_id': p_id}, function(ret)
             {
+                $("#collected_times").text(new_text);
                 if(ret.SUC==true)
                 {
                     alert("收藏成功");
                     var new_text = "收藏：" + ret.collected_times;
-                    $("#collected_times").text(new_text);
                     $("#collect").text("取消收藏");
-                    $("#collect").attr("title", "cancel_collect");
+                    $("#collect").attr("title", "collect_delete");
                 }
                 else
                 {
@@ -178,17 +178,17 @@ $(document).ready(function()
                 }
             });
         }
-        else if(title=="cancel_collect")
+        else if(title=="collect_delete")
         {
-            $.getJSON("/cancel_collect/", {'p_id': p_id}, function(ret)
+            $.getJSON("/collect_delete/", {'p_id': p_id}, function(ret)
             {
+                $("#collected_times").text(new_text);
                 if(ret.SUC==true)
                 {
                     alert("取消收藏成功");
                     var new_text = "收藏：" + ret.collected_times;
-                    $("#collected_times").text(new_text);
                     $("#collect").text("收藏");
-                    $("#collect").attr("title", "collect");
+                    $("#collect").attr("title", "collect_add");
                 }
                 else
                 {
@@ -198,13 +198,8 @@ $(document).ready(function()
         }
         else
         {
-            alert("title wrong");
+            alert("出错：title wrong");
         }
-    });
-
-    $("#cancel_collect").click(function()
-    {
-        var p_id = $("#p_id").val();
     });
 });
 </script>

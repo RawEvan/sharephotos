@@ -14,8 +14,6 @@ class DBTestCase(TestCase):
     """ Test for functions of database controling. """
 
     def setUp(self):
-        import pdb
-        pdb.set_trace()
         test_user = User(email='test@test.com')
         test_user.save()
 
@@ -28,6 +26,8 @@ class DBTestCase(TestCase):
         self.assertEqual(interest_obj.degree, 1)
 
     def test_add_collect(self):
+        import pdb
+        pdb.set_trace()
         email = 'test@test.com'
         photo_url = 'test_url'
         tag = u'tag1、tag2'
