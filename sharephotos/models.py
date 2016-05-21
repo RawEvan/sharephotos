@@ -1,5 +1,6 @@
 ﻿# coding:utf-8
 from django.db import models
+from users.models import User
 
 
 class Tag(models.Model):
@@ -9,7 +10,7 @@ class Tag(models.Model):
     add_time = models.DateTimeField(auto_now=True)
     used_times = models.IntegerField(default=1)
 
-    def unifiedTag(self):
+    def unified_tag(self):
         if self.is_person:
             return u'人脸' + self.tag
         else:
@@ -24,12 +25,13 @@ class Photo(models.Model):
     photo_url = models.TextField(max_length=1250, default='url')
     description = models.TextField(max_length=300, default='no description')
     upload_time = models.DateTimeField(auto_now=True)
-    owner = models.TextField(max_length=1250, default='system')
     collected_times = models.IntegerField(default=0)
     # permission:
     # private: only friend can see the photo;
     # public: all people can see the photo.
     permission = models.CharField(max_length=20, default='private')
+
+    owner = models.ForeignKey(User)
     tags = models.ManyToManyField(Tag)
 
     def __unicode__(self):
@@ -38,19 +40,21 @@ class Photo(models.Model):
 
 class Interest(models.Model):
     """Model of User's intersts. """
-    email = models.EmailField(max_length=255)
-    interested_tag = models.CharField(max_length=50, blank=False)
     # The times that the user interested in the tag
     degree = models.IntegerField(default=0)
 
+    user = models.ForeignKey(User)
+    tag = models.ForeignKey(Tag)
+
     class Meta:
-        unique_together = ('email', 'interested_tag')
+        unique_together = ('user', 'tag')
         
 class Collect(models.Model):
     """Model of User's collect. """
-    email = models.EmailField(max_length=255)
-    photo_id = models.IntegerField(default=0)
     collect_time = models.DateTimeField(auto_now=True)
 
+    user = models.ForeignKey(User)
+    photo = models.ForeignKey(Photo)
+
     class Meta:
-        unique_together = ('email', 'photo_id')
+        unique_together = ('user', 'photo')

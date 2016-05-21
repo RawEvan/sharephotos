@@ -33,14 +33,14 @@
     <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav navbar-right navbar_ul">
         <li class="active">
-            <a  class="nav_a" href="/upload">
+        <a  class="nav_a" href="{% url 'upload' %}">
             <div class="nav_icon">上传
             </div>
             </a>
         </li>
         {% if user_Email %}
         <li>
-            <a class="nav_a" href="/user_info">
+        <a class="nav_a" href="{% url 'user_info' %}">
                 <div class="nav_icon">{{user_Email}}</div>
             </a>
         </li>
@@ -74,7 +74,7 @@
             <button type="submit" id="search_button" class="btn btn-lg btn-primary search_button">搜索</button>
     </form>
     <div class="row face_search_row">
-        <a href="/face">
+        <a href="{% url 'face_search' %}">
         <button class="btn btn-lg btn-primary search_button">人脸搜索</button>
         </a>
     </div>

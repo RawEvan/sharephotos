@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.http import HttpResponse
 from django.core.mail import send_mail
 from models import Photo, Tag, Interest, Collect
+from users.models import User
 import dbControl
 import faceControl
 import time
@@ -12,38 +13,25 @@ class DBTestCase(TestCase):
 
     """ Test for functions of database controling. """
 
-    def test_save_photo_and_tag(self):
-        photoInfo = Photo.objects.get()
-        # get tag list
-        tagObjList = photoInfo.tags.all()
-        gotTagList = []
-        for each_tag in tagObjList:
-            gotTagList.append(each_tag.tag)
-        gotInfoList = [photoInfo.photo_url,
-                       photoInfo.description,
-                       gotTagList,
-                       photoInfo.owner]
-        testInfoList = [self.url,
-                        self.description,
-                        self.allTagList,
-                        self.owner]
-        self.assertEqual(gotInfoList, testInfoList)
+    def setUp(self):
+        import pdb
+        pdb.set_trace()
+        test_user = User(email='test@test.com')
+        test_user.save()
 
     def test_add_interest(self):
         tag_list = ['test_tag_1', 'test_tag_2']
         got_tag_list = []
-        test_owner = '2012406855@qq.com'
-        import pdb
-        pdb.set_trace()
+        test_owner = 'test@test.com'
         dbControl.add_interest(test_owner, tag_list)
         interest_obj = Interest.objects.get(email=test_owner, interested_tag=tag_list[0])
         self.assertEqual(interest_obj.degree, 1)
 
     def test_add_collect(self):
-        email = '201240685@qq.com'
+        email = 'test@test.com'
         photo_url = 'test_url'
         tag = u'tag1、tag2'
-        dbControl.savePhotoAndTag(photo_url=photo_url, description='no',
+        dbControl.save_photo_and_tag(photo_url=photo_url, description='no',
                 tag=tag, person_id_list=[], permission='public', owner=email)
         photo_id= Photo.objects.get(photo_url=photo_url).id
         dbControl.add_collect(email, photo_id)
@@ -55,12 +43,10 @@ class DBTestCase(TestCase):
         self.assertTrue(Interest.objects.get(email=email, interested_tag='tag2'))
 
     def test_cancel_collect(self):
-        email = '201240685@qq.com'
+        email = 'test@test.com'
         photo_url = 'test_url'
         tag = u'tag1、tag2'
-        import pdb
-        pdb.set_trace()
-        dbControl.savePhotoAndTag(photo_url=photo_url, description='no',
+        dbControl.save_photo_and_tag(photo_url=photo_url, description='no',
                 tag=tag, person_id_list=[], permission='public', owner=email)
         photo_id= Photo.objects.get(photo_url=photo_url).id
         dbControl.add_collect(email, photo_id)
@@ -96,5 +82,5 @@ def EmailTest(request):
 
     message = '%s, Email from sharephotos.sinaapp.com' % time.ctime()
     send_mail('Subject_test', message,
-              'sys_sharephotos@sina.com', ['909798432@qq.com'])
+              'sys_sharephotos@sina.com', ['liaiwen_mail@163.com'])
     return HttpResponse(u'send success')

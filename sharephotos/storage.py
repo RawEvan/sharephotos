@@ -15,7 +15,7 @@ acl[ACL.ACL_GROUP_CANONICAL] = [
     ACL.ACL_READ, ACL.ACL_READ_ACP, ACL.ACL_WRITE_ACP]
 
 
-def urlUpload(imgSrc='http://www.w3school.com.cn/i/site_photoref.jpg'):
+def url_upload(imgSrc='http://www.w3school.com.cn/i/site_photoref.jpg'):
 
     """ Upload photo by url. """
 
@@ -25,13 +25,13 @@ def urlUpload(imgSrc='http://www.w3school.com.cn/i/site_photoref.jpg'):
     path = imgSrc.split('/')[2] + '/%s__' % time.ctime()
     # if '/' in file name there will be problems
     filename = path + imgSrc.replace('/', '_')
-    scsResponse = s.put(filename, data)
+    scs_response = s.put(filename, data)
     s.update_acl(filename, acl)
-    stUrl = s.make_url(filename)   # get url of image in the storage
-    return stUrl
+    url = s.make_url(filename)   # get url of image in the storage
+    return url
 
 
-def objUpload(data, fileTag):
+def obj_upload(data, fileTag):
 
     """ Upload photo by object. """
 
@@ -40,7 +40,7 @@ def objUpload(data, fileTag):
     path = time.ctime().replace(' ', '_')
     # if '/' in file name there will be problems
     filename = fileTag[:6] + '_' + path + '.jpg'  # use jpg temporary
-    scsResponse = s.put(filename, data)
+    scs_response = s.put(filename, data)
     s.update_acl(filename, acl)
-    stUrl = s.make_url(filename)   # get url of image in the storage
-    return stUrl
+    url = s.make_url(filename)   # get url of image in the storage
+    return url

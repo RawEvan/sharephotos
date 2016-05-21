@@ -1,77 +1,77 @@
 # coding:utf-8
 # function of database control
 from models import Photo, Tag, Interest, Collect
-import users
+from users.models import User
 import common
-import re
 
 
-def getPhotosOfTag(key, method='tag'):
+def get_photos_of_tag(key, method='tag'):
 
     """ Get photos which have the tag """
 
     photo_list = []
     result_photo = []
-    try:
-        if method == 'tag':
-            # the tag that is person id
-            reg = u'人脸' + r'\d+?'
-            if re.search(reg, key):
-                key = key[2:]
-            targetTag = Tag.objects.get(tag=key)
-            # get photo related to the tag
-            result_photo = targetTag.photo_set.all()
-        elif method == 'owner':
-            result_photo = Photo.objects.filter(owner=key)
-    except:
-        pass
+    # the tag that is person id
+    if u'人脸' in key:
+        key = key[2:]
+    target_tag = Tag.objects.get(tag=key)
+    # get photo related to the tag
+    result_photo = target_tag.photo_set.all()
     for each_photo in result_photo:
-        photo_info = getPhotoInfo(each_photo, method='obj')
+        photo_info = get_photo_info(each_photo, method='obj')
         if photo_info:
             photo_list.append(photo_info)
     return photo_list
 
+def get_owned_photos(email):
+    user = User.objects.get(email=email)
+    owned_photos = user.photo_set.all()
+    for each_photo in owned_photo:
+        photo_info = get_photo_info(each_photo, method='obj')
+        if photo_info:
+            photo_list.append(photo_info)
+    return photo_list
 
-def getRelatedPhotos(tag_list):
+def get_related_photos(tag_list):
 
     """ get photos related to a tag list """
 
     photo_list = []
     for tag in tag_list:
-        photo_list.extend(getPhotosOfTag(tag))
+        photo_list.extend(get_photos_of_tag(tag))
     return photo_list
 
 
-def getPhotoInfo(key, method):
+def get_photo_info(key, method):
     if method == 'p_id':
-        photoObj = Photo.objects.get(id=key)
+        photo = Photo.objects.get(id=key)
     elif method == 'url':
         # Original_url is the same as photo_url in database model
-        photoObj = Photo.objects.get(photo_url=key)
+        photo = Photo.objects.get(photo_url=key)
     elif method == 'obj':
-        photoObj = key
+        photo = key
     else:
         print 'get photo info error'
-        photoObj = ''
+        photo = ''
     # get tag list and change person tag
-    if photoObj:
+    if photo:
         tag_list = []
-        got_tag_list = photoObj.tags.all()
+        got_tag_list = photo.tags.all()
         for each_tag in got_tag_list:
             tag_list.append(each_tag.unifiedTag())
-        thumbnail_url = common.get_thumbnail_url(photoObj.photo_url)
-        if photoObj.owner == 'system':
+        thumbnail_url = common.get_thumbnail_url(photo.photo_url)
+        if photo.owner == 'system':
             owner = u'游客'
         else:
-            owner = photoObj.owner
+            owner = photo.owner
         photo_info = {
-            'p_id': photoObj.id,
-            'original_url': photoObj.photo_url,
-            'description': photoObj.description,
+            'p_id': photo.id,
+            'original_url': photo.photo_url,
+            'description': photo.description,
             'owner': owner,
             'thumbnail_url': thumbnail_url,
             "tag_list": tag_list,
-            'collected_times': photoObj.collected_times}
+            'collected_times': photo.collected_times}
     else:
         # Deal with this later
         photo_info = {}
@@ -80,32 +80,32 @@ def getPhotoInfo(key, method):
     return photo_info
 
 
-def savePhotoAndTag(photo_url, description, tag, person_id_list, permission, owner):
+def save_photo_and_tag(photo_url, description, tag, person_id_list, permission, owner):
     # TODO:deal with the failure of saving photo or tags
     try:
-        photoObj = addPhoto(photo_url, description, permission, owner)
+        photo = add_photo(photo_url, description, permission, owner)
     except:
         return False
     tag_list = tag.split(u'、')
-    addTag(key=photoObj, tag_list=tag_list,
+    add_tag(key=photo, tag_list=tag_list,
            method='obj', person_id_list=person_id_list)
     tag_list.extend(person_id_list)
     add_interest(owner, tag_list)
     return True
 
 
-def addPhoto(photo_url, description, permission, owner):
-    photoObj = Photo(photo_url=photo_url,
+def add_photo(photo_url, description, permission, owner):
+    photo = Photo(photo_url=photo_url,
                     description=description, permission=permission, owner=owner)
-    photoObj.save()
-    return photoObj
+    photo.save()
+    return photo
 
 
-def addTag(key, tag_list, method, person_id_list=[]):
+def add_tag(key, tag_list, method, person_id_list=[]):
     if method == 'obj':
-        photoObj = key
+        photo = key
     elif method == 'p_id':
-        photoObj = Photo.objects.get(id=key)
+        photo = Photo.objects.get(id=key)
     else:
         return False
     # add tag and relation between tag and photo
@@ -117,7 +117,7 @@ def addTag(key, tag_list, method, person_id_list=[]):
         else:
             tagInfo = Tag(tag=tag, is_person=True, used_times=1)
         tagInfo.save()
-        tagInfo.photo_set.add(photoObj)
+        tagInfo.photo_set.add(photo)
     # person tag
     if person_id_list:
         for tag in person_id_list:
@@ -127,7 +127,7 @@ def addTag(key, tag_list, method, person_id_list=[]):
             else:
                 tagInfo = Tag(tag=tag, is_person=True, used_times=1)
             tagInfo.save()
-            tagInfo.photo_set.add(photoObj)
+            tagInfo.photo_set.add(photo)
     return True
 
 
@@ -135,8 +135,10 @@ def add_interest(owner, tag_list):
 
     """ Add infomation of interests to the database. """
 
+    user_obj = User.objects.get(email=owner)
     for tag in tag_list:
-        interest_obj = Interest.objects.get_or_create(email=owner, interested_tag=tag)[0]
+        tag_obj = Tag.objects.get(tag=tag)
+        interest_obj = Interest.objects.get_or_create(email=user_obj, interested_tag=tag_obj)[0]
         if interest_obj:
             interest_obj.degree += 1
         else:
@@ -161,25 +163,15 @@ def delete(p_id):
 def get_latest_tags(num=5):
     """ Get the latest 5 tags. """
     latest_tag_objects = Tag.objects.all().order_by('-id')[:5]
-    latest_tag_list = [object.unifiedTag() for object in latest_tag_objects]
+    latest_tag_list = [object.unified_tag() for object in latest_tag_objects]
     return latest_tag_list
-
-
-def get_interest_tags(email, num_limit=True, num=5):
-    """ Get the tags that user interested in. """
-    interests = Interest.objects.filter(email=email).order_by('degree')
-    tags = []
-    if num_limit and len(interests) > num:
-        interests = interests[:num]
-    for i in interests:
-        tags.append(i.interested_tag)
-    return tags
 
 
 def get_interested_photos(email, num_limit=True, num=5):
     """ Get photos that user may Interested in. """
-    tags = get_interest_tags(email)
-    photos = getRelatedPhotos(tags)
+    user = User.objects.get(email=email)
+    tags = user.interest_set.all()
+    photos = get_related_photos(tags)
     return photos
 
 
@@ -189,7 +181,7 @@ def get_latest_photos(num_limit=True, num=6):
     if num_limit:
         latest_photos = Photo.objects.all()[:num]
     for p in latest_photos:
-        photo = getPhotoInfo(p, 'obj')
+        photo = get_photo_info(p, 'obj')
         if photo:
             photos.append(photo)
     return photos
@@ -202,21 +194,23 @@ def add_collect(email, photo_id):
     --Update Interest
     --Add Photo.collected_times
     """
+    user = User.objects.get(email=email)
+    photo = Photo.objects.get(id = photo_id)
     # Update collect
-    collect, result = Collect.objects.get_or_create(email=email, photo_id=photo_id)
+    collect, result = Collect.objects.get_or_create(user=user, photo=photo)
     # If exist, result == False
     if result == False:
         return False
     else:
         collect.save()
         # Update Photo.collected_times
-        photoObj = Photo.objects.get(id=photo_id)
-        photoObj.collected_times += 1
-        photoObj.save()
+        photo = Photo.objects.get(id=photo_id)
+        photo.collected_times += 1
+        photo.save()
         tag_list = []
-        got_tag_list = photoObj.tags.all()
+        got_tag_list = photo.tags.all()
         for each_tag in got_tag_list:
-            tag_list.append(each_tag.unifiedTag())
+            tag_list.append(each_tag.unified_tag())
         # Update Interest
         add_interest(email, tag_list)
         return True
@@ -224,12 +218,14 @@ def add_collect(email, photo_id):
 
 def cancel_collect(email, photo_id):
     """ Cancel collect. """
+    user = User.objects.get(email=email)
+    photo = Photo.objects.get(id = photo_id)
     try:
-        collect = Collect.objects.get(email=email, photo_id=photo_id)
+        collect = Collect.objects.get(user=user, photo=photo)
         collect.delete()
-        photoObj = Photo.objects.get(id=photo_id)
-        photoObj.collected_times -= 1
-        photoObj.save()
+        photo = Photo.objects.get(id=photo_id)
+        photo.collected_times -= 1
+        photo.save()
         return True
     except:
         # Deal with it later.
@@ -240,22 +236,25 @@ def get_user_info(email):
     """ Get the infomation of user. """
     info = {}
     photos = []
-    user = users.models.User.objects.get(email=email)
-    interest = Interest.objects.filter(email=email)
-    collect = Collect.objects.filter(email=email)
+    user = User.objects.get(email=email)
+    interest = user.interest_set.all()
+    collect = user.collect_set.all()
     for c in collect:
-        photo = getPhotoInfo(c.photo_id, 'p_id')
+        photo = get_photo_info(c.photo, 'obj')
         if photo:
             photos.append(photo)
     info['id'] = user.id
     info['email'] = user.email
-    info['interest'] = [i.interested_tag for i in interest]
+    # i.tag is the tag object, (i.tag).tag is the content.
+    info['interest'] = [i.tag.tag for i in interest]
     info['collect'] = photos
     return info
 
 
 def is_collected(email, photo_id):
-    exist_collect = Collect.objects.filter(email=email, photo_id=photo_id)
+    user = User.objects.get(email=email)
+    photo = Photo.objects.get(id = photo_id)
+    exist_collect = Collect.objects.filter(user=user, photo=photo)
     if exist_collect:
         return True
     else:
