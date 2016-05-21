@@ -170,8 +170,11 @@ def get_latest_tags(num=5):
 
 def get_interested_photos(email, num_limit=True, num=5):
     """ Get photos that user may Interested in. """
+    import pdb
+    pdb.set_trace()
     user = User.objects.get(email=email)
-    tags = user.interest_set.all()
+    interest_tags = user.interest_set.all()
+    tags = [t.tag.tag for t in interest_tags]
     photos = get_related_photos(tags)
     return photos
 
