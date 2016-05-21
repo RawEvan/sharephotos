@@ -31,9 +31,8 @@ def upload_photo(photo_file, description, tag, permission, owner):
     return photo_info
 
 def get_email(request):
-    try:
-        Email = request.user.email
-    except:
-        print 'no owner'
-        Email = '2012406855@qq.com'
-    return Email
+    if request.user.is_authenticated():
+        email = request.user.email
+    else:
+        email = None
+    return email

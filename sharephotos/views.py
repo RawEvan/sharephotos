@@ -17,6 +17,7 @@ def homepage(request):
 
     latest_tag_list = dbControl.get_latest_tags()
     email = common.get_email(request)
+
     if request.user.is_authenticated():
         # if search
         if request.method == 'POST':
@@ -79,9 +80,13 @@ def photo(request):
 
     latest_tag_list = dbControl.get_latest_tags()
     email = common.get_email(request)
+    if request.user.is_authenticated():
+        is_collected = dbControl.is_collected(email, p_id)
+    else:
+        is_collected = False
+
     p_id = int(request.GET['photo'])
     photo_info = dbControl.get_photo_info(p_id, method='p_id')
-    is_collected = dbControl.is_collected(email, p_id)
     return_dict = {'user_Email': email,
                   'latest_tag_list': latest_tag_list,
                   'is_collected':is_collected,
