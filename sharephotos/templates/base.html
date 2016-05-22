@@ -33,14 +33,14 @@
     <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav navbar-right navbar_ul">
         <li class="active">
-            <a  class="nav_a" href="/upload">
+        <a  class="nav_a" href="{% url 'upload' %}">
             <div class="nav_icon">上传
             </div>
             </a>
         </li>
         {% if user_Email %}
         <li>
-            <a class="nav_a" href="/user_info">
+        <a class="nav_a" href="{% url 'user_info' %}">
                 <div class="nav_icon">{{user_Email}}</div>
             </a>
         </li>
@@ -68,13 +68,13 @@
 <div class="container col-xs-12 header_center">
 <div class="row f-trans">
         
-    <form class="form-inline form_text_align" role="form" id="search" name="search" action="/tag" method="GET">
+    <form class="form-inline form_text_align" role="form" id="search" name="search" action="{% url 'search' %}" method="GET">
         <!--{% csrf_token %}--!>
-            <input type="text" id="search_word" class="form-control search_input" name="search_word" value="奥运会">
+            <input type="text" id="search_word" class="form-control search_input" name="search_word">
             <button type="submit" id="search_button" class="btn btn-lg btn-primary search_button">搜索</button>
     </form>
     <div class="row face_search_row">
-        <a href="/face">
+        <a href="{% url 'face_search' %}">
         <button class="btn btn-lg btn-primary search_button">人脸搜索</button>
         </a>
     </div>
@@ -127,7 +127,7 @@ $(document).ready(function()
         var tag = $("#tag").val();
         var p_id = $("#p_id").val();
         var csrf = $("input[name='csrfmiddlewaretoken']").val();
-        $.getJSON("/addTag/", {'tag': tag, 'p_id': p_id}, function(ret)
+        $.getJSON("/tag_add/", {'tag': tag, 'p_id': p_id}, function(ret)
         {
             var tag_list = ret.tag_list;
             if(ret.SUC==true)
@@ -145,7 +145,7 @@ $(document).ready(function()
             }
         });
     });
-    $("#add_tag").submit(function(e)
+    $("#tag_add").submit(function(e)
     {
         $("#tag_submit").click();
         e.preventDefault();
@@ -160,9 +160,9 @@ $(document).ready(function()
     {
         var p_id = $("#p_id").val();
         title = $("#collect").attr("title");
-        if(title=="collect")
+        if(title=="collect_add")
         {
-            $.getJSON("/add_collect/", {'p_id': p_id}, function(ret)
+            $.getJSON("/collect_add/", {'p_id': p_id}, function(ret)
             {
                 if(ret.SUC==true)
                 {
@@ -170,17 +170,17 @@ $(document).ready(function()
                     var new_text = "收藏：" + ret.collected_times;
                     $("#collected_times").text(new_text);
                     $("#collect").text("取消收藏");
-                    $("#collect").attr("title", "cancel_collect");
+                    $("#collect").attr("title", "collect_delete");
                 }
                 else
                 {
-                    alert("收藏失败（已收藏）");
+                    alert("收藏失败：" + ret.info);
                 }
             });
         }
-        else if(title=="cancel_collect")
+        else if(title=="collect_delete")
         {
-            $.getJSON("/cancel_collect/", {'p_id': p_id}, function(ret)
+            $.getJSON("/collect_delete/", {'p_id': p_id}, function(ret)
             {
                 if(ret.SUC==true)
                 {
@@ -188,23 +188,18 @@ $(document).ready(function()
                     var new_text = "收藏：" + ret.collected_times;
                     $("#collected_times").text(new_text);
                     $("#collect").text("收藏");
-                    $("#collect").attr("title", "collect");
+                    $("#collect").attr("title", "collect_add");
                 }
                 else
                 {
-                    alert("取消收藏失败");
+                    alert("取消收藏失败：" + ret.info);
                 }
             });
         }
         else
         {
-            alert("title wrong");
+            alert("出错：title wrong");
         }
-    });
-
-    $("#cancel_collect").click(function()
-    {
-        var p_id = $("#p_id").val();
     });
 });
 </script>

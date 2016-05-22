@@ -113,14 +113,3 @@ def print_result(hint, result):
     print hint
     result = encode(result)
     print '\n'.join(['  ' + i for i in pformat(result, width=75).split('\n')])
-
-
-def main():
-    import pdb
-    pdb.set_trace()
-    path = 'static/images/test2.jpg'
-    name = 'test2'
-    searchFaceset(method='path', urlOrPath=path)
-
-if __name__ == '__main__':
-    main()

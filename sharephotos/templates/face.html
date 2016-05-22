@@ -7,7 +7,7 @@
 		<br class="clearfloat">
 		<form id="upload_form" name="face" action="/face/" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <input id="file_choose" type="file" name="facePhotoFile" name="image">
+            <input id="file_choose" type="file" name="face_photo_file" name="image">
             <input id="submit_button" type="submit" value="搜索">
             <input id="reset_button" type="reset" value="重置">
         </form>
