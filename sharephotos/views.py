@@ -29,7 +29,7 @@ def homepage(request):
                 pass
         # not search, get photos may be interested in
         else:
-            search_word= ''
+            search_word = ''
             photo_list = dbControl.get_interested_photos(email=email)
     # not login
     else:
@@ -77,19 +77,17 @@ def photo(request):
     """
     Show infomation of photo. Don't check the p_id temporary
     """
-
     latest_tag_list = dbControl.get_latest_tags()
     email = common.get_email(request)
+    p_id = int(request.GET['photo'])
     if request.user.is_authenticated():
         is_collected = dbControl.is_collected(email, p_id)
     else:
         is_collected = False
-
-    p_id = int(request.GET['photo'])
     photo_info = dbControl.get_photo_info(p_id, method='p_id')
     return_dict = {'user_Email': email,
                   'latest_tag_list': latest_tag_list,
-                  'is_collected':is_collected,
+                  'is_collected': is_collected,
                   'photo_info': photo_info}
     return render(request, 'photo.html', return_dict)
 
@@ -133,7 +131,6 @@ def face_search(request):
     """
     Search photos related to the face(s) in given photo.
     """
-
     latest_tag_list = dbControl.get_latest_tags()
     email = common.get_email(request)
     if request.method == 'POST':
@@ -149,7 +146,6 @@ def face_search(request):
             person_id_list = faceControl.add_faces(
                 method='url', urlOrPath=thumbnail_url)
             photo_list = dbControl.get_related_photos(person_id_list)
-
             return_dict = {'photo_list': photo_list,
                           'user_Email': email,
                           'latest_tag_list': latest_tag_list}
@@ -217,6 +213,7 @@ def tag_add(request):
 
 def collect_add(request):
     """ Add collected photo for user. """
+    return_dict = {}
     if request.user.is_authenticated():
         email = common.get_email(request)
         if request.method == 'GET':
@@ -224,24 +221,27 @@ def collect_add(request):
             photo_id = int(request.GET['p_id'])
             return_dict['SUC'] = dbControl.add_collect(email, photo_id)
             return_dict['collected_times'] = dbControl.get_collected_times(photo_id)
-            return JsonResponse(return_dict)
+            return_dict['info'] = ''
     else:
-        return HttpResponseRedirect(reverse('users_login'))
+        return_dict['SUC'] = False
+        return_dict['info'] = u'未登录'
+    return JsonResponse(return_dict)
 
 
 def collect_delete(request):
     """ Cancel collect. """
+    return_dict = {}
     if request.user.is_authenticated():
         email = common.get_email(request)
         if request.method == 'GET':
             photo_id = int(request.GET['p_id'])
-            if dbControl.cancel_collect(email, photo_id):
-                collected_times = dbControl.get_collected_times(photo_id)
-                return JsonResponse({'SUC':True, 'collected_times':collected_times})
-            else:
-                return JsonResponse({'SUC':False})
+            return_dict['SUC'] = dbControl.add_collect(email, photo_id)
+            return_dict['collected_times'] = dbControl.get_collected_times(photo_id)
+            return_dict['info'] = ''
     else:
-        return HttpResponseRedirect(reverse('users_login'))
+        return_dict['SUC'] = False
+        return_dict['info'] = u'未登录'
+    return JsonResponse(return_dict)
 
 
 def user_info(request):

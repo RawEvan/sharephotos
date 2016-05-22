@@ -14,13 +14,14 @@ def get_photos_of_tag(key, method='tag'):
     # the tag that is person id
     if u'人脸' in key:
         key = key[2:]
-    target_tag = Tag.objects.get(tag=key)
-    # get photo related to the tag
-    result_photo = target_tag.photo_set.all()
-    for each_photo in result_photo:
-        photo_info = get_photo_info(each_photo, method='obj')
-        if photo_info:
-            photo_list.append(photo_info)
+    target_tag = Tag.objects.filter(tag=key)[0]
+    if target_tag:
+        # get photo related to the tag
+        result_photo = target_tag.photo_set.all()
+        for each_photo in result_photo:
+            photo_info = get_photo_info(each_photo, method='obj')
+            if photo_info:
+                photo_list.append(photo_info)
     return photo_list
 
 def get_owned_photos(email):
@@ -37,8 +38,13 @@ def get_related_photos(tag_list):
     """ get photos related to a tag list """
 
     photo_list = []
+    photo_id_list = []
     for tag in tag_list:
-        photo_list.extend(get_photos_of_tag(tag))
+        photos = get_photos_of_tag(tag)
+        # Get distinct photo info
+        photos = [p for p in photos if p['p_id'] not in photo_id_list]
+        photo_id_list.extend([p['p_id'] for p in photos])
+        photo_list.extend(photos)
     return photo_list
 
 
@@ -170,8 +176,6 @@ def get_latest_tags(num=5):
 
 def get_interested_photos(email, num_limit=True, num=5):
     """ Get photos that user may Interested in. """
-    import pdb
-    pdb.set_trace()
     user = User.objects.get(email=email)
     interest_tags = user.interest_set.all()
     tags = [t.tag.tag for t in interest_tags]

@@ -68,9 +68,9 @@
 <div class="container col-xs-12 header_center">
 <div class="row f-trans">
         
-    <form class="form-inline form_text_align" role="form" id="search" name="search" action="/tag" method="GET">
+    <form class="form-inline form_text_align" role="form" id="search" name="search" action="{% url 'search' %}" method="GET">
         <!--{% csrf_token %}--!>
-            <input type="text" id="search_word" class="form-control search_input" name="search_word" value="奥运会">
+            <input type="text" id="search_word" class="form-control search_input" name="search_word">
             <button type="submit" id="search_button" class="btn btn-lg btn-primary search_button">搜索</button>
     </form>
     <div class="row face_search_row">
@@ -164,17 +164,17 @@ $(document).ready(function()
         {
             $.getJSON("/collect_add/", {'p_id': p_id}, function(ret)
             {
-                $("#collected_times").text(new_text);
                 if(ret.SUC==true)
                 {
                     alert("收藏成功");
                     var new_text = "收藏：" + ret.collected_times;
+                    $("#collected_times").text(new_text);
                     $("#collect").text("取消收藏");
                     $("#collect").attr("title", "collect_delete");
                 }
                 else
                 {
-                    alert("收藏失败（已收藏）");
+                    alert("收藏失败：" + ret.info);
                 }
             });
         }
@@ -182,17 +182,17 @@ $(document).ready(function()
         {
             $.getJSON("/collect_delete/", {'p_id': p_id}, function(ret)
             {
-                $("#collected_times").text(new_text);
                 if(ret.SUC==true)
                 {
                     alert("取消收藏成功");
                     var new_text = "收藏：" + ret.collected_times;
+                    $("#collected_times").text(new_text);
                     $("#collect").text("收藏");
                     $("#collect").attr("title", "collect_add");
                 }
                 else
                 {
-                    alert("取消收藏失败");
+                    alert("取消收藏失败：" + ret.info);
                 }
             });
         }
