@@ -1,7 +1,7 @@
 # coding:utf-8
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 
 from faceControl import add_faces
 import forms
@@ -286,3 +286,11 @@ def user_info(request):
         return render(request, 'user_info.html', return_dict)
     else:
         return HttpResponseRedirect(reverse('users_login'))
+
+
+def similarity_update(request):
+    if request.user.is_authenticated():
+        dbControl.similarity_update()
+        print ''.join(request.user.email + '-- update similarity')
+    return HttpResponse('similarity updated')
+

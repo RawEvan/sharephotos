@@ -57,6 +57,9 @@ class DBTestCase(TestCase):
         collected_times = Photo.objects.get(id=photo_id).collected_times
         self.assertEqual(collected_times, 0)
 
+    def test_similarity_update(self):
+        dbControl.similarity_update()
+
 
 class UploadTestCase(TestCase):
 

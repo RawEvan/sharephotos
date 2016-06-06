@@ -71,3 +71,16 @@ class Authority(models.Model):
 
     class Meta:
         unique_together = ('user', 'photo')
+
+
+class Similarity(models.Model):
+    """ Model of similarity between two photos. """
+    similar_count = models.IntegerField(default = 0)
+    similar_degree = models.FloatField(default = 0.0)
+
+    photo_1 = models.ForeignKey(Photo, related_name='photo_1')
+    photo_2 = models.ForeignKey(Photo, related_name='photo_2')
+
+    class Meta:
+        unique_together = ('photo_1', 'photo_2')
+

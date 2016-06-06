@@ -36,5 +36,6 @@ urlpatterns = [
     url(r'^collect_delete/$', 'sharephotos.views.collect_delete', name = 'collect_delete'),
     url(r'^user_info/$', 'sharephotos.views.user_info', name = 'user_info'),
     url(r'^answer_check/$', 'sharephotos.views.answer_check', name = 'answer_check'),
+    url(r'^similarity_update/$', 'sharephotos.views.similarity_update', name = 'similarity_update'),
     #url(r'^tag_delete/$', 'sharephotos.views.tag_delete', name = 'tag_delete'),
 ]

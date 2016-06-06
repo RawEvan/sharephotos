@@ -1,6 +1,7 @@
 # coding:utf-8
 # function of database control
-from models import Photo, Tag, Interest, Collect, Authority
+from math import sqrt
+from models import Photo, Tag, Interest, Collect, Authority, Similarity
 from users.models import User
 import common
 
@@ -319,3 +320,39 @@ def get_question(photo_id):
     else:
         question = ''
     return question
+
+
+def similarity_update():
+    import pdb
+    pdb.set_trace()
+    tags = Tag.objects.all().order_by('id')
+    for tag in tags:
+        photos = tag.photo_set.all()
+        for i in range(len(photos)):
+            for j in range(i+1, len(photos)):
+                add_similarity(photos[i], photos[j])
+                add_similarity(photos[j], photos[i])
+
+
+def recommend(email):
+    photos = get_condidate_photos(email)
+    return photos
+
+
+def add_similarity(photo_1, photo_2):
+    new_similarity = Similarity.objects.get_or_create(
+            photo_1=photo_1, photo_2=photo_2)[0]
+    new_similarity.similar_count += 1
+    new_similarity.similar_degree = count_similarity(photo_1, photo_2,
+            new_similarity.similar_count)
+    print 'similarity:'
+    print new_similarity.similar_count
+    print new_similarity.similar_degree
+    new_similarity.save()
+
+
+def count_similarity(photo_1, photo_2, similar_count):
+    count_1 = photo_1.tags.count()
+    count_2 = photo_2.tags.count()
+    new_degree = similar_count/sqrt(count_1 * count_2)
+    return new_degree
