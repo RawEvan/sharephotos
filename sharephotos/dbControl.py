@@ -1,6 +1,6 @@
 # coding:utf-8
 # function of database control
-from models import Photo, Tag, Interest, Collect
+from models import Photo, Tag, Interest, Collect, Authority
 from users.models import User
 import common
 
@@ -27,10 +27,12 @@ def get_photos_of_tag(key, method='tag'):
 def get_owned_photos(email):
     user = User.objects.get(email=email)
     owned_photos = user.photo_set.all()
-    for each_photo in owned_photo:
-        photo_info = get_photo_info(each_photo, method='obj')
-        if photo_info:
-            photo_list.append(photo_info)
+    photo_list = []
+    if owned_photos:
+        for each_photo in owned_photos:
+            photo_info = get_photo_info(each_photo, method='obj')
+            if photo_info:
+                photo_list.append(photo_info)
     return photo_list
 
 def get_related_photos(tag_list):
@@ -79,7 +81,7 @@ def get_photo_info(key, method):
             "tag_list": tag_list,
             'collected_times': photo.collected_times,
             'question': photo.question,
-            'answer': answer}
+            'answer': photo.answer}
     else:
         # Deal with this later
         photo_info = {}
@@ -163,6 +165,7 @@ def delete(photo_id):
             tag.photo_set.remove(photo)
             if not tag.photo_set.all():
                 tag.delete()
+        delete_authorization(photo_id)
         photo.delete()
         return True
     except:
@@ -247,8 +250,8 @@ def get_user_info(email):
     info = {}
     photos = []
     user = User.objects.get(email=email)
-    interest = user.interest.all()
-    collect = user.collect.all()
+    interest = user.interest_set.all()
+    collect = user.collect_set.all()
     for c in collect:
         photo = get_photo_info(c.photo, 'obj')
         if photo:
@@ -279,7 +282,14 @@ def get_collected_times(photo_id):
 def add_authorization(email, photo_id):
     user = User.objects.filter(email=email)[0]
     photo = Photo.objects.filter(id=photo_id)[0]
-    authorization = Authority.objects.get_or_create(user=user, private_photo=photo)
+    authorization = Authority.objects.get_or_create(user=user, photo=photo)
+
+
+def delete_authorization(photo_id):
+    photo = Photo.objects.filter(id=photo_id)[0]
+    authorization = Authority.objects.filter(photo=photo)
+    for au in authorization:
+        au.delete()
 
 
 def check_answer(photo_id, answer):
@@ -295,9 +305,17 @@ def check_authorization(email, photo_id):
     if photo.authorization == 'public':
         result = True
     else:
-        authorization = Authority.objects.filter(user=user, private_photo=photo)
+        authorization = Authority.objects.filter(user=user, photo=photo)
         if authorization.exists():
             result = True
         else:
             result = False
     return result
+
+def get_question(photo_id):
+    photo = Photo.objects.filter(id=photo_id)[0]
+    if photo:
+        question = photo.question
+    else:
+        question = ''
+    return question

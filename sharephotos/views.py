@@ -73,13 +73,13 @@ def tag(request, search_word):
     return render(request, u'index.html', return_dict)
 
 
-def photo(request):
+def photo(request, photo):
     """
     Show infomation of photo. Don't check the photo_id temporary
     """
     latest_tag_list = dbControl.get_latest_tags()
     email = common.get_email(request)
-    photo_id = int(request.GET['photo'])
+    photo_id = int(photo)
     has_authorization = dbControl.check_authorization(email, photo_id)
     if has_authorization:
         if request.user.is_authenticated():
@@ -91,7 +91,7 @@ def photo(request):
                       'latest_tag_list': latest_tag_list,
                       'is_collected': is_collected,
                       'photo_info': photo_info,
-                      'has_authorization': authorization}
+                      'has_authorization': has_authorization}
         return render(request, 'photo.html', return_dict)
     else:
         question = dbControl.get_question(photo_id)
@@ -99,7 +99,7 @@ def photo(request):
                       'latest_tag_list': latest_tag_list,
                       'photo_id': photo_id,
                       'question': question,
-                      'has_authorization': authorization}
+                      'has_authorization': has_authorization}
         return render(request, 'photo.html', return_dict)
 
 
@@ -111,7 +111,7 @@ def answer_check(request):
         answer = request.POST['answer']
         if dbControl.check_answer(photo_id, answer):
             dbControl.add_authorization(email, photo_id)
-        return HttpResponseRedirect(reverse('tag', args=[photo_id]))
+        return HttpResponseRedirect(reverse('photo', args=[photo_id]))
     else:
         return HttpResponseRedirect(reverse('users_login'))
      

@@ -38,7 +38,7 @@ class Photo(models.Model):
     tags = models.ManyToManyField(Tag)
 
     def __unicode__(self):
-        return self.description
+        return self.description + 'id:' + str(self.id)
 
 
 class Interest(models.Model):

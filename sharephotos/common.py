@@ -28,6 +28,7 @@ def upload_photo(photo_file, description, tag, authorization, owner, question, a
         photo_url, description, tag, person_id_list, authorization, owner, question, answer)
     # save info
     photo_info = dbControl.get_photo_info(photo_url, method='url')
+    dbControl.add_authorization(owner, photo_info['photo_id'])
     return photo_info
 
 def get_email(request):
