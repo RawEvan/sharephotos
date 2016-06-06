@@ -425,12 +425,17 @@ max-width: 100%;
 .tag_text
 {
     float:left;
-    width:60px;
     margin-bottom:10px;
 }
 #tag_div
 {
     clear:both;
+}
+#permission_div
+{
+    clear:both;
+    float:left;
+    margin-bottom:15px;
 }
 
 /* photo_info.html */

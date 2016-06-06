@@ -9,12 +9,17 @@
             {% csrf_token %}
             <input id="file_choose" type="file" name="photo_file">
             <div id="tag_div">
-                <input id="tag1" class="tag_text" name="tag" type="text" placeholder="标签">
-                多个标签用符号“、”分隔
+                <input id="tag" class="tag_text" name="tag" type="text" placeholder="标签" data-toggle="tooltip" data-placement="top" title="多个标签用符号“、”分隔">
             </div>
             <textarea id="description" name="description" placeholder="描述"></textarea>
-            <input id="pemission_radio" type = "radio" name="permission" value="public" checked="true">所有人可见
-            <input id="pemission_radio" type = "radio" name="permission" value="private">仅好友可见
+            <div id="authorization_div"> 
+                <input id="public_radio" class="authorization_radio" type="radio" name="authorization" value="public" checked="true">完全公开
+                <input id="private_radio" class="authorization_radio" type="radio" name="authorization" value="private">回答问题可见
+            </div>
+            <div id="question_set" class="collapse">
+                <input id="question" type="text" name="question" placeholder="问题" value="">
+                <input id="answer" type="text" name="answer" placeholder="答案" value="">
+            </div>
             <input id="submit_button" type="submit" value="上传">
             <input id="reset_button" type="reset" value="重置">
         </form>

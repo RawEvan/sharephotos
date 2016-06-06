@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+
 {% block menu %}
 {% endblock %}
+
+{% if has_authorization %}
 	<div class="photo_detail">
     <div class="co-xs-12 col-sm-7 dtl_image">
         <img class="photo_display" src={{photo_info.original_url}}>
@@ -17,11 +20,11 @@
                 </label>
             {% endfor %}
         </div>
-        <div id="add"class="collapse">
+        <div id="add" class="collapse">
             <form id="add_tag" action="/addTag/"  method="get" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input id="tag" name="tag" type="text">
-                <input id="p_id" name="p_id" type="hidden" value={{photo_info.p_id}}>
+                <input id="new_tag" name="tag" type="text">
+                <input id="photo_id" name="photo_id" type="hidden" value={{photo_info.photo_id}}>
                 <input id="tag_submit" class="btn" type="button" value="添加">
             </form>
         </div>
@@ -43,4 +46,14 @@
     </div>
 	</div>
 </div>
+
+{% else %}
+{{question}}
+<form id="answer_form" action="{% url 'answer_check' %}">
+    {% csrf_token %}
+    <input id="answer_text" name="answer" type="text" placeholder="回答">
+    <input id="photo_id" name="photo_id" type="hidden" value={{photo_id}}>
+    <input id="tag_submit" class="btn" type="button" value="提交">
+{% endif %}
+
 {% endblock %}

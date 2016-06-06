@@ -18,7 +18,7 @@
     <div>
         收藏：
         {% for each_photo in info.collect %}
-        <a href="/photo/?photo={{each_photo.p_id}}">
+        <a href="/photo/?photo={{each_photo.photo_id}}">
             <img src={{each_photo.thumbnail_url}}></a>
         {% endfor %}
     </div>

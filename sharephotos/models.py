@@ -26,10 +26,13 @@ class Photo(models.Model):
     description = models.TextField(max_length=300, default='no description')
     upload_time = models.DateTimeField(auto_now=True)
     collected_times = models.IntegerField(default=0)
-    # permission:
+    # authorization:
     # private: only friend can see the photo;
     # public: all people can see the photo.
-    permission = models.CharField(max_length=20, default='private')
+    authorization = models.CharField(max_length=20, default='public')
+    question = models.CharField(max_length=20, default='')
+    answer= models.CharField(max_length=20, default='')
+
 
     owner = models.ForeignKey(User)
     tags = models.ManyToManyField(Tag)
@@ -39,7 +42,7 @@ class Photo(models.Model):
 
 
 class Interest(models.Model):
-    """Model of User's intersts. """
+    """ Model of User's intersts. """
     # The times that the user interested in the tag
     degree = models.IntegerField(default=0)
 
@@ -50,8 +53,18 @@ class Interest(models.Model):
         unique_together = ('user', 'tag')
         
 class Collect(models.Model):
-    """Model of User's collect. """
+    """ Model of User's collect. """
     collect_time = models.DateTimeField(auto_now=True)
+
+    user = models.ForeignKey(User)
+    photo = models.ForeignKey(Photo)
+
+    class Meta:
+        unique_together = ('user', 'photo')
+
+class Authority(models.Model):
+    """ Model of authority for viewing the photo. """
+    add_time = models.DateTimeField(auto_now=True)
 
     user = models.ForeignKey(User)
     photo = models.ForeignKey(Photo)

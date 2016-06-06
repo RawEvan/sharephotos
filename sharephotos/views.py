@@ -75,23 +75,46 @@ def tag(request, search_word):
 
 def photo(request):
     """
-    Show infomation of photo. Don't check the p_id temporary
+    Show infomation of photo. Don't check the photo_id temporary
     """
     latest_tag_list = dbControl.get_latest_tags()
     email = common.get_email(request)
-    p_id = int(request.GET['photo'])
-    if request.user.is_authenticated():
-        is_collected = dbControl.is_collected(email, p_id)
+    photo_id = int(request.GET['photo'])
+    has_authorization = dbControl.check_authorization(email, photo_id)
+    if has_authorization:
+        if request.user.is_authenticated():
+            is_collected = dbControl.is_collected(email, photo_id)
+        else:
+            is_collected = False
+        photo_info = dbControl.get_photo_info(photo_id, method='photo_id')
+        return_dict = {'user_Email': email,
+                      'latest_tag_list': latest_tag_list,
+                      'is_collected': is_collected,
+                      'photo_info': photo_info,
+                      'has_authorization': authorization}
+        return render(request, 'photo.html', return_dict)
     else:
-        is_collected = False
-    photo_info = dbControl.get_photo_info(p_id, method='p_id')
-    return_dict = {'user_Email': email,
-                  'latest_tag_list': latest_tag_list,
-                  'is_collected': is_collected,
-                  'photo_info': photo_info}
-    return render(request, 'photo.html', return_dict)
+        question = dbControl.get_question(photo_id)
+        return_dict = {'user_Email': email,
+                      'latest_tag_list': latest_tag_list,
+                      'photo_id': photo_id,
+                      'question': question,
+                      'has_authorization': authorization}
+        return render(request, 'photo.html', return_dict)
 
 
+def answer_check(request):
+    if request.user.is_authenticated():
+        latest_tag_list = dbControl.get_latest_tags()
+        email = common.get_email(request)
+        photo_id = request.POST['photo_id']
+        answer = request.POST['answer']
+        if dbControl.check_answer(photo_id, answer):
+            dbControl.add_authorization(email, photo_id)
+        return HttpResponseRedirect(reverse('tag', args=[photo_id]))
+    else:
+        return HttpResponseRedirect(reverse('users_login'))
+     
 def upload(request):
     """
     Upload photo and infomation.
@@ -107,9 +130,15 @@ def upload(request):
                 photo_file = request.FILES['photo_file'].read()
                 description = request.POST['description']
                 tag = request.POST['tag']
-                permission = request.POST['permission']
+                authorization = request.POST['authorization']
+                if authorization == 'private':
+                    question = request.POST['question']
+                    answer = request.POST['answer']
+                else:
+                    question = ''
+                    answer = ''
                 photo_info = common.upload_photo(
-                    photo_file, description, tag, permission, email)
+                    photo_file, description, tag, authorization, email, question, answer)
 
                 return_dict = {'latest_tag_list': latest_tag_list,
                               'user_Email': email,
@@ -174,13 +203,13 @@ def photo_manage(request):
         return HttpResponseRedirect(reverse('users_login'))
 
 
-def photo_delete(request, p_id):
+def photo_delete(request, photo_id):
     """ Delete photo, don't check owner now. """
     latest_tag_list = dbControl.get_latest_tags()
     email = common.get_email(request)
     if request.user.is_authenticated():
-        p_id = int(p_id)
-        is_deleted = dbControl.delete(p_id)
+        photo_id = int(photo_id)
+        is_deleted = dbControl.delete(photo_id)
     else:
         is_deleted = False
 
@@ -199,12 +228,12 @@ def tag_add(request):
         if request.method == 'GET':
             # check it later
             tag = request.GET['tag']
-            p_id = int(request.GET['p_id'])
+            photo_id = int(request.GET['photo_id'])
             tag_list = tag.split(u'、')
-            dbControl.add_tag(p_id, tag_list, method='p_id')
+            dbControl.add_tag(photo_id, tag_list, method='photo_id')
             result = {'tag_list': tag_list, 'SUC': True}
             for eachTag in tag_list:
-                if not dbControl.tagOfPhotoExist(eachTag, p_id):
+                if not dbControl.tagOfPhotoExist(eachTag, photo_id):
                     result['SUC'] = False
             return JsonResponse(result)
     else:
@@ -218,7 +247,7 @@ def collect_add(request):
         email = common.get_email(request)
         if request.method == 'GET':
             return_dict = {}
-            photo_id = int(request.GET['p_id'])
+            photo_id = int(request.GET['photo_id'])
             return_dict['SUC'] = dbControl.add_collect(email, photo_id)
             return_dict['collected_times'] = dbControl.get_collected_times(photo_id)
             return_dict['info'] = ''
@@ -234,7 +263,7 @@ def collect_delete(request):
     if request.user.is_authenticated():
         email = common.get_email(request)
         if request.method == 'GET':
-            photo_id = int(request.GET['p_id'])
+            photo_id = int(request.GET['photo_id'])
             return_dict['SUC'] = dbControl.add_collect(email, photo_id)
             return_dict['collected_times'] = dbControl.get_collected_times(photo_id)
             return_dict['info'] = ''

@@ -13,6 +13,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Authority',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('add_time', models.DateTimeField(auto_now=True)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Collect',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -34,7 +41,9 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(default=b'no description', max_length=300)),
                 ('upload_time', models.DateTimeField(auto_now=True)),
                 ('collected_times', models.IntegerField(default=0)),
-                ('permission', models.CharField(default=b'private', max_length=20)),
+                ('authorization', models.CharField(default=b'public', max_length=20)),
+                ('question', models.CharField(default=b'', max_length=20)),
+                ('answer', models.CharField(default=b'', max_length=20)),
                 ('owner', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -54,20 +63,6 @@ class Migration(migrations.Migration):
             field=models.ManyToManyField(to='sharephotos.Tag'),
         ),
         migrations.AddField(
-            model_name='collect',
-            name='photo',
-            field=models.ForeignKey(to='sharephotos.Photo'),
-        ),
-        migrations.AddField(
-            model_name='collect',
-            name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.AlterUniqueTogether(
-            name='collect',
-            unique_together=set([('user', 'photo')]),
-        ),
-        migrations.AddField(
             model_name='interest',
             name='tag',
             field=models.ForeignKey(to='sharephotos.Tag'),
@@ -77,8 +72,36 @@ class Migration(migrations.Migration):
             name='user',
             field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
         ),
+        migrations.AddField(
+            model_name='collect',
+            name='photo',
+            field=models.ForeignKey(to='sharephotos.Photo'),
+        ),
+        migrations.AddField(
+            model_name='collect',
+            name='user',
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
+            model_name='authority',
+            name='photo',
+            field=models.ForeignKey(to='sharephotos.Photo'),
+        ),
+        migrations.AddField(
+            model_name='authority',
+            name='user',
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+        ),
         migrations.AlterUniqueTogether(
             name='interest',
             unique_together=set([('user', 'tag')]),
+        ),
+        migrations.AlterUniqueTogether(
+            name='collect',
+            unique_together=set([('user', 'photo')]),
+        ),
+        migrations.AlterUniqueTogether(
+            name='authority',
+            unique_together=set([('user', 'photo')]),
         ),
     ]

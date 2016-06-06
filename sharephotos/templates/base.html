@@ -69,7 +69,7 @@
 <div class="row f-trans">
         
     <form class="form-inline form_text_align" role="form" id="search" name="search" action="{% url 'search' %}" method="GET">
-        <!--{% csrf_token %}--!>
+        <!--{% csrf_token %}-->
             <input type="text" id="search_word" class="form-control search_input" name="search_word">
             <button type="submit" id="search_button" class="btn btn-lg btn-primary search_button">搜索</button>
     </form>
@@ -122,12 +122,18 @@
 <script>
 $(document).ready(function()
 {
+    
+    $("#search_word").click(function()
+    {
+        $("#search_word").val("")
+    });
+
     $("#tag_submit").click(function()
     {
         var tag = $("#tag").val();
-        var p_id = $("#p_id").val();
+        var photo_id = $("#photo_id").val();
         var csrf = $("input[name='csrfmiddlewaretoken']").val();
-        $.getJSON("/tag_add/", {'tag': tag, 'p_id': p_id}, function(ret)
+        $.getJSON("/tag_add/", {'tag': tag, 'photo_id': photo_id}, function(ret)
         {
             var tag_list = ret.tag_list;
             if(ret.SUC==true)
@@ -151,18 +157,13 @@ $(document).ready(function()
         e.preventDefault();
     });
 
-    $("#search_word").click(function()
-    {
-        $("#search_word").val("")
-    });
-
     $("#collect").click(function()
     {
-        var p_id = $("#p_id").val();
+        var photo_id = $("#photo_id").val();
         title = $("#collect").attr("title");
         if(title=="collect_add")
         {
-            $.getJSON("/collect_add/", {'p_id': p_id}, function(ret)
+            $.getJSON("/collect_add/", {'photo_id': photo_id}, function(ret)
             {
                 if(ret.SUC==true)
                 {
@@ -180,7 +181,7 @@ $(document).ready(function()
         }
         else if(title=="collect_delete")
         {
-            $.getJSON("/collect_delete/", {'p_id': p_id}, function(ret)
+            $.getJSON("/collect_delete/", {'photo_id': photo_id}, function(ret)
             {
                 if(ret.SUC==true)
                 {
@@ -201,6 +202,13 @@ $(document).ready(function()
             alert("出错：title wrong");
         }
     });
+    
+    $(".authorization_radio").change(function()
+    {
+        $("#question_set").collapse("toggle");
+    });
+
+    $("[data-toggle='tooltip']").tooltip();
 });
 </script>
 </html>

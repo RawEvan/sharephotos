@@ -16,7 +16,7 @@
         <div class="col-sm-4">
         <div class="photo_display">
             <div class="image_wrap">
-                <a href="/photo/?photo={{each_photo.p_id}}"></a>
+                <a href="/photo/?photo={{each_photo.photo_id}}"></a>
                 <img src={{each_photo.thumbnail_url}}>
                 <div class="col-xs-12 display_description">
                 {{each_photo.description}}
@@ -40,7 +40,7 @@
                 </div>
             </div>
             {% if owner %}
-            <a class="delete_photo" href="/delete/{{each_photo.p_id}}">删除</a>
+            <a class="delete_photo" href="/delete/{{each_photo.photo_id}}">删除</a>
             {% endif %}
         </div>
         </div>

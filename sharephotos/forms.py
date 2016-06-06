@@ -5,8 +5,10 @@ class photo_info_form(forms.Form):
     """ Use this form when upload photo. """
     photo_file = forms.ImageField()
     description = forms.CharField(max_length=300)
-    tag = forms.CharField(max_length=10)
-    permission = forms.CharField()
+    tag = forms.CharField(max_length=20)
+    authorization = forms.CharField()
+    question = forms.CharField(max_length=20)
+    answer = forms.CharField(max_length=20)
 
 
 class search_form(forms.Form):
@@ -16,7 +18,7 @@ class search_form(forms.Form):
 
 class photo_id_form(forms.Form):
     """ Use this form when delete photo or get infomation of photo by ID. """
-    p_id = forms.IntegerField()
+    photo_id = forms.IntegerField()
 
 
 class photo_file_form(forms.Form):
@@ -27,4 +29,4 @@ class photo_file_form(forms.Form):
 class tag_form(forms.Form):
     """ don't use this now. """
     tag = forms.CharField(max_length=10)
-    p_id = forms.IntegerField()
+    photo_id = forms.IntegerField()
