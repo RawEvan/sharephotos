@@ -325,6 +325,7 @@ def get_question(photo_id):
 def similarity_update():
     import pdb
     pdb.set_trace()
+    Similarity.objects.all().delete()
     tags = Tag.objects.all().order_by('id')
     for tag in tags:
         photos = tag.photo_set.all()
@@ -332,11 +333,6 @@ def similarity_update():
             for j in range(i+1, len(photos)):
                 add_similarity(photos[i], photos[j])
                 add_similarity(photos[j], photos[i])
-
-
-def recommend(email):
-    photos = get_condidate_photos(email)
-    return photos
 
 
 def add_similarity(photo_1, photo_2):
@@ -356,3 +352,57 @@ def count_similarity(photo_1, photo_2, similar_count):
     count_2 = photo_2.tags.count()
     new_degree = similar_count/sqrt(count_1 * count_2)
     return new_degree
+
+
+def get_recommend_photos(email):
+    import pdb
+    pdb.set_trace()
+    # Get condidate photos.
+    photos = get_condidate_photos(email)
+    # Pick up photos that most interested in.
+    recommend_photos = most_interested(email, photos)
+    photos = []
+    for photo in recommend_photos:
+        photos.append(get_photo_info(photo, 'obj'))
+    return photos
+
+
+def get_condidate_photos(email):
+    user = User.objects.get(email=email)
+    photos = user.photo_set.all()
+    condidate = {}
+    for photo in photos:
+        # Get similar photos of each photo.
+        similarities = photo.photo_1.all().order_by('similar_degree')[:10]
+        for s in similarities:
+            photo_2 = s.photo_2
+            if photo_2 not in condidate:
+                condidate[photo_2.id] = photo_2
+    return condidate.values()
+
+
+def most_interested(email, photos):
+    user = User.objects.get(email=email)
+    interests = user.interest_set.all()
+    collects = user.collect_set.all()
+    collect_photos = [c.photo for p in collects]
+    owned_photos = user.photo_set.all()
+    interest_tags = [i.tag for i in interests]
+    marks = {}
+    for photo in photos:
+        # The photo is not owned to or collected by the uesr.
+        #if photo not in collect_photos and photo not in owned_photos:
+        if photo not in collect_photos:
+            photo_mark = 0
+            tags = photo.tags.all()
+            # Count the sum mark of each tag.
+            for tag in tags:
+                if tag in interest_tags:
+                    photo_mark += Interest.objects.get(user=user, tag=tag).degree
+            marks[photo] = photo_mark
+    import pdb
+    pdb.set_trace()
+    # Get sorted tuple of marks.
+    sorted_marks = sorted(marks.items(), key=lambda m: m[1])
+    sorted_photos = [m[0] for m in sorted_marks][-10:]
+    return sorted_photos

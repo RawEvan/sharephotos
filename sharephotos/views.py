@@ -30,7 +30,7 @@ def homepage(request):
         # not search, get photos may be interested in
         else:
             search_word = ''
-            photo_list = dbControl.get_interested_photos(email=email)
+            photo_list = dbControl.get_recommend_photos(email=email)
     # not login
     else:
         search_word = ''
