@@ -370,13 +370,17 @@ def get_recommend_photos(email):
 def get_condidate_photos(email):
     user = User.objects.get(email=email)
     photos = user.photo_set.all()
+    collects = user.collect_set.all()
+    collect_photos = [c.photo for p in collects]
+    photos.extend(collect_photos)
     condidate = {}
     for photo in photos:
         # Get similar photos of each photo.
         similarities = photo.photo_1.all().order_by('similar_degree')[:10]
         for s in similarities:
             photo_2 = s.photo_2
-            if photo_2 not in condidate:
+            #check if the photo in condidate, collect_photos or owned_photos
+            if photo_2 not in condidate and photo_2 not in photos:
                 condidate[photo_2.id] = photo_2
     return condidate.values()
 
@@ -390,18 +394,13 @@ def most_interested(email, photos):
     interest_tags = [i.tag for i in interests]
     marks = {}
     for photo in photos:
-        # The photo is not owned to or collected by the uesr.
-        #if photo not in collect_photos and photo not in owned_photos:
-        if photo not in collect_photos:
-            photo_mark = 0
-            tags = photo.tags.all()
-            # Count the sum mark of each tag.
-            for tag in tags:
-                if tag in interest_tags:
-                    photo_mark += Interest.objects.get(user=user, tag=tag).degree
-            marks[photo] = photo_mark
-    import pdb
-    pdb.set_trace()
+        photo_mark = 0
+        tags = photo.tags.all()
+        # Count the sum mark of each tag.
+        for tag in tags:
+            if tag in interest_tags:
+                photo_mark += Interest.objects.get(user=user, tag=tag).degree
+        marks[photo] = photo_mark
     # Get sorted tuple of marks.
     sorted_marks = sorted(marks.items(), key=lambda m: m[1])
     sorted_photos = [m[0] for m in sorted_marks][-10:]
